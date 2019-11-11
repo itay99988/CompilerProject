@@ -65,16 +65,56 @@ import java_cup.runtime.*;
 	/* Enable token position extraction from main */
 	/**********************************************/
 	public int getTokenStartPosition() { return yycolumn + 1; } 
+	
+	
 %}
 
 /***********************/
 /* MACRO DECALARATIONS */
 /***********************/
-LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t\f]
-INTEGER			= 0 | [1-9][0-9]*
-ID				= [a-z]+
 
+
+//[^\r\n]
+LineTerminator	= \r|\n|\r\n
+WhiteSpace		= [ \t\f]
+NEGINTEGER		= [1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-2][0-9][0-9][0-9][0-9] | 3[0-1][0-9][0-9][0-9]| 32[0-6][0-9][0-9][0-9] | 327[0-5][0-9] | 3276[0-8]
+POSINTEGER 		= [0-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-2][0-9][0-9][0-9][0-9] | 3[0-1][0-9][0-9][0-9]| 32[0-6][0-9][0-9][0-9] | 327[0-5][0-9] | 3276[0-7]
+INTEGER			= {POSINTEGER}|-{NEGINTEGER}
+LPAREN 			= \( 
+RPAREN 			= \)
+LBRACK			= \[
+RBRACK 			= \]
+LBRACE			= \{
+RBRACE			= \}
+PLUS			= \+
+MINUS			= \-
+TIMES			= \*
+DIVIDE			= \/
+DOT				= \.
+COMMA			= \,
+SEMICOLON		= \;
+ELLIPSIS		= \.\.\.
+ASSIGN			= \:\=
+EQ				= \=
+LT				= \<
+GT				= \>
+//L?\\"(\\.|[^\\"])*\"
+ID				= [a-z|A-Z]+[a-z|A-Z|0-9]*
+InputCharacter = [0-9]|[a-z]|[A-Z]| {WhiteSpace} |{LPAREN} | {RPAREN} | {LBRACK} | {RBRACK} | {LBRACE} | {RBRACE} | \? | \! | {PLUS} | {MINUS} | {TIMES} | {DIVIDE} | {DOT} | {SEMICOLON} 
+TraditionalCharacter = {InputCharacter}|{LineTerminator}
+//\{|\}|?|!|+|-|*|/|\.|;
+
+/* comments */
+Comment = {TraditionalComment} | {EndOfLineComment} //| {EndOfFileComment}
+
+//TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+TraditionalComment   = "/*"{TraditionalCharacter}*"*/" 
+ //| "/*" "*"+ "/"
+// Comment can be the last line of the file, without line terminator.
+EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}
+//EndOfFileComment	= "//" {InputCharacter}*
+
+STRING 			= \"[a-zA-Z]*\"
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
@@ -92,15 +132,42 @@ ID				= [a-z]+
 /**************************************************************/
 
 <YYINITIAL> {
+"class"				{ return symbol(TokenNames.CLASS) ;}
+"nil"				{ return symbol(TokenNames.NIL) ;}
+"array"				{ return symbol(TokenNames.ARRAY) ;}
+"while"				{ return symbol(TokenNames.WHILE) ;}
+"extends"			{ return symbol(TokenNames.EXTENDS) ;}
+"return"			{ return symbol(TokenNames.RETURN) ;}
+"new"				{ return symbol(TokenNames.NEW) ;}
+"if"				{ return symbol(TokenNames.IF) ;}
 
-"+"					{ return symbol(TokenNames.PLUS);}
-"-"					{ return symbol(TokenNames.MINUS);}
-"PPP"				{ return symbol(TokenNames.TIMES);}
-"/"					{ return symbol(TokenNames.DIVIDE);}
-"("					{ return symbol(TokenNames.LPAREN);}
-")"					{ return symbol(TokenNames.RPAREN);}
+{DIVIDE}			{ return symbol(TokenNames.DIVIDE);}
+{LPAREN}			{ return symbol(TokenNames.LPAREN);}
+{RPAREN}			{ return symbol(TokenNames.RPAREN);}
+{RBRACK}			{ return symbol(TokenNames.RBRACK);}
+{LBRACK}			{ return symbol(TokenNames.LBRACK);}
+{LBRACE}			{ return symbol(TokenNames.LBRACE);}
+{RBRACE}			{ return symbol(TokenNames.RBRACE);}
+{PLUS}				{ return symbol(TokenNames.PLUS);}
+{MINUS}				{ return symbol(TokenNames.MINUS);}
+{TIMES}				{ return symbol(TokenNames.TIMES);}
+{DIVIDE}			{ return symbol(TokenNames.DIVIDE);}
+{DOT}				{ return symbol(TokenNames.DOT);}
+{COMMA}				{ return symbol(TokenNames.COMMA);}
+{ELLIPSIS}			{ return symbol(TokenNames.ELLIPSIS);}
+{ASSIGN}			{ return symbol(TokenNames.ASSIGN);}
+{EQ}				{ return symbol(TokenNames.EQ);}
+{LT}				{ return symbol(TokenNames.LT);}
+{GT}				{ return symbol(TokenNames.GT);}
+{SEMICOLON}			{ return symbol(TokenNames.SEMICOLON);}
 {INTEGER}			{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
 {ID}				{ return symbol(TokenNames.ID,     new String( yytext()));}   
+{STRING}			{ return symbol(TokenNames.STRING,     new String( yytext()));}   
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
+{LineTerminator}		{ /* just skip what was found, do nothing */ }
+
+ /* comments */
+      {Comment}                      { /* ignore */ }
 <<EOF>>				{ return symbol(TokenNames.EOF);}
+[^]					{ return symbol(TokenNames.ERROR);}
 }
