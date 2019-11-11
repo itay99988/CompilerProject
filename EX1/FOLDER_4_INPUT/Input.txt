@@ -1,3 +1,19 @@
 abcd
-moish 77 999 zebra
-90
+Moish987 class 77 999 zebra  "aaa" 98B "ac" "as" 32767 32768 327777 -32768 -32769 33  "" // sdfsdfds "abc" ""
+/* bla bla  b[[ ]]() [] {}
+ ? ! + - * / . ; la 
+sdf
+sdfsdfs gg gg 
+ */ gg
+ /* [[[[[*/
+ ab4
+ a
+ [
+ }
+ ]
+ {
+  , ... = < > :=
+  
+  ]]() ] {}
++ - * / . ;
+ // bla
