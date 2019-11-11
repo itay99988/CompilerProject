@@ -14,6 +14,7 @@ public class Main
 		PrintWriter file_writer;
 		String inputFilename = argv[0];
 		String outputFilename = argv[1];
+		boolean firstTime = true;
 		
 		try
 		{
@@ -45,21 +46,32 @@ public class Main
 				/************************/
 				/* [6] Print to console */
 				/************************/
-				System.out.print("[");
-				System.out.print(l.getLine());
-				System.out.print(",");
-				System.out.print(l.getTokenStartPosition());
-				System.out.print("]:");
-				System.out.print(s.value);
-				System.out.print("\n");
 				
-				/*********************/
-				/* [7] Print to file */
-				/*********************/
+				if (s.sym == TokenNames.ERROR)
+				{
+					file_writer.close();
+					file_writer = new PrintWriter(outputFilename);
+					file_writer.print("ERROR");
+					file_writer.close();
+					return;
+				}
+				
+				if (firstTime)
+				{
+					firstTime = false;
+				}
+				else{
+					file_writer.print("\n");
+				}
+				
+				file_writer.print(GetTypeName(s.sym));
+				if (s.sym == TokenNames.NUMBER || s.sym == TokenNames.ID || s.sym == TokenNames.STRING)
+					file_writer.print("("+s.value+")");
+				file_writer.print("[");
 				file_writer.print(l.getLine());
-				file_writer.print(": ");
-				file_writer.print(s.value);
-				file_writer.print("\n");
+				file_writer.print(",");
+				file_writer.print(l.getTokenStartPosition());
+				file_writer.print("]");
 				
 				/***********************/
 				/* [8] Read next token */
@@ -83,6 +95,75 @@ public class Main
 			e.printStackTrace();
 		}
 	}
+	
+	static public String GetTypeName(int type)
+	{
+		switch (type)
+		{
+			case TokenNames.CLASS:
+				return "CLASS";
+			case TokenNames.ARRAY:
+				return "ARRAY";
+			case TokenNames.EXTENDS:
+				return "EXTENDS";
+			case TokenNames.RETURN:
+				return "RETURN";
+			case TokenNames.WHILE:
+				return "WHILE";
+			case TokenNames.IF:
+				return "IF";
+			case TokenNames.NEW:
+				return "NEW";
+			case TokenNames.NIL:
+				return "NIL";
+				
+
+			case TokenNames.LPAREN:
+				return "LPAREN";
+			case TokenNames.RPAREN:
+				return "RPAREN";
+			case TokenNames.LBRACK:
+				return "LBRACK";
+			case TokenNames.RBRACK:
+				return "RBRACK";
+			case TokenNames.LBRACE:
+				return "LBRACE";
+			case TokenNames.RBRACE:
+				return "RBRACE";
+			case TokenNames.PLUS:
+				return "PLUS";
+			case TokenNames.MINUS:
+				return "MINUS";
+			case TokenNames.TIMES:
+				return "TIMES";
+			case TokenNames.DIVIDE:
+				return "DIVIDE";
+			case TokenNames.COMMA:
+				return "COMMA";
+			case TokenNames.DOT:
+				return "DOT";
+			case TokenNames.SEMICOLON:
+				return "SEMICOLON";
+			case TokenNames.ELLIPSIS:
+				return "ELLIPSIS";
+				
+			case TokenNames.ASSIGN:
+				return "ASSIGN";
+			case TokenNames.EQ:
+				return "EQ";
+			case TokenNames.LT:
+				return "LT";
+			case TokenNames.GT:
+				return "GT";
+				
+			case TokenNames.NUMBER:
+				return "INT";
+			case TokenNames.ID:
+				return "ID";
+			case TokenNames.STRING:
+				return "STRING";
+			default:
+				return "";
+		}
+	}
 }
-
-
