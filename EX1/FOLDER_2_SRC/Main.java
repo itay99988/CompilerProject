@@ -14,7 +14,7 @@ public class Main
 		PrintWriter file_writer;
 		String inputFilename = argv[0];
 		String outputFilename = argv[1];
-		boolean firstTime = true;
+		//boolean firstTime = true;
 		
 		try
 		{
@@ -56,14 +56,14 @@ public class Main
 					return;
 				}
 				
-				if (firstTime)
+				/*if (firstTime)
 				{
 					firstTime = false;
 				}
 				else{
 					file_writer.print("\n");
 				}
-				
+				*/
 				file_writer.print(GetTypeName(s.sym));
 				if (s.sym == TokenNames.NUMBER || s.sym == TokenNames.ID || s.sym == TokenNames.STRING)
 					file_writer.print("("+s.value+")");
@@ -72,6 +72,7 @@ public class Main
 				file_writer.print(",");
 				file_writer.print(l.getTokenStartPosition());
 				file_writer.print("]");
+				file_writer.print("\n");
 				
 				/***********************/
 				/* [8] Read next token */
