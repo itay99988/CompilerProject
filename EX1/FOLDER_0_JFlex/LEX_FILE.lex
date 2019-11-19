@@ -98,21 +98,17 @@ ASSIGN			= \:\=
 EQ				= \=
 LT				= \<
 GT				= \>
-//L?\\"(\\.|[^\\"])*\"
 ID				= [a-z|A-Z]+[a-z|A-Z|0-9]*
 InputCharacter = [0-9]|[a-z]|[A-Z]| {WhiteSpace} |{LPAREN} | {RPAREN} | {LBRACK} | {RBRACK} | {LBRACE} | {RBRACE} | \? | \! | {PLUS} | {MINUS} | {TIMES} | {DIVIDE} | {DOT} | {SEMICOLON} 
 TraditionalCharacter = {InputCharacter}|{LineTerminator}
-//\{|\}|?|!|+|-|*|/|\.|;
 
 /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment} //| {EndOfFileComment}
 
-//TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 TraditionalComment   = "/*"{TraditionalCharacter}*"*/" 
- //| "/*" "*"+ "/"
+
 // Comment can be the last line of the file, without line terminator.
-EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}
-//EndOfFileComment	= "//" {InputCharacter}*
+EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 STRING 			= \"[a-zA-Z]*\"
 /******************************/
