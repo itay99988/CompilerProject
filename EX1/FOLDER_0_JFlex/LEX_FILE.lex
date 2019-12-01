@@ -80,6 +80,10 @@ WhiteSpace		= [ \t\f]
 NEGINTEGER		= [1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-2][0-9][0-9][0-9][0-9] | 3[0-1][0-9][0-9][0-9]| 32[0-6][0-9][0-9][0-9] | 327[0-5][0-9] | 3276[0-8]
 POSINTEGER 		= [0-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-2][0-9][0-9][0-9][0-9] | 3[0-1][0-9][0-9][0-9]| 32[0-6][0-9][0-9][0-9] | 327[0-5][0-9] | 3276[0-7]
 INTEGER			= {POSINTEGER}|-{NEGINTEGER}
+ZEROS           = 00+
+MINUSZERO       = -0
+SEVERALINTS     = {INTEGER}{INTEGER}+
+NONINTEGER      = {ZEROS} | {MINUSZERO} | {SEVERALINTS}
 LPAREN 			= \( 
 RPAREN 			= \)
 LBRACK			= \[
@@ -166,4 +170,5 @@ STRING 			= \"[a-zA-Z]*\"
       {Comment}                      { /* ignore */ }
 <<EOF>>				{ return symbol(TokenNames.EOF);}
 [^]					{ return symbol(TokenNames.ERROR);}
+{NONINTEGER}	    { return symbol(TokenNames.ERROR);}
 }
