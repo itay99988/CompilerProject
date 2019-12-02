@@ -68,12 +68,26 @@ terminal LBRACE;
 terminal RBRACE;
 terminal SEMICOLON;
 terminal ASSIGN;
+terminal LT;
+terminal CLASS;
+terminal ERROR;
+terminal NIL;
+terminal COMMA;
+terminal ELLIPSIS;
+terminal GT;
+terminal ARRAY;
+terminal EXTENDS;
+terminal RETURN;
+terminal NEW;
+
+/*terminal EOF;*/
 
 /*************/
 /* TERMINALS */
 /*************/
 terminal Integer INT;
 terminal String ID;
+terminal String STRING;
 
 /*****************/
 /* NON TERMINALS */
@@ -82,6 +96,13 @@ non terminal AST_EXP exp;
 non terminal AST_VAR var;
 non terminal AST_STMT stmt;
 non terminal AST_STMT_LIST stmtList;
+
+non terminal AST_VAR_DEC varDec;
+non terminal AST_NEW_EXP newExp;
+non terminal AST_PROGRAM Program;
+non terminal AST_DEC dec;
+non terminal AST_DEC_LIST decList;
+
 
 /***********************/
 /* OPERATOR PRECEDENCE */
@@ -94,14 +115,31 @@ precedence left DIVIDE;
 /************************/
 /* START WITH: stmtList */
 /************************/
-start with stmtList;
+start with Program;
 
 /********************/
 /* DERIVATION RULES */
 /********************/
 
+
+Program		::=		decList:l			{: RESULT = new AST_PROGRAM(l);:}
+				;
+				
+
+decList	::=		dec:d	decList:l		{: RESULT = new AST_DEC_LIST(d,l);    :}
+					| dec:d				{: RESULT = new AST_DEC_LIST(d,null); :}
+					;				
+				
+dec			::= 	varDec:vd								{: RESULT = vd;:}
+					;
+
+varDec		::=		ID:t ID:n ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VAR_DEC_EXP(t, n, e);:} 
+				| ID:t ID:n ASSIGN newExp:ne SEMICOLON		{: RESULT = new AST_VAR_DEC_NEW_EXP(t, n, ne);:} 
+				;
+				
 stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
 					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+					
 					;
 
 var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
@@ -109,7 +147,8 @@ var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
 					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
 					;
 					
-stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
+stmt		::=		varDec:vd													{: RESULT = new AST_STMT_VAR_DEC(vd);:}
+					| var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
 					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); :}
 					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
 					;
@@ -118,4 +157,8 @@ exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i);          :}
 					| var:v								{: RESULT = new AST_EXP_VAR(v);          :}
 					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0);:}
 					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1);:}
+					;
+					
+newExp		::=		NEW ID:t							{: RESULT = new AST_NEW_EXP(t);          :}
+					| NEW ID:t LBRACK exp:e RBRACK		{: RESULT = new AST_NEW_EXP_EXTENDED(t, e);          :}
 					;

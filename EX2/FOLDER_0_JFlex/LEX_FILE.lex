@@ -2,17 +2,22 @@
 /* FILE NAME: LEX_FILE.lex */
 /***************************/
 
+/***************************/
+/* AUTHOR: OREN ISH SHALOM */
+/***************************/
+
 /*************/
 /* USER CODE */
 /*************/
+   
 import java_cup.runtime.*;
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
-
+      
 %%
-
+   
 /************************************/
 /* OPTIONS AND DECLARATIONS SECTION */
 /************************************/
@@ -29,9 +34,9 @@ import java_cup.runtime.*;
 /********************************************************************/
 %line
 %column
-
+    
 /*******************************************************************************/
-/* Note that this has to be the EXACT same name of the class the CUP generates */
+/* Note that this has to be the EXACT smae name of the class the CUP generates */
 /*******************************************************************************/
 %cupsym TokenNames
 
@@ -39,13 +44,13 @@ import java_cup.runtime.*;
 /* CUP compatibility mode interfaces with a CUP generated parser. */
 /******************************************************************/
 %cup
-
+   
 /****************/
 /* DECLARATIONS */
 /****************/
 /*****************************************************************************/   
 /* Code between %{ and %}, both of which must be at the beginning of a line, */
-/* will be copied verbatim (letter to letter) into the Lexer class code.     */
+/* will be copied letter to letter into the Lexer class code.                */
 /* Here you declare member variables and functions that are used inside the  */
 /* scanner actions.                                                          */  
 /*****************************************************************************/   
@@ -59,22 +64,23 @@ import java_cup.runtime.*;
 	/*******************************************/
 	/* Enable line number extraction from main */
 	/*******************************************/
-	public int getLine() { return yyline + 1; } 
-
-	/**********************************************/
-	/* Enable token position extraction from main */
-	/**********************************************/
-	public int getTokenStartPosition() { return yycolumn + 1; } 
-	
-	
+	public int getLine()    { return yyline + 1; } 
+	public int getCharPos() { return yycolumn;   } 
 %}
 
 /***********************/
 /* MACRO DECALARATIONS */
 /***********************/
+/*************original**************
+LineTerminator	= \r|\n|\r\n
+WhiteSpace		= {LineTerminator} | [ \t\f]
+INTEGER			= 0 | [1-9][0-9]*
+ID				= [a-zA-Z]+
+LT				= \<
+************************************/
 
 
-//[^\r\n]
+/********** our lex file******/
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= [ \t\f]
 INTEGER 		= [0-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-2][0-9][0-9][0-9][0-9] | 3[0-1][0-9][0-9][0-9]| 32[0-6][0-9][0-9][0-9] | 327[0-5][0-9] | 3276[0-7]
@@ -112,6 +118,7 @@ TraditionalComment   = "/*"{TraditionalCharacter}*"*/"
 EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 STRING 			= \"[a-zA-Z]*\"
+   
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
 /******************************/
@@ -121,13 +128,15 @@ STRING 			= \"[a-zA-Z]*\"
 /************************************************************/
 /* LEXER matches regular expressions to actions (Java code) */
 /************************************************************/
-
+   
 /**************************************************************/
 /* YYINITIAL is the state at which the lexer begins scanning. */
 /* So these regular expressions will only be matched if the   */
 /* scanner is in the start state YYINITIAL.                   */
+
 /**************************************************************/
 
+/****************** our code **************/
 <YYINITIAL> {
 "class"				{ return symbol(TokenNames.CLASS) ;}
 "nil"				{ return symbol(TokenNames.NIL) ;}
@@ -137,7 +146,7 @@ STRING 			= \"[a-zA-Z]*\"
 "return"			{ return symbol(TokenNames.RETURN) ;}
 "new"				{ return symbol(TokenNames.NEW) ;}
 "if"				{ return symbol(TokenNames.IF) ;}
-
+{LT}				{ return symbol(TokenNames.LT);}
 {DIVIDE}			{ return symbol(TokenNames.DIVIDE);}
 {LPAREN}			{ return symbol(TokenNames.LPAREN);}
 {RPAREN}			{ return symbol(TokenNames.RPAREN);}
@@ -154,14 +163,13 @@ STRING 			= \"[a-zA-Z]*\"
 {ELLIPSIS}			{ return symbol(TokenNames.ELLIPSIS);}
 {ASSIGN}			{ return symbol(TokenNames.ASSIGN);}
 {EQ}				{ return symbol(TokenNames.EQ);}
-{LT}				{ return symbol(TokenNames.LT);}
 {GT}				{ return symbol(TokenNames.GT);}
 {SEMICOLON}			{ return symbol(TokenNames.SEMICOLON);}
-{INTEGER}			{ return symbol(TokenNames.NUMBER, new Integer(yytext()));}
+{INTEGER}			{ return symbol(TokenNames.INT, new Integer(yytext()));}
 {ID}				{ return symbol(TokenNames.ID,     new String( yytext()));}   
 {STRING}			{ return symbol(TokenNames.STRING,     new String( yytext()));}   
 {WhiteSpace}		{ /* just skip what was found, do nothing */ }
-{LineTerminator}		{ /* just skip what was found, do nothing */ }
+{LineTerminator}		{ /* just skip what was found, do nothing*/  }
 
  /* comments */
       {Comment}                      { /* ignore */ }
