@@ -50,7 +50,6 @@ scan with
 {:
 	Symbol s;
 	s = lexer.next_token();
-	//System.out.print(s.sym);
 	System.out.print("[");
 	System.out.print(lexer.getLine());
 	System.out.print(":");
@@ -98,49 +97,43 @@ terminal EXTENDS;
 terminal RETURN;
 terminal NEW;
 
-/*terminal EOF;*/
-
-/*************/
-/* TERMINALS */
-/*************/
+/************************/
+/* ADDITIONAL TERMINALS */
+/************************/
 terminal Integer INT;
-terminal String ID;
-terminal String STRING;
+terminal String  ID;
+terminal String  STRING;
 
 /*****************/
 /* NON TERMINALS */
 /*****************/
-non terminal AST_PROGRAM Program;
-non terminal AST_DEC dec;
-non terminal AST_DEC_LIST decList;
-non terminal AST_VAR_DEC varDec;
+non terminal AST_PROGRAM   Program;
+non terminal AST_DEC       dec;
+non terminal AST_DEC_LIST  decList;
+non terminal AST_VAR_DEC   varDec;
 
-non terminal AST_FUNCDEC funcDec;
-non terminal AST_CLASSDEC classDec;
-non terminal AST_ARR_DEC arrayDec;
+non terminal AST_FUNCDEC   funcDec;
+non terminal AST_CLASSDEC  classDec;
+non terminal AST_ARR_DEC   arrayDec;
 
-non terminal AST_EXP exp;
-non terminal AST_VAR var;
-non terminal AST_STMT stmt;
+non terminal AST_EXP 	   exp;
+non terminal AST_VAR 	   var;
+non terminal AST_STMT      stmt;
 non terminal AST_STMT_LIST stmtList;
 
-non terminal AST_NEW_EXP newExp;
-non terminal AST_CFIELD cField;
+non terminal AST_NEW_EXP   newExp;
+non terminal AST_CFIELD    cField;
 
-non terminal AST_BINOP binOp;
-non terminal AST_INT int;
+non terminal AST_BINOP     binOp;
+non terminal AST_INT       int;
 
 //assisting non terminals:
-non terminal AST_FULLINT fullInt;
-non terminal AST_IDSCOMMA commaIdsLst;
+non terminal AST_FULLINT     fullInt;
+non terminal AST_IDSCOMMA    commaIdsLst;
 non terminal AST_CFIELD_LIST cFieldList;
-non terminal AST_COMMAEXP commaExpsLst;
-non terminal AST_BRACESEXP bracesExps;
-non terminal AST_FUNC_CALL funcCall;
-
-
-
-
+non terminal AST_COMMAEXP    commaExpsLst;
+non terminal AST_BRACESEXP   bracesExps;
+non terminal AST_FUNC_CALL   funcCall;
 
 /***********************/
 /* OPERATOR PRECEDENCE */
@@ -166,13 +159,12 @@ start with Program;
 /* DERIVATION RULES */
 /********************/
 
-
-Program		::=		decList:l			{: RESULT = new AST_PROGRAM(l); :}
+Program		::=		decList:l								{: RESULT = new AST_PROGRAM(l);      :}
 					;
 				
 
-decList	    ::=		dec:d	decList:l		{: RESULT = new AST_DEC_LIST(d,l);    :}
-					| dec:d				    {: RESULT = new AST_DEC_LIST(d,null); :}
+decList	    ::=		dec:d	decList:l						{: RESULT = new AST_DEC_LIST(d,l);    :}
+					| dec:d				    				{: RESULT = new AST_DEC_LIST(d,null); :}
 					;
 
 commaIdsLst ::=     COMMA ID ID commaIdsLst				    {: RESULT = null;                     :}
@@ -191,31 +183,34 @@ funcCall    ::=     ID bracesExps							{: RESULT = null;                     :}
 					| var DOT ID bracesExps					{: RESULT = null;                     :}
 					;
 
-cFieldList	::=		cField	cFieldList		{: RESULT = null;                     :}
-					| cField				{: RESULT = null;                     :}
+cFieldList	::=		cField	cFieldList		                {: RESULT = null;                     :}
+					| cField								{: RESULT = null;                     :}
 					;
 				
-dec			::= 	varDec:vd								{: RESULT = null;                     :}
-				  | funcDec									{: RESULT = null;                     :}
-				  | classDec								{: RESULT = null;                     :}
-				  | arrayDec:ad							    {: RESULT = null;                     :}
-				  ;
+dec			::= 	varDec	      							{: RESULT = null;                     :}
+				    | funcDec								{: RESULT = null;                     :}
+				    | classDec								{: RESULT = null;                     :}
+				    | arrayDec   							{: RESULT = null;                     :}
+				    ;
 
-varDec		::=		ID:t ID:n ASSIGN exp:e SEMICOLON		{: RESULT = new AST_VAR_DEC_EXP(t, n, e);:} 
-				| ID:t ID:n SEMICOLON		                {: RESULT = new AST_VAR_DEC_EXP(t, n, null);:} 
-				| ID:t ID:n ASSIGN newExp:ne SEMICOLON		{: RESULT = new AST_VAR_DEC_NEW_EXP(t, n, ne);:} 
-				;
-funcDec     ::=   ID ID LPAREN RPAREN LBRACE stmtList RBRACE                   {: RESULT = null;                  :}
-				| ID ID LPAREN ID ID commaIdsLst RPAREN LBRACE stmtList RBRACE {: RESULT = null;                  :}
-				;
-classDec    ::=     CLASS ID LBRACE cFieldList RBRACE                  {: RESULT = null;                     :}
-				|   CLASS ID EXTENDS ID LBRACE cFieldList RBRACE       {: RESULT = null;                     :}
-				;
-arrayDec    ::=     ARRAY ID:n EQ ID:t LBRACK RBRACK        {: RESULT = new AST_ARR_DEC(t,n); :}
-				;
+varDec		::=	    ID:t ID:n ASSIGN exp:e SEMICOLON		    {: RESULT = new AST_VAR_DEC_EXP(t, n, e);      :} 
+				    | ID:t ID:n SEMICOLON		                {: RESULT = new AST_VAR_DEC_EXP(t, n, null);   :} 
+				    | ID:t ID:n ASSIGN newExp:ne SEMICOLON		{: RESULT = new AST_VAR_DEC_NEW_EXP(t, n, ne); :} 
+				    ;
+
+funcDec     ::=     ID ID LPAREN RPAREN LBRACE stmtList RBRACE                     {: RESULT = null;                  :}
+				    | ID ID LPAREN ID ID commaIdsLst RPAREN LBRACE stmtList RBRACE {: RESULT = null;                  :}
+				    ;
+
+classDec    ::=     CLASS ID LBRACE cFieldList RBRACE                    {: RESULT = null;                     :}
+			       	| CLASS ID EXTENDS ID LBRACE cFieldList RBRACE       {: RESULT = null;                     :}
+				    ;
+
+arrayDec    ::=     ARRAY ID:n EQ ID:t LBRACK RBRACK       			     {: RESULT = new AST_ARR_DEC(t,n);     :}
+				    ;
 				
-stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
-					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+stmtList	::=		stmt:s	stmtList:l									{: RESULT = new AST_STMT_LIST(s,l);    :}
+					| stmt:s											{: RESULT = new AST_STMT_LIST(s,null); :}
 					;
 
 fullInt	    ::=     int						{: RESULT = null;                            :}
@@ -223,9 +218,9 @@ fullInt	    ::=     int						{: RESULT = null;                            :}
 					;
  
 
-var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
-					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
-					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
+var			::=		ID:name														{: RESULT = new AST_VAR_SIMPLE(name);       :}
+					| var:v DOT ID:fieldName									{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
+					| var:v LBRACK exp:e RBRACK									{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
 					;
 					
 stmt		::=		varDec:vd													{: RESULT = new AST_STMT_VAR_DEC(vd); :}
@@ -255,7 +250,7 @@ cField      ::=     varDec                              {: RESULT = null; :}
                     | funcDec                           {: RESULT = null; :}
 					;
 
-binOp       ::=       PLUS                              {: RESULT = null; :}
+binOp       ::=     PLUS                                {: RESULT = null; :}
 					| MINUS                             {: RESULT = null; :}								
 					| TIMES                             {: RESULT = null; :}
 					| DIVIDE                            {: RESULT = null; :}
@@ -263,5 +258,9 @@ binOp       ::=       PLUS                              {: RESULT = null; :}
 					| LT                                {: RESULT = null; :}
 					| EQ                                {: RESULT = null; :}
 					;
-int         ::=       INT                               {: RESULT = null; :}
+int         ::=     INT                                 {: RESULT = null; :}
 					;
+
+/********************/
+/* END OF SECTION   */
+/********************/
