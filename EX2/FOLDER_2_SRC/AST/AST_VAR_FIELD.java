@@ -35,7 +35,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		/*********************************/
 		/* AST NODE TYPE = AST FIELD VAR */
 		/*********************************/
-		System.out.print("AST NODE FIELD VAR\n");
+		System.out.print("AST NODE: FIELD VAR\n");
 
 		/**********************************************/
 		/* RECURSIVELY PRINT VAR, then FIELD NAME ... */
@@ -48,7 +48,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("FIELD\nVAR\n...->%s",fieldName));
+			String.format("FIELD\nVAR\n( %s )",fieldName));
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */

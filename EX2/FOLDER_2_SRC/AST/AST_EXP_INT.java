@@ -2,44 +2,38 @@ package AST;
 
 public class AST_EXP_INT extends AST_EXP
 {
-	public int value;
+	public AST_FULLINT fullInt;
 	
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
-	public AST_EXP_INT(int value)
-	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
-		SerialNumber = AST_Node_Serial_Number.getFresh();
 
-		/***************************************/
-		/* PRINT CORRESPONDING DERIVATION RULE */
-		/***************************************/
-		System.out.format("====================== exp -> INT( %d )\n", value);
+	public AST_EXP_INT(AST_FULLINT fullInt) {
+		System.out.print("====================== exp -> fullInt\n");
 
-		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
-		/*******************************/
-		this.value = value;
+		this.fullInt = fullInt;
 	}
 
-	/************************************************/
-	/* The printing message for an INT EXP AST node */
-	/************************************************/
-	public void PrintMe()
-	{
+
+	public void PrintMe() {
 		/*******************************/
 		/* AST NODE TYPE = AST INT EXP */
 		/*******************************/
-		System.out.format("AST NODE INT( %d )\n",value);
+		System.out.format("AST NODE: EXP INT\n", fullInt);
+
+		/*********************************/
+		/* RECURSIVELY PRINT fullInt ... */
+		/*********************************/
+		if (fullInt != null) fullInt.PrintMe();
 
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("INT(%d)",value));
+			String.format("EXP INT", fullInt));
+
+		/****************************************/
+		/* PRINT Edges to AST GRAPHVIZ DOT file */
+		/****************************************/
+		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, fullInt.SerialNumber);
 	}
+
 }

@@ -1,19 +1,40 @@
 package AST;
 
-public class AST_VAR_DEC_EXP extends AST_VAR_DEC
-{
-	String t;
-	String n;
-	AST_EXP e;
+public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
+	
+	public AST_EXP exp;
 	
 	public AST_VAR_DEC_EXP(String type, String name, AST_EXP exp){
-		t = type;
-		n = name;
-		e = exp;
+		super(type, name);
+		this.exp = exp;
+		String expStr = exp == null ? "" : " exp";
+		System.out.format("====================== varDec -> ID( %s ) ID( %s ) ASSIGN%s SEMICOLON\n", type, name, expStr);
 	}
 	
-	public void printMe(){
-		System.out.println("print me ast vardec exp\n");
+
+	public void PrintMe() {
+		/******************************************/
+		/* AST NODE TYPE = VAR DEC EXP (AST NODE) */
+		/******************************************/
+		System.out.print("AST NODE: VAR DEC EXP\n");
+
+		/*****************************/
+		/* RECURSIVELY PRINT exp ... */
+		/*****************************/
+		if (exp != null) exp.PrintMe();
+		
+		/*********************************/
+		/* Print to AST GRAPHIZ DOT file */
+		/*********************************/
+		AST_GRAPHVIZ.getInstance().logNode(
+			SerialNumber,
+			"VAR DEC\nEXP");
+
+		/****************************************/
+		/* PRINT Edges to AST GRAPHVIZ DOT file */
+		/****************************************/
+		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, exp.SerialNumber);
 	}
+
 }
 	

@@ -18,7 +18,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/***************************************/
 		/* PRINT CORRESPONDING DERIVATION RULE */
 		/***************************************/
-		System.out.print("====================== var -> var [ exp ]\n");
+		System.out.print("====================== var -> var LBRACK exp RBRACK\n");
 
 		/*******************************/
 		/* COPY INPUT DATA NENBERS ... */
@@ -35,7 +35,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/*************************************/
 		/* AST NODE TYPE = AST SUBSCRIPT VAR */
 		/*************************************/
-		System.out.print("AST NODE SUBSCRIPT VAR\n");
+		System.out.print("AST NODE: SUBSCRIPT VAR\n");
 
 		/****************************************/
 		/* RECURSIVELY PRINT VAR + SUBSRIPT ... */
@@ -48,7 +48,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"SUBSCRIPT\nVAR\n...[...]");
+			"SUBSCRIPT\nVAR\n");
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
