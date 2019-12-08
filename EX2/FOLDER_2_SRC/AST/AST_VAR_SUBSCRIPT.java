@@ -48,7 +48,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/***************************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			"SUBSCRIPT\nVAR\n");
+			"SUBSCRIPT\nVAR\nleft[right]");
 		
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */

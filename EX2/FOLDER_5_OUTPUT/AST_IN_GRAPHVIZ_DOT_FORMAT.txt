@@ -162,7 +162,7 @@ VAR"];
 v69 -> v68;
 v71 [label = "SUBSCRIPT
 VAR
-"];
+left[right]"];
 v71 -> v66;
 v71 -> v69;
 v72 [label = "EXP
@@ -350,7 +350,7 @@ VAR"];
 v148 -> v147;
 v150 [label = "SUBSCRIPT
 VAR
-"];
+left[right]"];
 v150 -> v145;
 v150 -> v148;
 v151 [label = "INT( 99 )"];
@@ -399,7 +399,7 @@ v171 [label = "EXP INT"];
 v171 -> v170;
 v173 [label = "SUBSCRIPT
 VAR
-"];
+left[right]"];
 v173 -> v168;
 v173 -> v171;
 v175 [label = "SIMPLE
@@ -416,7 +416,7 @@ v180 [label = "EXP INT"];
 v180 -> v179;
 v182 [label = "SUBSCRIPT
 VAR
-"];
+left[right]"];
 v182 -> v177;
 v182 -> v180;
 v183 [label = "EXP
