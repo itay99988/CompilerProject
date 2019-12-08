@@ -27,9 +27,9 @@ public class AST_EXP_BINOP extends AST_EXP {
 		/*********************************/
 		System.out.format("AST NODE: EXP BINOP\n", op);
 
-		/********************************/
-		/* RECURSIVELY PRINT astInt ... */
-		/********************************/
+		/*********************************************/
+		/* RECURSIVELY PRINT left, op, and right ... */
+		/*********************************************/
 		if (left != null) left.PrintMe();
 		if(op != null) op.PrintMe();
 		if (right != null) right.PrintMe();

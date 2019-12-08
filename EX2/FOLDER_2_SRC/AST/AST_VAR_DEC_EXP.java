@@ -33,7 +33,9 @@ public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, exp.SerialNumber);
+		if(exp != null) {
+			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, exp.SerialNumber);
+		}
 	}
 
 }

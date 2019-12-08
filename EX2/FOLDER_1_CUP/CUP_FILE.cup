@@ -234,8 +234,8 @@ stmt		::=		varDec:vd													{: RESULT = new AST_STMT_VAR_DEC(vd);		:}
 					;
 
 exp			::=		  var:v								{: RESULT = new AST_EXP_VAR(v);					:}
-					| LPAREN exp RPAREN					{: RESULT = null;								:}
-					| exp:e1 binOp: b  exp:e2			{: RESULT = new AST_EXP_BINOP(e1, e2, b);		:}
+					| LPAREN exp: e RPAREN				{: RESULT = new AST_EXP_EXP(e);					:}
+					| exp: e1 binOp: b  exp:e2			{: RESULT = new AST_EXP_BINOP(e1, e2, b);		:}
 					| funcCall: f						{: RESULT = new AST_EXP_FUNCCALL(f);			:}
 					| fullInt: i						{: RESULT = new AST_EXP_INT(i);					:}
 					| NIL								{: RESULT = new AST_EXP_NIL();					:}
@@ -259,7 +259,7 @@ binOp       ::=     PLUS                                {: RESULT = new AST_BINO
 					| EQ                                {: RESULT = new AST_BINOP(AST_BINOP.Op.EQ);		:}
 					;
 
-int         ::=     INT: i                                 {: RESULT = new AST_INT(i); :}
+int         ::=     INT: i								{: RESULT = new AST_INT(i);						:}
 					;
 
 /********************/

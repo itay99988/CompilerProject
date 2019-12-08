@@ -25,7 +25,7 @@ public class AST_BINOP extends AST_DEC {
 		/*****************************/
 		/* AST NODE TYPE = AST BINOP */
 		/*****************************/
-		System.out.format("AST NODE: binOp( %s )", this);
+		System.out.format("AST NODE: binOp( %s )\n", this);
 
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */

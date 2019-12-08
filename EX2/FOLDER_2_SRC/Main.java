@@ -38,8 +38,6 @@ public class Main
 			/* [5] 3 ... 2 ... 1 ... Parse !!! */
 			/***********************************/
 			AST = (AST_PROGRAM) p.parse().value;
-
-			System.out.println("@@@@@@@@@@AST:" + AST);
 			
 			/*************************/
 			/* [6] Print the AST ... */

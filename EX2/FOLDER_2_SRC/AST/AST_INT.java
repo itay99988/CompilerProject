@@ -15,7 +15,7 @@ public class AST_INT extends AST_DEC {
 		/***************************/
 		/* AST NODE TYPE = AST INT */
 		/***************************/
-		System.out.format("AST NODE: INT( %d )", value);
+		System.out.format("AST NODE: INT( %d )\n", value);
 
 
 		/*********************************/
