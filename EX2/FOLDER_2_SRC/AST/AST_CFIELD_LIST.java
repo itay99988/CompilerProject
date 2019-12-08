@@ -21,7 +21,7 @@ public class AST_CFIELD_LIST extends AST_DEC {
 	}
 	
 
-	public void printMe() {
+	public void PrintMe() {
 		/******************************************/
 		/* AST NODE TYPE = CFIELD LIST (AST NODE) */
 		/******************************************/

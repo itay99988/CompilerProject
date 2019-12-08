@@ -15,7 +15,7 @@ public class AST_IDSCOMMA extends AST_DEC {
 	}
 
 
-	public void printMe() {
+	public void PrintMe() {
 		/********************************************/
 		/* AST NODE TYPE = STMT IDSCOMMA (AST NODE) */
 		/********************************************/

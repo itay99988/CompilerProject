@@ -12,7 +12,7 @@ public class AST_ARR_DEC extends AST_DEC {
 		System.out.format("====================== arrayDec -> ARRAY ID( %s ) EQ ID( %s ) LBRACK RBRACK", name, type);
 	}
 	
-	public void printMe(){
+	public void PrintMe(){
 		/****************************************/
 		/* AST NODE TYPE = ARRAY DEC (AST NODE) */
 		/****************************************/

@@ -9,7 +9,7 @@ public class AST_CFIELD extends AST_DEC {
 		System.out.format("====================== cField -> %s\n", dec);
 	}
 	
-	public void printMe() {
+	public void PrintMe() {
 		/*************************************/
 		/* AST NODE TYPE = CFIELD (AST NODE) */
 		/*************************************/

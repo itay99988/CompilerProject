@@ -18,7 +18,7 @@ public class AST_CLASSDEC extends AST_DEC {
 	}
 	
 
-	public void printMe(){
+	public void PrintMe(){
 		/***************************************/
 		/* AST NODE TYPE = CLASS DEC (AST NODE) */
 		/***************************************/
