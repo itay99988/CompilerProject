@@ -36,7 +36,7 @@ public class AST_IDSCOMMA extends AST_DEC {
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, commaIdsLst.SerialNumber);
+		if (commaIdsLst != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, commaIdsLst.SerialNumber);
 	}
 	
 }
