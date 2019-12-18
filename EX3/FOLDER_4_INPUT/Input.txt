@@ -1,0 +1,5 @@
+class Father
+{
+	abcdefghijklmnopqrstuvwxyz j;
+	int k;
+}

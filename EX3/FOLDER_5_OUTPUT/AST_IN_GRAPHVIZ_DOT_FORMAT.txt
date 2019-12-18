@@ -1,0 +1,27 @@
+digraph
+{
+graph [ordering = "out"]
+v0 [label = "VAR DEC
+EXP"];
+v1 [label = "CFIELD"];
+v1 -> v0;
+v2 [label = "VAR DEC
+EXP"];
+v3 [label = "CFIELD"];
+v3 -> v2;
+v4 [label = "CFIELD
+LIST"];
+v4 -> v3;
+v5 [label = "CFIELD
+LIST"];
+v5 -> v1;
+v5 -> v4;
+v6 [label = "CLASS
+DEC"];
+v6 -> v5;
+v7 [label = "DEC
+LIST"];
+v7 -> v6;
+v8 [label = "PROGRAM"];
+v8 -> v7;
+}
