@@ -12,6 +12,7 @@ public class AST_EXP_VAR extends AST_EXP
 		this.var = var;
 	}
 	
+
 	public void PrintMe() {
 		/************************************/
 		/* AST NODE TYPE = EXP VAR AST NODE */
@@ -37,8 +38,8 @@ public class AST_EXP_VAR extends AST_EXP
 			
 	}
 	
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws SemantException
 	{
-		return null;
+		return var.SemantMe();
 	}
 }

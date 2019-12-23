@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {
@@ -25,6 +26,12 @@ public class AST_VAR_FIELD extends AST_VAR
 		/*******************************/
 		this.var = var;
 		this.fieldName = fieldName;
+	}
+	
+	
+	//todo return type of field of class.
+	public TYPE SemantMe() throws SemantException{
+		return null;
 	}
 
 	/*************************************************/

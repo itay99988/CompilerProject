@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_FULLINT extends AST_DEC {
 
 	public AST_INT astInt;
@@ -37,6 +39,10 @@ public class AST_FULLINT extends AST_DEC {
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, astInt.SerialNumber);
+	}
+	
+	public TYPE SemantMe(){
+		return TYPE_INT.getInstance();
 	}
 }
 	

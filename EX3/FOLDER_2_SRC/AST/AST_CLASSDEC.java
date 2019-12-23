@@ -52,6 +52,8 @@ public class AST_CLASSDEC extends AST_DEC {
 	
 	public TYPE SemantMe() throws SemantException
 	{	
+	
+		System.out.println("semant me ast_classDEC");
 		/*************************/
 		/* [1] Begin Class Scope */
 		/*************************/

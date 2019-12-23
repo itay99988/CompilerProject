@@ -84,10 +84,13 @@ public class Main
 			/* [8] Close output file */
 			/*************************/
 		try{
-						System.out.println("step 8");
-			file_writer.close();
 			if (!isException)
+			{
+				file_writer.print("OK");
 				System.out.println("OK");
+			}
+			System.out.println("step 8");
+			file_writer.close();
 
 			/*************************************/
 			/* [9] Finalize AST GRAPHIZ DOT file */

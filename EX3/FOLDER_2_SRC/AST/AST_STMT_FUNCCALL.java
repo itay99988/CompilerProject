@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_STMT_FUNCCALL  extends AST_STMT {
 	
     public AST_FUNC_CALL funcCall;
@@ -34,6 +36,13 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
         /****************************************/
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, funcCall.SerialNumber);
+	}
+	
+		//todo go to symbol table and return type of function from symbol table
+		public TYPE SemantMe()throws SemantException
+	{
+		funcCall.SemantMe();
+		return null;
 	}
 
 

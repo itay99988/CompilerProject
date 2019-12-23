@@ -29,7 +29,7 @@ public class AST_EXP_STRING extends AST_EXP {
 			String.format("EXP_STR( '%s' )", this.str));
 	}
 	
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws SemantException
 	{
 		return TYPE_STRING.getInstance();
 	}

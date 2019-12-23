@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_STMT_RETURN  extends AST_STMT {
 	
     public AST_EXP exp;
@@ -13,7 +15,7 @@ public class AST_STMT_RETURN  extends AST_STMT {
 	}
 	
 	
-	public void PrintMe() {
+	public void PrintMe()  {
 		/******************************************/
 		/* AST NODE TYPE = STMT RETURN (AST NODE) */
 		/******************************************/
@@ -38,6 +40,15 @@ public class AST_STMT_RETURN  extends AST_STMT {
             AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, exp.SerialNumber);
         }
 	}
-
+	
+	
+	public TYPE SemantMe() throws SemantException
+	{
+		if (exp != null)
+		{
+			return exp.SemantMe();
+		}
+		return TYPE_VOID.getInstance();	
+	}
 
 }

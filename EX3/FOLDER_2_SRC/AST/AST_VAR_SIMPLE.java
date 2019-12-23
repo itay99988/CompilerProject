@@ -1,4 +1,7 @@
 package AST;
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {
@@ -26,6 +29,20 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		/* COPY INPUT DATA NENBERS ... */
 		/*******************************/
 		this.name = name;
+	}
+	
+	
+	public TYPE SemantMe() throws SemantException{
+		TYPE t = SYMBOL_TABLE.getInstance().find(name);
+		if (t == null)
+		{
+			//System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);
+			throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");
+			
+		}
+		
+
+		return TYPE_STRING.getInstance();
 	}
 
 	/**************************************************/

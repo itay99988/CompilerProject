@@ -1,6 +1,4 @@
 package AST;
-
-
 import TYPES.*;
 
 public class AST_EXP_BINOP extends AST_EXP {
@@ -20,6 +18,7 @@ public class AST_EXP_BINOP extends AST_EXP {
 		this.right = right;
 		this.op = op;
 	}
+	
 	
 	/*************************************************/
 	/* The printing message for a binop exp AST node */
@@ -52,9 +51,9 @@ public class AST_EXP_BINOP extends AST_EXP {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, right.SerialNumber);
 	}
 	
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws SemantException
 	{
-		/*
+		
 		TYPE t1 = null;
 		TYPE t2 = null;
 		
@@ -65,8 +64,11 @@ public class AST_EXP_BINOP extends AST_EXP {
 		{
 			return TYPE_INT.getInstance();
 		}
-		System.exit(0);
-		*/
+		if ((t1 == TYPE_STRING.getInstance()) && (op.toString() == "PLUS") && (t2 == TYPE_STRING.getInstance()))
+		{
+			return TYPE_STRING.getInstance();
+		}
+		
 		return null;
 	}
 }

@@ -1,4 +1,7 @@
 package AST;
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 
 public class AST_FUNC_CALL extends AST_DEC {
 
@@ -46,6 +49,20 @@ public class AST_FUNC_CALL extends AST_DEC {
 			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, var.SerialNumber);
 		}
 
+	}
+	
+	//todo go to symbol table and return type of function from symbol table
+		public TYPE SemantMe()throws SemantException
+	{
+		TYPE t = SYMBOL_TABLE.getInstance().find(name);
+		if (t == null)
+		{
+			throw new SemantException(this.getLineNumber(), "function is not in symbol table");			
+		}
+		
+		braceExps.SemantMe();
+
+		return null;
 	}
 
 }

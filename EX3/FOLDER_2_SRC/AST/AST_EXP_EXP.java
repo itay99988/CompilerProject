@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_EXP_EXP extends AST_EXP {
 
     public AST_EXP exp;
@@ -9,6 +11,11 @@ public class AST_EXP_EXP extends AST_EXP {
 
         System.out.print("====================== exp -> LPAREN exp RPAREN\n");
     }
+	
+	
+	public TYPE SemantMe() throws SemantException{
+		return exp.SemantMe();
+	}
 
 
 	public void PrintMe() {

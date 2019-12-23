@@ -82,59 +82,67 @@ public class AST_FUNCDEC extends AST_DEC {
 		return name;
 	}
 	
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws SemantException
 	{
-		/*
 		TYPE t;
 		TYPE returnType = null;
 		TYPE_LIST type_list = null;
-		*/
+		
+		System.out.println("semantme ast_funcdec");
+		
 		/*******************/
 		/* [0] return type */
 		/*******************/
-		/*
-		returnType = SYMBOL_TABLE.getInstance().find(returnTypeName);
+		/* Check function type */
+		returnType = SYMBOL_TABLE.getInstance().find(type);
 		if (returnType == null)
 		{
-			System.out.format(">> ERROR [%d:%d] non existing return type %s\n",6,6,returnType);				
-		}*/
+			throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");			
+		}
 	
 		/****************************/
 		/* [1] Begin Function Scope */
 		/****************************/
-		/*SYMBOL_TABLE.getInstance().beginScope();*/
+		SYMBOL_TABLE.getInstance().beginScope();
 
 		/***************************/
 		/* [2] Semant Input Params */
 		/***************************/
-		/*for (AST_TYPE_NAME_LIST it = params; it  != null; it = it.tail)
+		
+		/* Check if function type is equal to function return type */
+		t = stmtList.SemantMe();
+		
+		if (t != returnType)
 		{
-			t = SYMBOL_TABLE.getInstance().find(it.head.type);
-			if (t == null)
+			throw new SemantException(this.getLineNumber(), "Function return type is wrong");
+		}
+		
+		if (argType != null)
+		{
+			TYPE t2 = SYMBOL_TABLE.getInstance().find(argType);
+			if (t2 == null)
 			{
-				System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,it.head.type);				
+				throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");			
 			}
-			else
+			/*else // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			{
 				type_list = new TYPE_LIST(t,type_list);
 				SYMBOL_TABLE.getInstance().enter(it.head.name,t);
-			}
-		}*/
-
-		/*******************/
-		/* [3] Semant Body */
-		/*******************/
-		/*body.SemantMe();*/
+			}*/
+		}
+		
+		if (commaIdsList != null)
+			commaIdsList.SemantMe();
 
 		/*****************/
 		/* [4] End Scope */
 		/*****************/
-		/*SYMBOL_TABLE.getInstance().endScope();*/
+		SYMBOL_TABLE.getInstance().endScope();
 
 		/***************************************************/
 		/* [5] Enter the Function Type to the Symbol Table */
 		/***************************************************/
-		/*SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list));*/
+		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list));
 
 		/*********************************************************/
 		/* [6] Return value is irrelevant for class declarations */

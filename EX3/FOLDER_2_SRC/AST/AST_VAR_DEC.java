@@ -36,6 +36,7 @@ public abstract class AST_VAR_DEC extends AST_DEC{
 		/* [1] Check If Type exists */
 		/****************************/
 		t = SYMBOL_TABLE.getInstance().find(type);
+		System.out.println("ast_ var_dec");
 		if (t == null)
 		{
 			//System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);

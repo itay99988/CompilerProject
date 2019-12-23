@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -25,6 +26,11 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/*******************************/
 		this.var = var;
 		this.subscript = subscript;
+	}
+	
+	
+	public TYPE SemantMe() throws SemantException{
+		return var.SemantMe();
 	}
 
 	/*****************************************************/

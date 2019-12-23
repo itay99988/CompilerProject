@@ -38,9 +38,9 @@ public class AST_EXP_INT extends AST_EXP
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, fullInt.SerialNumber);
 	}
 
-	public TYPE SemantMe()
+	public TYPE SemantMe() throws SemantException
 	{
-		return TYPE_INT.getInstance();
+		return fullInt.SemantMe();
 	}
 
 }

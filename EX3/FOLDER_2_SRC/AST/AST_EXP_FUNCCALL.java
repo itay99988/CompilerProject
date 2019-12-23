@@ -1,5 +1,7 @@
 package AST;
 
+import TYPES.*;
+
 public class AST_EXP_FUNCCALL extends AST_EXP {
 	
 	public AST_FUNC_CALL funcCall;
@@ -34,6 +36,11 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 		/****************************************/
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, funcCall.SerialNumber);
 
+	}
+
+	public TYPE SemantMe() throws SemantException
+	{
+		return funcCall.SemantMe();
 	}
 
 }

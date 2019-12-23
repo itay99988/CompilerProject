@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_IDSCOMMA extends AST_DEC {
 
 	public String type;
@@ -37,6 +40,25 @@ public class AST_IDSCOMMA extends AST_DEC {
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
 		if (commaIdsLst != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, commaIdsLst.SerialNumber);
+	}
+	
+	public TYPE SemantMe() throws SemantException
+	{
+		TYPE t = SYMBOL_TABLE.getInstance().find(type);
+		if (t == null)
+		{
+			throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");			
+		}
+		/*else // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		{
+			type_list = new TYPE_LIST(t,type_list);
+			SYMBOL_TABLE.getInstance().enter(it.head.name,t);
+		}*/		
+		
+		if (commaIdsLst != null)
+			commaIdsLst.SemantMe();
+
+		return null;
 	}
 	
 }
