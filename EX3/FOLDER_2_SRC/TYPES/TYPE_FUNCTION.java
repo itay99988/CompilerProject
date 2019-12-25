@@ -13,9 +13,13 @@ public class TYPE_FUNCTION extends TYPE
 	public TYPE_LIST params;
 
 	/*************************/
-	/* Additional params */
+	/* number of parameters  */
 	/*************************/
 	public int paramsLen;
+
+	/*************************/
+	/* class name (if any )  */
+	/*************************/
 	public String className; //if null - function is in global scope, otherwise it is a method
 	
 	/****************/

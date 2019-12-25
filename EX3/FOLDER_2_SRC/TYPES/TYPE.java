@@ -3,17 +3,17 @@ package TYPES;
 public abstract class TYPE
 {
 	/******************************/
-	/*  Every type has a name ... */
+	/*          type name         */
 	/******************************/
 	public String name;
 
-	/*************/
-	/* isClass() */
-	/*************/
+	/*****************************************/
+	/* isClass() - can be overriden later on */
+	/*****************************************/
 	public boolean isClass(){ return false;}
 
-	/*************/
-	/* isArray() */
-	/*************/
+	/*****************************************/
+	/* isArray() - can be overriden later on */
+	/*****************************************/
 	public boolean isArray(){ return false;}
 }
