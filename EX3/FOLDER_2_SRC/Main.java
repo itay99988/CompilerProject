@@ -78,7 +78,9 @@ public class Main
 		{
 			isException = true;
 			file_writer.print(String.format("ERROR(%d)",se.getLine()));
+			file_writer.close();
 			se.printStackTrace();
+			System.exit(0);
 		}
 			/*************************/
 			/* [8] Close output file */
