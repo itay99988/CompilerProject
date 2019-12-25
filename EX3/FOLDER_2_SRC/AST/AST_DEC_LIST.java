@@ -6,7 +6,7 @@ public class AST_DEC_LIST extends AST_Node {
 	public AST_DEC head;
 	public AST_DEC_LIST tail;
 
-	public AST_DEC_LIST(AST_DEC head, AST_DEC_LIST tail) {
+	public AST_DEC_LIST(AST_DEC head, AST_DEC_LIST tail, int lineNumber) {
 		if (tail != null) {
 			System.out.print("====================== decs -> dec decs\n");
 		}
@@ -16,6 +16,8 @@ public class AST_DEC_LIST extends AST_Node {
 
 		this.head = head;
 		this.tail = tail;
+
+		this.setLineNumber(lineNumber);
 	}
 
 

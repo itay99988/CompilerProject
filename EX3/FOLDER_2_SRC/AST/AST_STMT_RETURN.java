@@ -7,10 +7,12 @@ public class AST_STMT_RETURN  extends AST_STMT {
     public AST_EXP exp;
 
 	
-	public AST_STMT_RETURN(AST_EXP exp) {
+	public AST_STMT_RETURN(AST_EXP exp, int lineNumber) {
         this.exp = exp;
         
         String expStr = exp == null ? "" : " exp";
+
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== stmt -> return%s SEMICOLON\n", expStr);
 	}
 	

@@ -7,7 +7,7 @@ public class AST_EXP_BINOP extends AST_EXP {
 	public AST_EXP right;
 	
 
-	public AST_EXP_BINOP(AST_EXP left,AST_EXP right, AST_BINOP op) {
+	public AST_EXP_BINOP(AST_EXP left,AST_EXP right, AST_BINOP op, int lineNumber) {
 
 		System.out.print("====================== exp -> exp BinOp exp\n");
 
@@ -17,6 +17,8 @@ public class AST_EXP_BINOP extends AST_EXP {
 		this.left = left;
 		this.right = right;
 		this.op = op;
+
+		this.setLineNumber(lineNumber);
 	}
 	
 	

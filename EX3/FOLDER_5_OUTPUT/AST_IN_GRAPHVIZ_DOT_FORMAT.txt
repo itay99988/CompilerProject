@@ -3,25 +3,21 @@ digraph
 graph [ordering = "out"]
 v0 [label = "VAR DEC
 EXP"];
-v1 [label = "CFIELD"];
-v1 -> v0;
-v2 [label = "VAR DEC
+v1 [label = "VAR DEC
 EXP"];
-v3 [label = "CFIELD"];
-v3 -> v2;
-v4 [label = "CFIELD
-LIST"];
-v4 -> v3;
-v5 [label = "CFIELD
-LIST"];
-v5 -> v1;
-v5 -> v4;
-v6 [label = "CLASS
+v2 [label = "ARR
 DEC"];
-v6 -> v5;
-v7 [label = "DEC
+v3 [label = "DEC
 LIST"];
-v7 -> v6;
-v8 [label = "PROGRAM"];
-v8 -> v7;
+v3 -> v2;
+v4 [label = "DEC
+LIST"];
+v4 -> v1;
+v4 -> v3;
+v5 [label = "DEC
+LIST"];
+v5 -> v0;
+v5 -> v4;
+v6 [label = "PROGRAM"];
+v6 -> v5;
 }

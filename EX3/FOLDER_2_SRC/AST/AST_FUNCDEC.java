@@ -13,14 +13,15 @@ public class AST_FUNCDEC extends AST_DEC {
 	public AST_STMT_LIST stmtList;
 
 
-	public AST_FUNCDEC(String type, String name) {
+	public AST_FUNCDEC(String type, String name, int lineNumber) {
 		this.type = type;
 		this.name = name;
+		this.setLineNumber(lineNumber);
 	}
 
 	
-	public AST_FUNCDEC(String type, String name, String argType, String argName, AST_IDSCOMMA commaIdsList, AST_STMT_LIST stmtList){
-		this(type, name);
+	public AST_FUNCDEC(String type, String name, String argType, String argName, AST_IDSCOMMA commaIdsList, AST_STMT_LIST stmtList, int lineNumber){
+		this(type, name, lineNumber);
 		this.argType = argType;
 		this.argName = argName;
 		this.commaIdsList = commaIdsList;
@@ -30,8 +31,8 @@ public class AST_FUNCDEC extends AST_DEC {
 	}
 	
 
-	public AST_FUNCDEC(String type, String name, AST_STMT_LIST stmtList){
-		this(type, name);
+	public AST_FUNCDEC(String type, String name, AST_STMT_LIST stmtList, int lineNumber){
+		this(type, name, lineNumber);
 		this.stmtList = stmtList;
 		
 		System.out.format("====================== funcDec -> ID( %s ) ID( %s ) LPAREN RPAREN LBRACE stmtList RBRACE\n", type, name);
@@ -139,10 +140,14 @@ public class AST_FUNCDEC extends AST_DEC {
 		/*****************/
 		SYMBOL_TABLE.getInstance().endScope();
 
+		//TODO: cound args number
+		int paramsLen = 0;
+
 		/***************************************************/
 		/* [5] Enter the Function Type to the Symbol Table */
 		/***************************************************/
-		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list));
+		//TODO: change null to class name
+		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list,paramsLen,null));
 
 		/*********************************************************/
 		/* [6] Return value is irrelevant for class declarations */

@@ -4,9 +4,10 @@ public class AST_NEW_EXP extends AST_Node
 {
 	String type;
 	
-	public AST_NEW_EXP (String type){
+	public AST_NEW_EXP (String type, int lineNumber){
 		this.type = type;
 
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== newExp -> NEW ID( %s )\n", type);
 	}
 	

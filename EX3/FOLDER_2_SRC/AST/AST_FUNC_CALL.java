@@ -10,12 +10,14 @@ public class AST_FUNC_CALL extends AST_DEC {
 	public AST_VAR var;
 
 
-	public AST_FUNC_CALL(String name, AST_BRACESEXP braceExps, AST_VAR var){
+	public AST_FUNC_CALL(String name, AST_BRACESEXP braceExps, AST_VAR var, int lineNumber){
 		this.name = name;
 		this.braceExps = braceExps;
 		this.var = var;
 
 		String varString = var == null ? "" : "var DOT";
+
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== funcCall ->%s ID( %s ) braceExps\n", varString, name);
 	}
 	

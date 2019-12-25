@@ -6,10 +6,11 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
     public AST_NEW_EXP newExp;
 
 	
-	public AST_STMT_NEW_ASSIGN(AST_VAR var, AST_NEW_EXP newExp) {
+	public AST_STMT_NEW_ASSIGN(AST_VAR var, AST_NEW_EXP newExp, int lineNumber) {
         this.var = var;
         this.newExp = newExp;
-        
+
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== stmt -> var ASSIGN newExp SEMICOLON\n");
 	}
 	

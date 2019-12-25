@@ -5,10 +5,11 @@ public class AST_ARR_DEC extends AST_DEC {
 	String name;
 	String type;
 	
-	public AST_ARR_DEC(String name, String type){
+	public AST_ARR_DEC(String name, String type, int lineNumber){
 		this.name = name;
 		this.type = type;
 
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== arrayDec -> ARRAY ID( %s ) EQ ID( %s ) LBRACK RBRACK", name, type);
 	}
 	

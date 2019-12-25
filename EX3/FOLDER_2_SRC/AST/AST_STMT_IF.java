@@ -11,11 +11,12 @@ public class AST_STMT_IF extends AST_STMT
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_IF(AST_EXP cond,AST_STMT_LIST body)
+	public AST_STMT_IF(AST_EXP cond,AST_STMT_LIST body, int lineNumber)
 	{
 		this.cond = cond;
 		this.body = body;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== stmt -> IF LPAREN exp RPAREN LBRACE stmtList RBRACE\n");
 	}
 

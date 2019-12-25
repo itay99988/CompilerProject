@@ -8,10 +8,11 @@ public class AST_STMT_WHILE extends AST_STMT
 	/*******************/
 	/*  CONSTRUCTOR(S) */
 	/*******************/
-	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body) {
+	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body, int lineNumber) {
 		this.cond = cond;
 		this.body = body;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== stmt -> WHILE LPAREN exp RPAREN LBRACE stmtList RBRACE\n");
 	}
 

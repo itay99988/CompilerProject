@@ -6,9 +6,10 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 	
 	public AST_FUNC_CALL funcCall;
 	
-	public AST_EXP_FUNCCALL(AST_FUNC_CALL funcCall){
+	public AST_EXP_FUNCCALL(AST_FUNC_CALL funcCall, int lineNumber){
 		this.funcCall = funcCall;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== exp -> funcCall\n");
 	}
 	

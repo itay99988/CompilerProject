@@ -5,10 +5,11 @@ public class AST_COMMAEXP extends AST_DEC {
 	public AST_EXP exp;
 	public AST_COMMAEXP commaExpsList;
 
-	public AST_COMMAEXP(AST_EXP exp, AST_COMMAEXP commaExpsList){
+	public AST_COMMAEXP(AST_EXP exp, AST_COMMAEXP commaExpsList, int lineNumber){
 		this.exp = exp;
 		this.commaExpsList = commaExpsList;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== commaExpsList -> COMMA exp commaExpsLst\n");
 	}
 	

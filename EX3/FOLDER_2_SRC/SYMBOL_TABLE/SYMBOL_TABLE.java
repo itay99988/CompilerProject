@@ -26,6 +26,8 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
+	public int scope_level = 0;
+	public TYPE_CLASS currClass = null;
 	
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
@@ -62,7 +64,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++,scope_level);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -99,6 +101,25 @@ public class SYMBOL_TABLE
 	}
 
 	/***************************************************************************/
+	/* returns true if the variable name exists in the current scope level */
+	/***************************************************************************/
+		/* */
+	public boolean existInScope(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				if(this.scope_level == e.scope_level)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
 	public void beginScope()
@@ -109,6 +130,9 @@ public class SYMBOL_TABLE
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/
+
+		this.scope_level++;
+
 		enter(
 			"SCOPE-BOUNDARY",
 			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
@@ -140,6 +164,8 @@ public class SYMBOL_TABLE
 		table[top.index] = top.next;
 		top_index = top_index-1;
 		top = top.prevtop;
+
+		this.scope_level--;
 
 		/*********************************************/
 		/* Print the symbol table after every change */		
@@ -264,7 +290,24 @@ public class SYMBOL_TABLE
 					"PrintInt",
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
-						null)));
+						null), 0, null));
+
+			//additional library funcs
+			instance.enter(
+				"PrintString",
+				new TYPE_FUNCTION(
+					TYPE_VOID.getInstance(),
+					"PrintString",
+					new TYPE_LIST(
+						TYPE_STRING.getInstance(),
+						null),1, null));
+			instance.enter(
+				"PrintTrace",
+				new TYPE_FUNCTION(
+					TYPE_VOID.getInstance(),
+					"PrintTrace",
+					null
+					,0, null));
 			
 		}
 		return instance;

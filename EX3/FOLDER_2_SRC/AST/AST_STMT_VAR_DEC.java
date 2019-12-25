@@ -7,9 +7,10 @@ public class AST_STMT_VAR_DEC  extends AST_STMT {
 	public AST_VAR_DEC varDec;
 
 	
-	public AST_STMT_VAR_DEC(AST_VAR_DEC varDec) {
+	public AST_STMT_VAR_DEC(AST_VAR_DEC varDec, int lineNumber) {
 		this.varDec = varDec;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== stmt -> varDec\n");
 	}
 	

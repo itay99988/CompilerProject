@@ -9,17 +9,19 @@ public class AST_CFIELD_LIST extends AST_Node {
 	public AST_CFIELD_LIST clsFieldList;
 	
 
-	public AST_CFIELD_LIST(AST_CFIELD clsField) {
+	public AST_CFIELD_LIST(AST_CFIELD clsField, int lineNumber) {
 		this.clsField = clsField;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== cFieldList -> cField\n");
 	}
 
 
-	public AST_CFIELD_LIST(AST_CFIELD clsField, AST_CFIELD_LIST clsFieldList) {
+	public AST_CFIELD_LIST(AST_CFIELD clsField, AST_CFIELD_LIST clsFieldList, int lineNumber) {
 		this.clsField = clsField;
 		this.clsFieldList = clsFieldList;
 
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== cFieldList -> cField cFieldList\n");
 	}
 	

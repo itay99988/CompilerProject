@@ -9,11 +9,12 @@ public class AST_IDSCOMMA extends AST_DEC {
 	public String name;
 	public AST_IDSCOMMA commaIdsLst;
 	
-	public AST_IDSCOMMA(String type, String name, AST_IDSCOMMA commaIdsLst) {
+	public AST_IDSCOMMA(String type, String name, AST_IDSCOMMA commaIdsLst, int lineNumber) {
 		this.type = type;
 		this.name = name;
 		this.commaIdsLst = commaIdsLst;
 
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== commaIdsLst -> COMMA ID( %s ) ID( %s ) commaIdsLst\n", type, name);
 	}
 

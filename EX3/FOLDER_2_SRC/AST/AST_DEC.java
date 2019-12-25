@@ -8,8 +8,10 @@ public abstract class AST_DEC extends AST_Node {
     public AST_DEC() {}
 
 
-    public AST_DEC(AST_DEC dec) {
+    public AST_DEC(AST_DEC dec, int lineNumber) {
 		this.dec = dec;        
+
+		this.setLineNumber(lineNumber);
         System.out.println("====================== dec -> " + this.dec);
     }
 

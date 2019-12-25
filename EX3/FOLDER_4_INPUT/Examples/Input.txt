@@ -1,0 +1,23 @@
+class Father
+{
+	int j;
+	int k;
+
+	int c := 5;
+	
+
+	int a(int t)
+	{
+		int m;
+		return 6;
+	}	
+
+	int b()
+	{
+		int m;
+		return 6;
+		a(c);
+
+	}
+	
+}

@@ -4,10 +4,11 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 {
 	AST_EXP size;
 	
-	public AST_NEW_EXP_EXTENDED (String type, AST_EXP size){
-		super(type);
+	public AST_NEW_EXP_EXTENDED (String type, AST_EXP size, int lineNumber){
+		super(type, lineNumber);
 		this.size = size;
 
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== newExpExtended -> NEW ID( %s ) LBRACK exp RBRACK\n", type);
 	}
 	

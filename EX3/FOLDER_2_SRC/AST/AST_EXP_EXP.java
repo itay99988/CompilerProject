@@ -6,9 +6,10 @@ public class AST_EXP_EXP extends AST_EXP {
 
     public AST_EXP exp;
 
-    public AST_EXP_EXP(AST_EXP exp) {
+    public AST_EXP_EXP(AST_EXP exp, int lineNumber) {
         this.exp = exp;
 
+		this.setLineNumber(lineNumber);
         System.out.print("====================== exp -> LPAREN exp RPAREN\n");
     }
 	

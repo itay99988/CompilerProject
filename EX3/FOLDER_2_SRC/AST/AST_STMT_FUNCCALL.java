@@ -7,9 +7,10 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
     public AST_FUNC_CALL funcCall;
 
 	
-	public AST_STMT_FUNCCALL(AST_FUNC_CALL funcCall) {
+	public AST_STMT_FUNCCALL(AST_FUNC_CALL funcCall, int lineNumber) {
         this.funcCall = funcCall;
         
+		this.setLineNumber(lineNumber);
 		System.out.print("====================== stmt -> funcCall SEMICOLON\n");
 	}
 	

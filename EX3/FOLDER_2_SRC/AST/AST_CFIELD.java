@@ -7,8 +7,10 @@ public class AST_CFIELD extends AST_DEC {
 
 	AST_DEC dec;
 	
-	public AST_CFIELD(AST_DEC dec) {
+	public AST_CFIELD(AST_DEC dec, int lineNumber) {
 		this.dec = dec;
+
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== cField -> %s\n", dec);
 	}
 	
