@@ -28,7 +28,7 @@ public abstract class AST_VAR_DEC extends AST_DEC{
 		return name;
 	}
 	
-	public TYPE SemantMe() throws SemantException
+	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException
 	{
 		TYPE t;
 		

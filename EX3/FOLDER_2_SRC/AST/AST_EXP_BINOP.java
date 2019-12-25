@@ -55,7 +55,7 @@ public class AST_EXP_BINOP extends AST_EXP {
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		
+
 		TYPE t1 = null;
 		TYPE t2 = null;
 		
@@ -70,7 +70,34 @@ public class AST_EXP_BINOP extends AST_EXP {
 		{
 			return TYPE_STRING.getInstance();
 		}
+
+        if(op.toString() == "EQ"){
+            if(t1.isArray() && t2.isArray() && t1.name.equals(t2.name))
+                return TYPE_INT.getInstance();
+            if(t1 == TYPE_STRING.getInstance() && t2 == TYPE_STRING.getInstance())
+                return TYPE_INT.getInstance();
+            if(t1 == TYPE_NIL.getInstance() || t2 == TYPE_NIL.getInstance()){
+                if(t1.isArray() || t2.isArray())
+                    return TYPE_INT.getInstance();
+                if(t1.isClass() || t2.isClass())
+                    return TYPE_INT.getInstance();
+            }
+
+            if(t1.isClass() && t2.isClass()){
+                if(isComparable((TYPE_CLASS) t1, (TYPE_CLASS) t2))
+                    return TYPE_INT.getInstance();
+            }
+        }
 		
-		return null;
+		System.out.format("ERROR: binop:%s types don't match", op.toString());
+        throw new SemantException(this.getLineNumber(), "ERROR: binop: types don't match");
 	}
+
+	public boolean isComparable(TYPE_CLASS t1, TYPE_CLASS t2){
+	    while(t1.father != null)
+	        t1 = t1.father;
+	    while(t2.father != null)
+	        t2 = t2.father;
+	    return t1.name.equals(t2.name);
+    }
 }

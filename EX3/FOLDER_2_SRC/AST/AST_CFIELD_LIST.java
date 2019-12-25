@@ -54,17 +54,17 @@ public class AST_CFIELD_LIST extends AST_Node {
 		}
 	}
 
-	public TYPE_LIST SemantMe() throws SemantException
+	public TYPE_CLASS_DATA_MEMBER_LIST SemantMe() throws SemantException
 	{
 		if (clsFieldList == null)
 		{
-			return new TYPE_LIST(
+			return new TYPE_CLASS_DATA_MEMBER_LIST(
 				clsField.SemantMe(),
 				null);
 		}
 		else
 		{
-			return new TYPE_LIST(
+			return new TYPE_CLASS_DATA_MEMBER_LIST(
 				clsField.SemantMe(),
 				clsFieldList.SemantMe());
 		}

@@ -51,7 +51,17 @@ public class AST_DEC_LIST extends AST_Node {
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		head.SemantMe();
+		if(head instanceof AST_FUNCDEC){
+			AST_FUNCDEC funcDec = (AST_FUNCDEC)head;
+			funcDec.SemantMe(null); // there is no inclass parameter in this case
+		}
+		else if(head instanceof AST_VAR_DEC){
+			AST_VAR_DEC varDec = (AST_VAR_DEC)head;
+			varDec.SemantMe(null); //there is no inclass parameter in this case
+		}
+		else
+			head.SemantMe();
+
 		if (tail != null){
 			tail.SemantMe();
 		}

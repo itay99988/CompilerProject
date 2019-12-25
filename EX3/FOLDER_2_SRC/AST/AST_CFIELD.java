@@ -38,7 +38,7 @@ public class AST_CFIELD extends AST_DEC {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, dec.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws SemantException
+	public TYPE_CLASS_DATA_MEMBER SemantMe() throws SemantException
 	{
 		String type = dec.GetType();
 		String name = dec.GetName();

@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_INT extends AST_DEC {
 
@@ -30,6 +31,10 @@ public class AST_INT extends AST_DEC {
 
 	public String toString() {
 		return "" + value;
+	}
+
+	public TYPE SemantMe(){
+		return TYPE_INT.getInstance();
 	}
 }
 	

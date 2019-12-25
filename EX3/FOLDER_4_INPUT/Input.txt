@@ -1,3 +1,12 @@
-int x;
-Itay y;
-array IntArray = int[]
+void main()
+{
+    int x;
+    string y;
+
+    int z;
+    z := (x=y);
+
+    return;
+}
+
+
