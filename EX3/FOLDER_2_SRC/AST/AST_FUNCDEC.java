@@ -95,7 +95,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		/* [0] return type */
 		/*******************/
 		/* Check function type */
-		returnType = SYMBOL_TABLE.getInstance().find(type);
+		returnType = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		if (returnType == null)
 		{
 			throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");			
@@ -111,16 +111,11 @@ public class AST_FUNCDEC extends AST_DEC {
 		/***************************/
 		
 		/* Check if function type is equal to function return type */
-		t = stmtList.SemantMe();
-		
-		if (t != returnType)
-		{
-			throw new SemantException(this.getLineNumber(), "Function return type is wrong");
-		}
+		t = stmtList.SemantMe(returnType);
 		
 		if (argType != null)
 		{
-			TYPE t2 = SYMBOL_TABLE.getInstance().find(argType);
+			TYPE t2 = SYMBOL_TABLE.getInstance().find(argType, EntryCategory.Type);
 			if (t2 == null)
 			{
 				throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");			
@@ -147,7 +142,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		/* [5] Enter the Function Type to the Symbol Table */
 		/***************************************************/
 		//TODO: change null to class name
-		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list,paramsLen,null));
+		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list,paramsLen,null), EntryCategory.Obj);
 
 		/*********************************************************/
 		/* [6] Return value is irrelevant for class declarations */

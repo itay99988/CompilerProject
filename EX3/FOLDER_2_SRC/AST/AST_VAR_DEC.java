@@ -35,7 +35,7 @@ public abstract class AST_VAR_DEC extends AST_DEC{
 		/****************************/
 		/* [1] Check If Type exists */
 		/****************************/
-		t = SYMBOL_TABLE.getInstance().find(type);
+		t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		System.out.println("ast_ var_dec");
 		if (t == null)
 		{
@@ -47,17 +47,17 @@ public abstract class AST_VAR_DEC extends AST_DEC{
 		/**************************************/
 		/* [2] Check That Name does NOT exist */
 		/**************************************/
-		if (SYMBOL_TABLE.getInstance().find(name) != null)
+		if (SYMBOL_TABLE.getInstance().find(name, EntryCategory.Type) != null)
 		{
 			//System.out.format(">> ERROR [%d:%d] variable %s already exists in scope\n",2,2,name);	
-			throw new SemantException(this.getLineNumber(), "name is already exist in symbol table");
+			throw new SemantException(this.getLineNumber(), "name already exists in symbol table");
 			
 		}
 
 		/***************************************************/
-		/* [3] Enter the Function Type to the Symbol Table */
+		/* [3] Enter the Variable Type to the Symbol Table */
 		/***************************************************/
-		SYMBOL_TABLE.getInstance().enter(name,t);
+		SYMBOL_TABLE.getInstance().enter(name,t, EntryCategory.Obj);
 
 		/*********************************************************/
 		/* [4] Return value is irrelevant for class declarations */

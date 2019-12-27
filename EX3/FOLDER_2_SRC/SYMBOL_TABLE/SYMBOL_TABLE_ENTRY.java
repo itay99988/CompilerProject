@@ -39,8 +39,8 @@ public class SYMBOL_TABLE_ENTRY
 	/****************************************************/
 	public int prevtop_index;
 
-	
 	public int scope_level;
+	public EntryCategory entry_cat;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -52,7 +52,8 @@ public class SYMBOL_TABLE_ENTRY
 		SYMBOL_TABLE_ENTRY next,
 		SYMBOL_TABLE_ENTRY prevtop,
 		int prevtop_index,
-		int scope_level)
+		int scope_level,
+		EntryCategory entryCat)
 	{
 		this.index = index;
 		this.name = name;
@@ -61,5 +62,6 @@ public class SYMBOL_TABLE_ENTRY
 		this.prevtop = prevtop;
 		this.prevtop_index = prevtop_index;
 		this.scope_level = scope_level;
+		this.entry_cat = entryCat;
 	}
 }

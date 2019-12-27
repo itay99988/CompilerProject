@@ -63,23 +63,12 @@ public class AST_STMT_LIST extends AST_Node
 		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
 	}
 	
-	public TYPE SemantMe() throws SemantException
+	public TYPE SemantMe(TYPE returnedTypeExpected) throws SemantException
 	{
-		TYPE returntype=null,t=null;
-		if (head != null)
-		{
-			t = head.SemantMe();
-			if (t != null)
-				returntype = t;
-		}
-		if (tail != null)
-		{
-			t = tail.SemantMe();
-			if (t != null && returntype == null)
-				returntype = t;
-		}
-		
-		return returntype;
+		this.head.SemantMe(returnedTypeExpected);
+		if(tail != null)
+			this.tail.SemantMe(returnedTypeExpected);
+		return null;
 	}
 	
 }

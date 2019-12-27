@@ -93,7 +93,8 @@ public class AST_EXP_BINOP extends AST_EXP {
         throw new SemantException(this.getLineNumber(), "ERROR: binop: types don't match");
 	}
 
-	public boolean isComparable(TYPE_CLASS t1, TYPE_CLASS t2){
+	public boolean isComparable(TYPE_CLASS t1, TYPE_CLASS t2)
+	{
 	    while(t1.father != null)
 	        t1 = t1.father;
 	    while(t2.father != null)
