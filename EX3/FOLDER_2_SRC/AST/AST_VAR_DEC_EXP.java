@@ -1,9 +1,13 @@
 package AST;
 
 public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
+
+	public AST_STMT_ASSIGN assign;
 	
 	public AST_VAR_DEC_EXP(String type, String name, AST_EXP exp, int lineNumber){
 		super(type, name, exp);
+		this.assign = new AST_STMT_ASSIGN(new AST_VAR_SIMPLE(name), exp);
+
 		String expStr = exp == null ? "" : " exp";
 
 		this.setLineNumber(lineNumber);
@@ -35,6 +39,25 @@ public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 		if(exp != null) {
 			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, exp.SerialNumber);
 		}
+	}
+
+	
+	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
+		TYPE t = super.SemantMe(inClass);
+
+		if(assign != null) {
+			assign.SemantMe(null);
+			if(inClass != null) {
+				//allow only constant values
+				if(!(assign.exp instanceof AST_EXP_INT ||
+					 assign.exp instanceof AST_EXP_STRING ||
+				 	 assign.exp instanceof AST_EXP_NIL)) {
+					throw new SemantException(this.getLineNumber(), "var_dec_exp: cannot use non-constant assignments inside class");
+				}
+				assign.SemantMe(null);
+			}
+		}
+		return t;
 	}
 
 }

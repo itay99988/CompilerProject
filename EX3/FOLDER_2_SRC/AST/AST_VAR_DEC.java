@@ -30,20 +30,19 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		return name;
 	}
 	
-	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException
-	{
+	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
 		TYPE t;
-		
+		lineNumber = this.getLineNumber();
 		/****************************/
 		/* [1] Check If Type exists */
 		/****************************/
 		t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
-		System.out.println("ast_ var_dec");
-		if (t == null)
-		{
-			//System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);
-			throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");
-			
+		
+		if (t == null) {
+			throw new SemantException(lineNumber, String.format("var_dec: '%s %s', type cannot be found", this.type, this.name));
+		}
+		if(t == TYPE_VOID.getInstance()) {
+			throw new SemantException(lineNumber, String.format("var_dec: '%s %s', can't use type void", this.type, this.name));
 		}
 		
 		/**************************************/
@@ -55,13 +54,27 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		/***************************************************/
 		/* [3] Enter the Variable Type to the Symbol Table */
 		/***************************************************/
-		SYMBOL_TABLE.getInstance().enter(name,t, EntryCategory.Obj);
+		if (t.isArray()) {
+			SYMBOL_TABLE.getInstance().enter(this.name, new TYPE_ARRAY(this.type), EntryCategory.Obj);
+		}
+		else {
+			SYMBOL_TABLE.getInstance().enter(this.name, t, EntryCategory.Obj);
+		}
 
-		/*********************************************************/
-		/* [4] Return value is irrelevant for class declarations */
-		/*********************************************************/
-		return null;
+		/******************/
+		/* [4] Semant exp */
+		/******************/
+		if(this.exp != null) {
+			this.exp.SemantMe();
+		}
+
+		/*********************/
+		/* [5] Return type t */
+		/*********************/
+
+		return t;
 	}
+
 
 
 	void checkVarName(AST_CLASSDEC inClass) throws SemantException {
