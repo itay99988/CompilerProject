@@ -2,7 +2,8 @@ package AST;
 
 public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 	
-	public AST_VAR_DEC_NEW_EXP(String type, String name, AST_NEW_EXP newExp, int lineNumber){
+	public AST_VAR_DEC_NEW_EXP(String type, String name, AST_NEW_EXP newExp, int lineNumber)
+	{
 		super(type, name, newExp);
 
 		this.setLineNumber(lineNumber);
@@ -19,7 +20,7 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 		/*****************************/
 		/* RECURSIVELY PRINT exp ... */
 		/*****************************/
-		if (newExp != null) newExp.PrintMe();
+		if (this.exp != null) this.exp.PrintMe();
 		
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */
@@ -31,7 +32,7 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, newExp.SerialNumber);
+		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, this.exp.SerialNumber);
 
 	}
 }

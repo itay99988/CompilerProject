@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 {
 	AST_EXP size;
@@ -35,6 +38,24 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, size.SerialNumber);
+	}
+
+	public TYPE SemantMe() throws SemantException
+	{
+		TYPE t = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
+		if(t == null)
+		{
+		    String err = String.format(">> ERROR type %s for array init doesn't exist in SYMBOL_TABLE", this.type);
+		    throw new SemantException(this.getLineNumber(),err);
+		}
+
+		TYPE expType = size.SemantMe();
+		if(expType == TYPE_INT.getInstance())
+			return new TYPE_ARRAY(this.type, 0);
+
+		//array wasn't defined properly
+		String err = String.format(">> ERROR Array allocation must be with integral size\n");
+		throw new SemantException(this.getLineNumber(),err);
 	}
 
 }

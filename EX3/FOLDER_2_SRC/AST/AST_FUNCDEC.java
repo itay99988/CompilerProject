@@ -92,7 +92,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		/* [0] return type */
 		/*******************/
 		/* Check function type */
-		returnType = SYMBOL_TABLE.getInstance().find(type);
+		returnType = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		if (returnType == null) {
 			throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");
 		}
@@ -107,11 +107,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		/***************************/
 
 		/* Check if function type is equal to function return type */
-		t = body.SemantMe();
-
-		if (t != returnType) {
-			throw new SemantException(this.getLineNumber(), "Function return type is wrong");
-		}
+		body.SemantMe(returnType);
 
 		if (firstArgType != null) {
 			TYPE t2 = SYMBOL_TABLE.getInstance().find(firstArgType, EntryCategory.Type);

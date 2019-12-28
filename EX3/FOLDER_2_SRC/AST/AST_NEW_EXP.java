@@ -1,5 +1,9 @@
 package AST;
 
+
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_NEW_EXP extends AST_EXP
 {
 	String type;
@@ -23,6 +27,19 @@ public class AST_NEW_EXP extends AST_EXP
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			"NEW\nEXP");
+	}
+
+	public TYPE SemantMe() throws SemantException
+	{
+		TYPE t = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
+		if(t == null){
+		    String err = String.format(">> ERROR: class '%s' is not in SYMBOL_TABLE", this.type);
+		    throw new SemantException(this.getLineNumber(), err);
+		}
+		if(t.isClass())
+		    return t;
+		String err = String.format(">> ERROR new expression can't be followed by %s (it's not a Class or an Array\n", this.type);
+		throw new SemantException(this.getLineNumber(), err);
 	}
 
 }

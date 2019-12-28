@@ -1,1 +1,9 @@
 .vscode
+EX1/LEXER
+EX1/FOLDER_3_BIN/Lexer.class
+EX1/FOLDER_3_BIN/Main.class
+EX1/FOLDER_3_BIN/TokenNames.class
+EX1/FOLDER_5_OUTPUT/OutputTokenizedProgram.txt
+EX2/PARSER
+EX2/FOLDER_4_INPUT/Input.txt
+EX2/FOLDER_5_OUTPUT/ParseStatus.txt

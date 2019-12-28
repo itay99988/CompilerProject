@@ -77,7 +77,7 @@ public class Main
 		catch (SemantException se) 
 		{
 			isException = true;
-			file_writer.print(String.format("ERROR(%d)",se.getLine()));
+			file_writer.print( String.format("ERROR(%d)",se.getLineNumber()) );
 			file_writer.close();
 			se.printStackTrace();
 			System.exit(0);

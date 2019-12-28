@@ -40,14 +40,17 @@ public class AST_STMT_VAR_DEC  extends AST_STMT {
 	}
 
 
-	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException {
+	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException 
+	{
 		try {
-			varDec.SemantMe(null); // var dec is not inside any class
+			return varDec.SemantMe(null); // var dec is not inside any class
 		}
-		catch (SemanticErrorException e){
-			e.setLineNumber(lineNumber);
+		catch (SemantException e){
+			e.setLineNumber(this.getLineNumber());
 			throw e;
 		}
+
+
 	}
 
 }

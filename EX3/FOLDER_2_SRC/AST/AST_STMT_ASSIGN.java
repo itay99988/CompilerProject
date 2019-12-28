@@ -65,21 +65,34 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
 	}
 	
-	public TYPE SemantMe()
+	public TYPE SemantMe(TYPE returnedTypeExpected) throws SemantException
 	{
-		/*
-		TYPE t1 = null;
-		TYPE t2 = null;
-		
-		if (var != null) t1 = var.SemantMe();
-		if (exp != null) t2 = exp.SemantMe();
-		
-		if (t1 != t2)
+		TYPE expressionType = null;
+		TYPE varType = this.var.SemantMe();
+		if (varType == null)
 		{
-			System.out.format(">> ERROR [%d:%d] type mismatch for var := exp\n",6,6);				
+			String err = ">> ERROR stmt_assign: var doesn't exist\n";
+			throw new SemantException(this.getLineNumber(), err);
 		}
-		*/
-		return null;
+
+		if (this.exp != null)
+		{
+			expressionType = this.exp.SemantMe();
+		}
+			
+
+		if (expressionType == null)
+		{
+			String err = ">> ERROR stmt_assign: exp type doesn't exist";
+			throw new SemantException(this.getLineNumber(), err);
+		}
+		if (isValidAssignment(varType, expressionType, this.getLineNumber()))
+			return null;
+		else 
+		{
+			String err = ">> ERROR stmt_assign: assignment is illegal!";
+			throw new SemantException(this.getLineNumber(), err);
+		}
 	}
 
 	public static boolean isValidAssignment(TYPE t1, TYPE t2, int lineNumber) throws SemantException

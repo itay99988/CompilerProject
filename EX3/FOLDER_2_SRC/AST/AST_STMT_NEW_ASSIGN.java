@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 	
     public AST_VAR var;
@@ -39,6 +42,41 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
         /****************************************/
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, var.SerialNumber);
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, newExp.SerialNumber);
+	}
+
+	public TYPE SemantMe(TYPE returnedTypeExpected) throws SemantException
+	{
+		TYPE expressionType;
+		TYPE varType = this.var.SemantMe();
+		if (varType == null)
+		{
+			String err = ">> ERROR stmt_assign: var doesn't exist\n";
+			throw new SemantException(this.getLineNumber(), err);
+		}
+
+		expressionType = this.newExp.SemantMe();
+		
+		if(varType.isArray())
+		{	//array gets special treatment here
+			if(!expressionType.isArray())
+			{
+				String err = String.format(">> ERROR stmt_assign: '%s', new exp type is not an array\n", newExp.type);
+				throw new SemantException(this.getLineNumber(), err);
+			}
+		}
+
+		if (expressionType == null)
+		{
+			String err = ">> ERROR stmt_assign: exp type doesn't exist";
+			throw new SemantException(this.getLineNumber(), err);
+		}
+		if (AST_STMT_ASSIGN.isValidAssignment(varType, expressionType, this.getLineNumber()))
+			return null;
+		else 
+		{
+			String err = ">> ERROR stmt_assign: assignment is illegal!";
+			throw new SemantException(this.getLineNumber(), err);
+		}
 	}
 
 

@@ -39,10 +39,11 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
         AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, funcCall.SerialNumber);
 	}
 	
-		//todo go to symbol table and return type of function from symbol table
-		public TYPE SemantMe()throws SemantException
+	//todo go to symbol table and return type of function from symbol table
+	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException
 	{
 		funcCall.SemantMe();
+
 		return null;
 	}
 

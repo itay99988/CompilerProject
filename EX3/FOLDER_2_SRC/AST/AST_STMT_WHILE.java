@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_STMT_WHILE extends AST_STMT
 {
 	public AST_EXP cond;
@@ -41,5 +44,10 @@ public class AST_STMT_WHILE extends AST_STMT
 		/****************************************/
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, cond.SerialNumber);
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, body.SerialNumber);
+	}
+
+	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException
+	{
+		return null;
 	}
 }
