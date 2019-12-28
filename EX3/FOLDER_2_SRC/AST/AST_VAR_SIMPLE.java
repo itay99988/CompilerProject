@@ -35,7 +35,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	
 	
 	public TYPE SemantMe() throws SemantException{
-		TYPE t = SYMBOL_TABLE.getInstance().find(name);
+		TYPE t = SYMBOL_TABLE.getInstance().find(name, EntryCategory.Type);
 		if (t == null)
 		{
 			//System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);

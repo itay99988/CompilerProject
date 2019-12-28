@@ -1,12 +1,6 @@
-void main()
+int main()
 {
-    int x;
-    string y;
-
-    int z;
-    z := (x=y);
-
-    return;
+    int j := 0;
+	int k := 0;
+	return "yess";
 }
-
-

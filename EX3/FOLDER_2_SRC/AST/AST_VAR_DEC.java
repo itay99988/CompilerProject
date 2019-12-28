@@ -37,7 +37,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		/****************************/
 		/* [1] Check If Type exists */
 		/****************************/
-		t = SYMBOL_TABLE.getInstance().find(type);
+		t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		System.out.println("ast_ var_dec");
 		if (t == null)
 		{
@@ -53,9 +53,9 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		checkVarName(inClass);
 
 		/***************************************************/
-		/* [3] Enter the Function Type to the Symbol Table */
+		/* [3] Enter the Variable Type to the Symbol Table */
 		/***************************************************/
-		SYMBOL_TABLE.getInstance().enter(name,t);
+		SYMBOL_TABLE.getInstance().enter(name,t, EntryCategory.Obj);
 
 		/*********************************************************/
 		/* [4] Return value is irrelevant for class declarations */
@@ -65,7 +65,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 
 
 	void checkVarName(AST_CLASSDEC inClass) throws SemantException {
-    	if(SYMBOL_TABLE.getInstance().find(this.name, EntryKind.TypeEntry) != null){
+    	if(SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Type) != null){
 			throw new SemantException(this.getLineNumber(), String.format("var_dec: var name '%s' already exists as a type", this.name));
     	}
     	if (SYMBOL_TABLE.getInstance().existInScope(this.name)) { //var name exists in scope
@@ -80,7 +80,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 	
 
 	void checkNameInSuperClasses(AST_CLASSDEC inClass) throws SemantException {
-    	TYPE_CLASS superClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(inClass.extendingClassName, EntryKind.TypeEntry);
+    	TYPE_CLASS superClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(inClass.extendingClassName, EntryCategory.Type);
     	
     	while (superClass != null) {
         	TYPE_CLASS_DATA_MEMBER_LIST cfieldTypes = superClass.data_members;

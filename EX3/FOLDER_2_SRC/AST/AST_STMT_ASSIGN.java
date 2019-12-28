@@ -1,6 +1,7 @@
 package AST;
 
 import TYPES.*;
+import SYMBOL_TABLE.*;
 
 public class AST_STMT_ASSIGN extends AST_STMT
 {
@@ -80,4 +81,68 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		*/
 		return null;
 	}
+
+	public static boolean isValidAssignment(TYPE t1, TYPE t2, int lineNumber) throws SemantException
+	{
+	    if(t1 == null || t2 == null)
+	        return false;
+
+        if(t1.name.equals(t2.name)) 
+            return true;
+
+        if(t1.isClass())
+		{
+            TYPE_CLASS father = (TYPE_CLASS)t1;
+
+            if(t2.isClass()) { //(Father) var := (Son) exp
+                TYPE_CLASS son = (TYPE_CLASS) t2;
+                if (son.isDerivedFrom(father))
+                    return true;
+                else {
+                    String err = String.format(">> ERROR %s is not derived from %s\n", son.name, father.name);
+        			throw new SemantException(lineNumber, err);
+                }
+            }
+            //t2 is not a class
+            if(t2 == TYPE_NIL.getInstance()) //Father FatherClassInstance := NIL
+                return true;
+            else{
+                String err = String.format(">> ERROR %s new class instance can be assigned with object or NIL\n", father.name);
+    			throw new SemantException(lineNumber, err);
+            }
+        }
+        //t1 is not a class
+        if(t1.isArray())
+		{
+            TYPE_ARRAY varArrayType = (TYPE_ARRAY) t1;
+
+            if (t2 == TYPE_NIL.getInstance()) //(SomeTypeArray) var := NIL
+                return true;
+            if(t2.isArray()) {
+                TYPE_ARRAY expArrayType = (TYPE_ARRAY) t2;
+                if (varArrayType.name.equals(expArrayType.name))
+                    return true;
+                else {
+                  TYPE arrayType = SYMBOL_TABLE.getInstance().find(varArrayType.name, EntryCategory.Type); //IntArray type (=int)
+       	    	  if(!arrayType.name.equals(expArrayType.name)){
+       	    		String err = String.format(">> ERROR '%s' (type:%s[]), new '%s[]'," +
+       	    									" array types don't match\n", varArrayType.name, arrayType.name, expArrayType.name);
+       		  		throw new SemantException(lineNumber, err);
+       	    	  }
+                  return true;
+                }
+            }
+            //t1 is Array, t2 is not Array nor NIL
+            else {
+                String err = String.format(">> ERROR TYPE_ARRAY %s can only be assigned with a new $s[exp] or NILL\n",
+                        					varArrayType.name,varArrayType.name);
+    			throw new SemantException(lineNumber,err);
+            }
+        }
+        //t1 is not a class or an array, i.e t1 is a primitive type
+        else{
+            String err = String.format(">> ERROR can't assign exp of type %s to var of type %s\n", t2.name, t1.name);
+			throw new SemantException(lineNumber, err);
+        }
+    }
 }

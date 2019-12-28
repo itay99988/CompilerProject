@@ -48,7 +48,7 @@ public class SYMBOL_TABLE
 	/****************************************************************************/
 	/* Enter a variable, function, class type or array type to the symbol table */
 	/****************************************************************************/
-	public void enter(String name,TYPE t)
+	public void enter(String name,TYPE t, EntryCategory entryCat)
 	{
 		/*************************************************/
 		/* [1] Compute the hash value for this new entry */
@@ -64,7 +64,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++,scope_level);
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++,scope_level,entryCat);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -85,7 +85,7 @@ public class SYMBOL_TABLE
 	/***********************************************/
 	/* Find the inner-most scope element with name */
 	/***********************************************/
-	public TYPE find(String name)
+	public TYPE find(String name, EntryCategory entryCat)
 	{
 		SYMBOL_TABLE_ENTRY e;
 				
@@ -93,7 +93,8 @@ public class SYMBOL_TABLE
 		{
 			if (name.equals(e.name))
 			{
-				return e.type;
+				if(e.entry_cat == entryCat)
+					return e.type;
 			}
 		}
 		
@@ -135,7 +136,7 @@ public class SYMBOL_TABLE
 
 		enter(
 			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
+			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"), EntryCategory.Type);
 
 		/*********************************************/
 		/* Print the symbol table after every change */
@@ -276,9 +277,9 @@ public class SYMBOL_TABLE
 			/*****************************************/
 			/* [1] Enter primitive types int, string */
 			/*****************************************/
-			instance.enter("int",   TYPE_INT.getInstance());
-			instance.enter("string",TYPE_STRING.getInstance());
-			instance.enter("void",TYPE_VOID.getInstance());
+			instance.enter("int",   TYPE_INT.getInstance(), EntryCategory.Type);
+			instance.enter("string",TYPE_STRING.getInstance(), EntryCategory.Type);
+			instance.enter("void",TYPE_VOID.getInstance(), EntryCategory.Type);
 
 			/***************************************/
 			/* [3] Enter library function PrintInt */
@@ -290,7 +291,7 @@ public class SYMBOL_TABLE
 					"PrintInt",
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
-						null), 0, null));
+						null), 0, null), EntryCategory.Obj);
 
 			//additional library funcs
 			instance.enter(
@@ -300,14 +301,15 @@ public class SYMBOL_TABLE
 					"PrintString",
 					new TYPE_LIST(
 						TYPE_STRING.getInstance(),
-						null),1, null));
+						null),1, null), EntryCategory.Obj);
+						
 			instance.enter(
 				"PrintTrace",
 				new TYPE_FUNCTION(
 					TYPE_VOID.getInstance(),
 					"PrintTrace",
 					null
-					,0, null));
+					,0, null), EntryCategory.Obj);
 			
 		}
 		return instance;

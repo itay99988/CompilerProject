@@ -56,7 +56,7 @@ public class AST_FUNC_CALL extends AST_DEC {
 	//todo go to symbol table and return type of function from symbol table
 		public TYPE SemantMe()throws SemantException
 	{
-		TYPE t = SYMBOL_TABLE.getInstance().find(name);
+		TYPE t = SYMBOL_TABLE.getInstance().find(name,EntryCategory.Obj);
 		if (t == null)
 		{
 			throw new SemantException(this.getLineNumber(), "function is not in symbol table");			

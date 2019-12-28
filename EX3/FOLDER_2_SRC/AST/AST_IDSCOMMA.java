@@ -45,7 +45,7 @@ public class AST_IDSCOMMA extends AST_DEC {
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		TYPE t = SYMBOL_TABLE.getInstance().find(type);
+		TYPE t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		if (t == null)
 		{
 			throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");			

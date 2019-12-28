@@ -74,7 +74,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		/************************************************/
 		/* [4] Enter the Class Type to the Symbol Table */
 		/************************************************/
-		SYMBOL_TABLE.getInstance().enter(className,t);
+		SYMBOL_TABLE.getInstance().enter(className,t, EntryCategory.Type);
 
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */

@@ -114,7 +114,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		}
 
 		if (firstArgType != null) {
-			TYPE t2 = SYMBOL_TABLE.getInstance().find(firstArgType);
+			TYPE t2 = SYMBOL_TABLE.getInstance().find(firstArgType, EntryCategory.Type);
 			if (t2 == null) {
 				throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");
 			}
@@ -139,8 +139,8 @@ public class AST_FUNCDEC extends AST_DEC {
 		/***************************************************/
 		/* [5] Enter the Function Type to the Symbol Table */
 		/***************************************************/
-		// TODO: change null to class name
-		SYMBOL_TABLE.getInstance().enter(name, new TYPE_FUNCTION(returnType, name, type_list, paramsLen, null));
+		//TODO: change null to class name
+		SYMBOL_TABLE.getInstance().enter(name,new TYPE_FUNCTION(returnType,name,type_list,paramsLen,null), EntryCategory.Obj);
 
 		/*********************************************************/
 		/* [6] Return value is irrelevant for class declarations */
