@@ -46,8 +46,35 @@ public class AST_STMT_WHILE extends AST_STMT
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, body.SerialNumber);
 	}
 
-	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException
+	public TYPE SemantMe(TYPE returnedTypeExpected) throws SemantException
 	{
+		/****************************/
+		/* [0] Semant the Condition */
+		/****************************/
+		if (cond.SemantMe() != TYPE_INT.getInstance())
+		{
+            String err = String.format(">> ERROR: condition inside WHILE does not return integer value\n");
+			throw new SemantException(this.getLineNumber(), err);
+		}
+
+		/*************************/
+		/* [1] Begin Class Scope */
+		/*************************/
+		SYMBOL_TABLE.getInstance().beginScope();
+
+		/***************************/
+		/* [2] Semant Data Members */
+		/***************************/
+		body.SemantMe(returnedTypeExpected);
+
+		/*****************/
+		/* [3] End Scope */
+		/*****************/
+		SYMBOL_TABLE.getInstance().endScope();
+
+		/*********************************************************/
+		/* [4] Return value is irrelevant for class declarations */
+		/*********************************************************/
 		return null;
 	}
 }

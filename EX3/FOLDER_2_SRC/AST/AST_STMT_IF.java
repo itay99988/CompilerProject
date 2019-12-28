@@ -47,36 +47,36 @@ public class AST_STMT_IF extends AST_STMT
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, body.SerialNumber);
 	}
 	
-	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException
+	public TYPE SemantMe(TYPE returnedTypeExpected) throws SemantException
 	{
-		/****************************/
-		/* [0] Semant the Condition */
-		/****************************/
-		/*
-		if (cond.SemantMe() != TYPE_INT.getInstance())
-		{
-			System.out.format(">> ERROR [%d:%d] condition inside IF is not integral\n",2,2);
-		}*/
-		
-		/*************************/
-		/* [1] Begin Class Scope */
-		/*************************/
-		/*SYMBOL_TABLE.getInstance().beginScope();*/
+        /****************************/
+        /* [0] Semant the Condition */
+        /****************************/
+        if (cond.SemantMe() != TYPE_INT.getInstance())
+        {
+            String err = String.format(">> ERROR: condition inside IF does not return integer value\n");
+			throw new SemantException(this.getLineNumber(), err);
+        }
 
-		/***************************/
-		/* [2] Semant Data Members */
-		/***************************/
-		/*body.SemantMe();*/
+        /*************************/
+        /* [1] Begin Class Scope */
+        /*************************/
+        SYMBOL_TABLE.getInstance().beginScope();
 
-		/*****************/
-		/* [3] End Scope */
-		/*****************/
-		/*SYMBOL_TABLE.getInstance().endScope();*/
+        /***************************/
+        /* [2] Semant Data Members */
+        /***************************/
+        body.SemantMe(returnedTypeExpected);
 
-		/*********************************************************/
-		/* [4] Return value is irrelevant for class declarations */
-		/*********************************************************/
-		return null;		
+        /*****************/
+        /* [3] End Scope */
+        /*****************/
+        SYMBOL_TABLE.getInstance().endScope();
+
+        /*********************************************************/
+        /* [4] Return value is irrelevant for class declarations */
+        /*********************************************************/
+        return null;
 	}
 	
 }
