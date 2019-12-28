@@ -39,10 +39,15 @@ public class AST_STMT_VAR_DEC  extends AST_STMT {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, varDec.SerialNumber);
 	}
 
-	public TYPE SemantMe() throws SemantException
-	{
-		varDec.SemantMe();
-		return null;
+
+	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException {
+		try {
+			varDec.SemantMe(null); // var dec is not inside any class
+		}
+		catch (SemanticErrorException e){
+			e.setLineNumber(lineNumber);
+			throw e;
+		}
 	}
-	
+
 }

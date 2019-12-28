@@ -1,12 +1,9 @@
 package AST;
 
-public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC
-{
-	AST_NEW_EXP newExp;
+public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 	
 	public AST_VAR_DEC_NEW_EXP(String type, String name, AST_NEW_EXP newExp, int lineNumber){
-		super(type, name);
-		this.newExp = newExp;
+		super(type, name, newExp);
 
 		this.setLineNumber(lineNumber);
 		System.out.format("====================== varDec -> ID( %s ) ID( %s ) ASSIGN newExp SEMICOLON\n", type, name);

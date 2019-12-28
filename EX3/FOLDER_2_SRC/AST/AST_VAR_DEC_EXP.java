@@ -2,11 +2,8 @@ package AST;
 
 public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 	
-	public AST_EXP exp;
-	
 	public AST_VAR_DEC_EXP(String type, String name, AST_EXP exp, int lineNumber){
-		super(type, name);
-		this.exp = exp;
+		super(type, name, exp);
 		String expStr = exp == null ? "" : " exp";
 
 		this.setLineNumber(lineNumber);

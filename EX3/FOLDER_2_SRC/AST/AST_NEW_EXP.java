@@ -1,6 +1,6 @@
 package AST;
 
-public class AST_NEW_EXP extends AST_Node
+public class AST_NEW_EXP extends AST_EXP
 {
 	String type;
 	
