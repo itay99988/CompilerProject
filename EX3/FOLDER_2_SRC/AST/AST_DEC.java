@@ -54,8 +54,6 @@ public abstract class AST_DEC extends AST_Node {
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		System.out.println("TEST AST_DEC SemantMe");
-		
 		return null;
 	}
 

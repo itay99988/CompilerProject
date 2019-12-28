@@ -32,7 +32,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 	
 	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
 		TYPE t;
-		lineNumber = this.getLineNumber();
+		int lineNumber = this.getLineNumber();
 		/****************************/
 		/* [1] Check If Type exists */
 		/****************************/
@@ -48,14 +48,13 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		/**************************************/
 		/* [2] Check that var name is legal   */
 		/**************************************/
-
 		checkVarName(inClass);
 
 		/***************************************************/
 		/* [3] Enter the Variable Type to the Symbol Table */
 		/***************************************************/
 		if (t.isArray()) {
-			SYMBOL_TABLE.getInstance().enter(this.name, new TYPE_ARRAY(this.type), EntryCategory.Obj);
+			SYMBOL_TABLE.getInstance().enter(this.name, new TYPE_ARRAY(this.type, 0), EntryCategory.Obj);
 		}
 		else {
 			SYMBOL_TABLE.getInstance().enter(this.name, t, EntryCategory.Obj);

@@ -1,12 +1,15 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 
 	public AST_STMT_ASSIGN assign;
 	
 	public AST_VAR_DEC_EXP(String type, String name, AST_EXP exp, int lineNumber){
 		super(type, name, exp);
-		this.assign = new AST_STMT_ASSIGN(new AST_VAR_SIMPLE(name), exp);
+		this.assign = new AST_STMT_ASSIGN(new AST_VAR_SIMPLE(name, lineNumber), exp, lineNumber);
 
 		String expStr = exp == null ? "" : " exp";
 
