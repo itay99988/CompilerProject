@@ -48,8 +48,7 @@ public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
 		TYPE t = super.SemantMe(inClass);
 
-		if(assign != null) {
-			assign.SemantMe(null);
+		if(exp != null) {
 			if(inClass != null) {
 				//allow only constant values
 				if(!(assign.exp instanceof AST_EXP_INT ||
@@ -57,9 +56,10 @@ public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 				 	 assign.exp instanceof AST_EXP_NIL)) {
 					throw new SemantException(this.getLineNumber(), "var_dec_exp: cannot use non-constant assignments inside class");
 				}
-				assign.SemantMe(null);
 			}
+			assign.SemantMe(null);
 		}
+		
 		return t;
 	}
 

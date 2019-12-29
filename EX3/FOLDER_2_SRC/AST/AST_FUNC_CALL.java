@@ -62,26 +62,28 @@ public class AST_FUNC_CALL extends AST_DEC {
 			throw new SemantException(lineNumber, err);	
 		}
 		
-		this.args.SemantMe();
-
-        TYPE_FUNCTION type_function = (TYPE_FUNCTION) t;
-        TYPE_LIST funcParamList = type_function.params; //a TYPE_LIST of the function argumants' type
+		TYPE_FUNCTION typeFunction = (TYPE_FUNCTION) t;
+        TYPE_LIST funcParamList = typeFunction.params; //a TYPE_LIST of the function argumants' type
 		TYPE_LIST argTypeList = new TYPE_LIST(null, null);
-
-        TYPE currExpType;
-		AST_COMMAEXP otherExps = this.args.commaExpsList;
-		int argListLen = args.length();
-
-		if (type_function.paramsLen < argListLen) {
+		int argListLen = args == null? 0 : args.length();
+		
+		if (typeFunction.paramsLen < argListLen) {
 			String err = String.format("ast_func_call: too many arguments when calling function %s", this.name);
             throw new SemantException(lineNumber, err);
         }
-        if (type_function.paramsLen > argListLen) {
+        if (typeFunction.paramsLen > argListLen) {
 			String err = String.format("ast_func_call: too few arguments when calling function %s", this.name);
             throw new SemantException(lineNumber, err);
         }
 
-		currExpType = args.exp.SemantMe();
+		if(this.args == null) {
+			return typeFunction.returnType;
+		}
+
+		this.args.SemantMe();
+
+		AST_COMMAEXP otherExps = this.args.commaExpsList;
+		TYPE currExpType = args.exp.SemantMe();
 		argTypeList = new TYPE_LIST(currExpType, argTypeList);
         while (otherExps != null) {
             currExpType = otherExps.exp.SemantMe();
@@ -104,7 +106,7 @@ public class AST_FUNC_CALL extends AST_DEC {
         }
 
         // all parameter types match the argument types
-        return type_function.returnType;
+        return typeFunction.returnType;
 	}
 	
 

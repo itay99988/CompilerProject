@@ -6,14 +6,14 @@ import SYMBOL_TABLE.*;
 public class AST_CLASSDEC extends AST_DEC {
 	
 	public String className;
-	public String extendingClassName;
+	public String superClassName;
 	public AST_CFIELD_LIST cfieldList;
 
 
 
 	public AST_CLASSDEC(String className, String extendingClassName, AST_CFIELD_LIST cfieldList, int lineNumber) {
 		this.className = className;
-		this.extendingClassName = extendingClassName;
+		this.superClassName = extendingClassName;
 		this.cfieldList = cfieldList;
 		
 		String extStr = extendingClassName == null ? "" : String.format(" EXTENDS ( %s )", extendingClassName);

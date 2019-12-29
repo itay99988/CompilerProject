@@ -84,7 +84,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 			throw new SemantException(this.getLineNumber(), String.format("var_dec: var name '%s' already exists in the current scope", this.name));
         }
         if(inClass != null){
-        	if(inClass.extendingClassName == null) //this class doesn't extend another class => var name is unique
+        	if(inClass.superClassName == null) //this class doesn't extend another class => var name is unique
         		return;
         	checkNameInSuperClasses(inClass); //check if var name exist in super class
         }
@@ -92,7 +92,7 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 	
 
 	void checkNameInSuperClasses(AST_CLASSDEC inClass) throws SemantException {
-    	TYPE_CLASS superClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(inClass.extendingClassName, EntryCategory.Type);
+    	TYPE_CLASS superClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(inClass.superClassName, EntryCategory.Type);
     	
     	while (superClass != null) {
         	TYPE_CLASS_DATA_MEMBER_LIST cfieldTypes = superClass.data_members;

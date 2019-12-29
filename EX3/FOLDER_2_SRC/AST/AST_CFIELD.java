@@ -47,11 +47,8 @@ public class AST_CFIELD extends AST_DEC {
 		}
 		else if (this.dec instanceof AST_FUNCDEC)
 		{
-			//TODO: uncomment below once SemantFunctionPrototype is implemented
-
-			// TYPE t = ((AST_FUNCDEC)this.dec).SemantFunctionPrototype(inClass); //TYPE_FUNCTION
-			// return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t);
-			return null;
+			TYPE t = ((AST_FUNCDEC)this.dec).SemantFunctionPrototype(inClass); //TYPE_FUNCTION
+			return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t);
 		}
 		return null;
 	}

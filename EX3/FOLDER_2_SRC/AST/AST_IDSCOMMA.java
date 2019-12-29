@@ -79,7 +79,7 @@ public class AST_IDSCOMMA extends AST_DEC {
 		/* return (existing) type t */
 		/****************************/
 		return t;
-	} 
+	}
 	
 }
 	
