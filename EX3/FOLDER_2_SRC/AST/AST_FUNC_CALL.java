@@ -69,8 +69,8 @@ public class AST_FUNC_CALL extends AST_DEC {
 		TYPE_LIST argTypeList = new TYPE_LIST(null, null);
 
         TYPE currExpType;
-		AST_BRACESEXP otherExps = this.args.commaExpsList;
-		int argListLen = exps.length();
+		AST_COMMAEXP otherExps = this.args.commaExpsList;
+		int argListLen = args.length();
 
 		if (type_function.paramsLen < argListLen) {
 			String err = String.format("ast_func_call: too many arguments when calling function %s", this.name);
@@ -110,13 +110,13 @@ public class AST_FUNC_CALL extends AST_DEC {
 
     public TYPE checkFuncExists() throws SemantException {
     	if(this.var != null){
-			AST_VAR_FIELD fieldFunc = AST_VAR_FIELD(this.var, this.name, this.getLineNumber());
+			AST_VAR_FIELD fieldFunc = new AST_VAR_FIELD(this.var, this.name, this.getLineNumber());
 			return fieldFunc.SemantMe();
 		}
 
 		// else (this.var == null)
 
-        TYPE t = SYMBOL_TABLE.getInstance().find(this.name, EntryKind.ObjEntry);
+        TYPE t = SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Obj);
         if(t != null) {	// function name exists in current scope or a higher scope
 			return t;
 		}
@@ -125,7 +125,7 @@ public class AST_FUNC_CALL extends AST_DEC {
 			// function name does not exist in any visible scope, and is not inside a class
 			return null;
 		}
-		AST_VAR_SIMPLE funcVar = AST_VAR_SIMPLE(this.name, this.getLineNumber());
+		AST_VAR_SIMPLE funcVar = new AST_VAR_SIMPLE(this.name, this.getLineNumber());
     	return funcVar.findNameInSuperClass(curClass); //check if name exists in super class
     }
 
