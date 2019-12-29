@@ -6,13 +6,13 @@ import SYMBOL_TABLE.*;
 public class AST_FUNC_CALL extends AST_DEC {
 
 	public String name;
-	public AST_BRACESEXP braceExps;
+	public AST_BRACESEXP args;
 	public AST_VAR var;
 
 
-	public AST_FUNC_CALL(String name, AST_BRACESEXP braceExps, AST_VAR var, int lineNumber){
+	public AST_FUNC_CALL(String name, AST_BRACESEXP args, AST_VAR var, int lineNumber){
 		this.name = name;
-		this.braceExps = braceExps;
+		this.args = args;
 		this.var = var;
 
 		String varString = var == null ? "" : "var DOT";
@@ -28,10 +28,10 @@ public class AST_FUNC_CALL extends AST_DEC {
 		/****************************************/
 		System.out.print("AST NODE: VAR DEC EXP\n");
 
-		/******************************************/
-		/* RECURSIVELY PRINT braceExps and var... */
-		/******************************************/
-		if (braceExps != null) braceExps.PrintMe();
+		/***************************************/
+		/* RECURSIVELY PRINT args and var... */
+		/***************************************/
+		if (args != null) args.PrintMe();
 		if (var != null) var.PrintMe();
 		
 		/*********************************/
@@ -44,28 +44,90 @@ public class AST_FUNC_CALL extends AST_DEC {
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
-		if(braceExps != null) {
-			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, braceExps.SerialNumber);
+		if(args != null) {
+			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, args.SerialNumber);
 		}
 		if(var != null) {
 			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, var.SerialNumber);
 		}
 
 	}
-	
-	//todo go to symbol table and return type of function from symbol table
-		public TYPE SemantMe()throws SemantException
-	{
-		TYPE t = SYMBOL_TABLE.getInstance().find(name,EntryCategory.Obj);
-		if (t == null)
-		{
-			throw new SemantException(this.getLineNumber(), "function is not in symbol table");			
+
+
+    public TYPE SemantMe() throws SemantException {
+		int lineNumber = this.getLineNumber();
+        TYPE t = checkFuncExists();
+        if (t instanceof TYPE_FUNCTION == false) {
+            String err = String.format("variable %s is not a function", this.name);
+			throw new SemantException(lineNumber, err);	
 		}
 		
-		braceExps.SemantMe();
+		this.args.SemantMe();
 
-		return null;
+        TYPE_FUNCTION type_function = (TYPE_FUNCTION) t;
+        TYPE_LIST funcParamList = type_function.params; //a TYPE_LIST of the function argumants' type
+		TYPE_LIST argTypeList = new TYPE_LIST(null, null);
+
+        TYPE currExpType;
+		AST_BRACESEXP otherExps = this.args.commaExpsList;
+		int argListLen = exps.length();
+
+		if (type_function.paramsLen < argListLen) {
+			String err = String.format("ast_func_call: too many arguments when calling function %s", this.name);
+            throw new SemantException(lineNumber, err);
+        }
+        if (type_function.paramsLen > argListLen) {
+			String err = String.format("ast_func_call: too few arguments when calling function %s", this.name);
+            throw new SemantException(lineNumber, err);
+        }
+
+		currExpType = args.exp.SemantMe();
+		argTypeList = new TYPE_LIST(currExpType, argTypeList);
+        while (otherExps != null) {
+            currExpType = otherExps.exp.SemantMe();
+            argTypeList = new TYPE_LIST(currExpType, argTypeList);
+            otherExps = otherExps.commaExpsList;
+        }
+
+        // loop over paramTypeList and function argType and make sure that they match
+        int argIndex = argListLen;
+        while (argTypeList.head != null) {
+            if (!AST_STMT_ASSIGN.isValidAssignment(funcParamList.head, argTypeList.head, lineNumber)) {
+				String err = String.format("ast_func_call: can't call function %s, argument #%d type doesn't match.",
+								this.name, argIndex);
+				err += String.format("\nExpected: %s; got: %s.", funcParamList.head, argTypeList.head);
+				throw new SemantException(lineNumber, err);
+            }
+            argTypeList = argTypeList.tail;
+            funcParamList = funcParamList.tail;
+            argIndex--;
+        }
+
+        // all parameter types match the argument types
+        return type_function.returnType;
 	}
+	
+
+    public TYPE checkFuncExists() throws SemantException {
+    	if(this.var != null){
+			AST_VAR_FIELD fieldFunc = AST_VAR_FIELD(this.var, this.name, this.getLineNumber());
+			return fieldFunc.SemantMe();
+		}
+
+		// else (this.var == null)
+
+        TYPE t = SYMBOL_TABLE.getInstance().find(this.name, EntryKind.ObjEntry);
+        if(t != null) {	// function name exists in current scope or a higher scope
+			return t;
+		}
+    	TYPE_CLASS curClass = SYMBOL_TABLE.getInstance().currClass;
+    	if(curClass == null) {
+			// function name does not exist in any visible scope, and is not inside a class
+			return null;
+		}
+		AST_VAR_SIMPLE funcVar = AST_VAR_SIMPLE(this.name, this.getLineNumber());
+    	return funcVar.findNameInSuperClass(curClass); //check if name exists in super class
+    }
 
 }
 	

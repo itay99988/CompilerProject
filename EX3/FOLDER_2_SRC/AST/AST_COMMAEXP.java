@@ -49,5 +49,13 @@ public class AST_COMMAEXP extends AST_DEC {
 		return null;
 	}
 
+
+	public int length() {
+		if(this.commaExpsList == null) {
+			return 1;
+		}
+		return 1 + this.commaExpsList.length();
+	}
+
 }
 	

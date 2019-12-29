@@ -40,12 +40,8 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
 	}
 	
 	//todo go to symbol table and return type of function from symbol table
-	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException
-	{
-		funcCall.SemantMe();
-
-		return null;
+	public TYPE SemantMe(TYPE expectedReturnType) throws SemantException {
+		return funcCall.SemantMe();
 	}
-
 
 }
