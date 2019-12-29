@@ -51,10 +51,5 @@ public abstract class AST_DEC extends AST_Node {
 	{
 		return null;
 	}
-	
-	public TYPE SemantMe() throws SemantException
-	{
-		return null;
-	}
 
 }

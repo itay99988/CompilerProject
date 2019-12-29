@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_ARR_DEC extends AST_DEC {
 	
 	String name;
@@ -25,6 +28,11 @@ public class AST_ARR_DEC extends AST_DEC {
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
 			"ARR\nDEC");
+	}
+
+	public TYPE SemantMe() throws SemantException 
+	{
+		return null;
 	}
 
 }

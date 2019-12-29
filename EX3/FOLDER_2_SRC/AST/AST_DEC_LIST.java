@@ -59,12 +59,19 @@ public class AST_DEC_LIST extends AST_Node {
 			AST_VAR_DEC varDec = (AST_VAR_DEC)head;
 			varDec.SemantMe(null); //there is no inclass parameter in this case
 		}
-		else
-			head.SemantMe();
+		else if (head instanceof AST_ARR_DEC){
+			AST_ARR_DEC arrDec = (AST_ARR_DEC)head;
+			arrDec.SemantMe();
+		}
+		else if (head instanceof AST_CLASSDEC){
+			AST_CLASSDEC classDec = (AST_CLASSDEC)head;
+			classDec.SemantMe();
+		}
 
 		if (tail != null){
 			tail.SemantMe();
 		}
+
 		return null;
 	}	
 

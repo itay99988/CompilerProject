@@ -1,5 +1,7 @@
 package AST;
+
 import TYPES.*;
+import SYMBOL_TABLE.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -28,11 +30,6 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		this.subscript = subscript;
 
 		this.setLineNumber(lineNumber);
-	}
-	
-	
-	public TYPE SemantMe() throws SemantException{
-		return var.SemantMe();
 	}
 
 	/*****************************************************/
@@ -63,5 +60,34 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		/****************************************/
 		if (var       != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
 		if (subscript != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,subscript.SerialNumber);
+	}
+
+		
+	public TYPE SemantMe() throws SemantException
+	{
+		TYPE t = var.SemantMe(); //should be TYPE_ARRAY
+
+		if(t == null || !t.isArray())
+		{
+			String err = ">> ERROR var_subscript: the var is not an array";
+			throw new SemantException(this.getLineNumber(),err);
+		}
+
+		TYPE_ARRAY typeArray = (TYPE_ARRAY)t;
+		if(subscript.SemantMe() != TYPE_INT.getInstance())
+		{
+			String err = ">> ERROR var_subscript: exp inside '[]' is not int";
+			throw new SemantException(this.getLineNumber(),err);
+		}
+
+		TYPE arrayType = SYMBOL_TABLE.getInstance().find(typeArray.name, EntryCategory.Type);
+		TYPE elementTypeArray = SYMBOL_TABLE.getInstance().find(arrayType.name, EntryCategory.Type);
+
+
+		if(elementTypeArray instanceof TYPE_INT || elementTypeArray instanceof TYPE_STRING || 
+				elementTypeArray instanceof TYPE_CLASS)
+			return elementTypeArray;
+
+		return arrayType;
 	}
 }

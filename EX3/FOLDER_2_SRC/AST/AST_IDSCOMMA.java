@@ -43,24 +43,43 @@ public class AST_IDSCOMMA extends AST_DEC {
 		if (commaIdsLst != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, commaIdsLst.SerialNumber);
 	}
 	
-	public TYPE SemantMe() throws SemantException
+	public TYPE_LIST SemantMe() throws SemantException
+	{
+		if (this.commaIdsLst == null)
+		{
+			return new TYPE_LIST(this.CheckSingleArg(), null);
+		}
+		else
+		{
+			return new TYPE_LIST( this.CheckSingleArg(), this.commaIdsLst.SemantMe() );
+		}
+	}
+
+	public TYPE CheckSingleArg() throws SemantException
 	{
 		TYPE t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		if (t == null)
 		{
-			throw new SemantException(this.getLineNumber(), "function member TYPE is not in symbol table");			
+			/**************************/
+			/* ERROR: undeclared type */
+			/**************************/
+			String err = String.format(">> ERROR arg: %s %s, type doesn't exist\n", this.type, this.name);
+            throw new SemantException(this.getLineNumber(), err);
 		}
-		/*else // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		else
 		{
-			type_list = new TYPE_LIST(t,type_list);
-			SYMBOL_TABLE.getInstance().enter(it.head.name,t);
-		}*/		
-		
-		if (commaIdsLst != null)
-			commaIdsLst.SemantMe();
+			/*******************************************************/
+			/* Enter var with name=name and type=t to symbol table */
+			/*******************************************************/
+			SYMBOL_TABLE.getInstance().enter(name, t, EntryCategory.Obj);
+			
+		}
 
-		return null;
-	}
+		/****************************/
+		/* return (existing) type t */
+		/****************************/
+		return t;
+	} 
 	
 }
 	
