@@ -291,7 +291,7 @@ public class SYMBOL_TABLE
 					"PrintInt",
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
-						null), 0, null), EntryCategory.Obj);
+						null), 1, null), EntryCategory.Obj);
 
 			//additional library funcs
 			instance.enter(

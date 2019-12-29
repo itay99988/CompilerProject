@@ -79,7 +79,6 @@ public class AST_FUNCDEC extends AST_DEC {
 
 
 	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
-        TYPE t;
         TYPE_FUNCTION typeFunction = SemantFunctionPrototype(inClass);
 
         /****************************/
@@ -87,23 +86,23 @@ public class AST_FUNCDEC extends AST_DEC {
         /****************************/
         SYMBOL_TABLE.getInstance().beginScope();
 
-        //check that all parameter names are unique:
-        SemantFunctionArguments();
+		//check that all parameter names are unique:
+		SemantFunctionArguments();
 
         /*******************/
         /* [2] Semant Body */
-        /*******************/
-        body.SemantMe(typeFunction.returnType);
+		/*******************/
+		body.SemantMe(typeFunction.returnType);
 
         /*****************/
         /* [3] End Scope */
         /*****************/
-        SYMBOL_TABLE.getInstance().endScope();
-
-        /*********************************************************/
-        /* [4] Return value is irrelevant for class declarations */
-        /*********************************************************/
-        return null;
+		SYMBOL_TABLE.getInstance().endScope();
+		
+        /****************************/
+        /* [4] Return function type */
+        /****************************/
+        return typeFunction;
 	}
 
 
@@ -135,7 +134,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		int lineNumber = this.getLineNumber();
         /*******************/
         /* [1] return type */
-        /*******************/
+		/*******************/
         returnType = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
         if (returnType == null) {
 			String err = String.format("ast_func_dec: non existing return type: %s", this.type);
@@ -147,7 +146,7 @@ public class AST_FUNCDEC extends AST_DEC {
 
         /********************************/
         /* [2] Semant Input Param Types */
-        /********************************/
+		/********************************/
         int paramsLen = 0;
         for (AST_IDSCOMMA param = this.params; param != null; param = param.commaIdsLst) {
             t = SYMBOL_TABLE.getInstance().find(param.type, EntryCategory.Type);
@@ -172,12 +171,12 @@ public class AST_FUNCDEC extends AST_DEC {
 		
         /*************************************************/
         /* [3] Make sure that the function name is legal */
-        /*************************************************/
+		/*************************************************/
 		isLegalFunctionName(inClass, returnType, paramTypeList, paramsLen);
 		
         /*************************************/
         /* [4] Create function type instance */
-        /*************************************/
+		/*************************************/
         String className = null;
         if(inClass!=null) {
 			className = inClass.className;
@@ -186,7 +185,7 @@ public class AST_FUNCDEC extends AST_DEC {
 
         /***************************************************/
         /* [5] Enter the Function Type to the Symbol Table */
-        /***************************************************/
+		/***************************************************/
         SYMBOL_TABLE.getInstance().enter(name, type_func, EntryCategory.Obj);
         return type_func;
     }
@@ -235,6 +234,7 @@ public class AST_FUNCDEC extends AST_DEC {
 						if(superFunction.returnType.name.equals(returnType.name) &&
 							typeListsMatch(paramTypeList, paramsLen, superFunction.params, superFunction.paramsLen)) {
 								// method was overloaded -- legal
+								cfieldTypes = cfieldTypes.tail;
 								continue;
 						}
 						// else: shadowing

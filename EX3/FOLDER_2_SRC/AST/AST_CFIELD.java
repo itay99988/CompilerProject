@@ -47,7 +47,7 @@ public class AST_CFIELD extends AST_DEC {
 		}
 		else if (this.dec instanceof AST_FUNCDEC)
 		{
-			TYPE t = ((AST_FUNCDEC)this.dec).SemantFunctionPrototype(inClass); //TYPE_FUNCTION
+			TYPE t = ((AST_FUNCDEC)this.dec).SemantMe(inClass);
 			return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t);
 		}
 		return null;

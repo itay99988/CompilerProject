@@ -8,7 +8,7 @@ public class AST_ARR_DEC extends AST_DEC {
 	String name;
 	String type;
 	
-	public AST_ARR_DEC(String name, String type, int lineNumber){
+	public AST_ARR_DEC(String type, String name, int lineNumber){
 		this.name = name;
 		this.type = type;
 
@@ -39,7 +39,7 @@ public class AST_ARR_DEC extends AST_DEC {
 
         if (t == null) 
 		{ //array element type does not exist
-            err = String.format(">> ERROR array_dec: %s %s, type doesn't exist\n", this.name, this.type);
+            err = String.format(">> ERROR array_dec: 'array %s = %s[]', type '%s' doesn't exist\n", this.name, this.type, this.type);
             throw new SemantException(this.getLineNumber(), err);
         }
         if (isArrayDecNameExist) 
