@@ -1,6 +1,11 @@
 int main()
 {
-    int j := 0;
+	int j := 0;
 	int k := 0;
-	return "yess";
+	if(k < 3) {
+		k := 5;
+	}
+	k := 123;
+	
+	return 3;
 }
