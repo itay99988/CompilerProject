@@ -1,5 +1,7 @@
 package AST;
+
 import TYPES.*;
+import SYMBOL_TABLE.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {
@@ -29,12 +31,6 @@ public class AST_VAR_FIELD extends AST_VAR
 
 		this.setLineNumber(lineNumber);
 	}
-	
-	
-	//todo return type of field of class.
-	public TYPE SemantMe() throws SemantException{
-		return null;
-	}
 
 	/*************************************************/
 	/* The printing message for a field var AST node */
@@ -63,5 +59,33 @@ public class AST_VAR_FIELD extends AST_VAR
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
 		/****************************************/
 		if (var != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,var.SerialNumber);
+	}
+
+	public TYPE SemantMe() throws SemantException
+	{
+
+		TYPE t = this.var.SemantMe(); //we expect TYPE_CLASS
+
+		if(t == null || !t.isClass())
+		{
+			String err = String.format(">> ERROR var_field: '.%s', the var is not a class object\n", this.fieldName);
+			throw new SemantException(this.getLineNumber(), err);
+		}
+
+		TYPE_CLASS typeClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(t.name, EntryCategory.Type);
+		
+		while(typeClass != null)
+		{
+			TYPE_CLASS_DATA_MEMBER_LIST memList = typeClass.data_members;
+			while(memList != null)
+			{
+				if(memList.head.name.equals(this.fieldName))
+						return memList.head.type;
+
+				memList = memList.tail;
+			}
+			typeClass = typeClass.father;
+		}
+		return null;
 	}
 }

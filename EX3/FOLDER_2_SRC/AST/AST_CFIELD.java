@@ -38,47 +38,21 @@ public class AST_CFIELD extends AST_DEC {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, dec.SerialNumber);
 	}
 
-	public TYPE_CLASS_DATA_MEMBER SemantMe() throws SemantException
+	public TYPE_CLASS_DATA_MEMBER SemantMe(AST_CLASSDEC inClass) throws SemantException
 	{
-		String type = dec.GetType();
-		String name = dec.GetName();
-		
-		TYPE t;
-		
-///		System.out.println("TEST AST_CFIELD SemantMe");
-		
-		/****************************/
-		/* [1] Check If Type exists */
-		/****************************/
-	//	t = SYMBOL_TABLE.getInstance().find(type);
-		//if (t == null)
-	//	{
-		//	System.out.format(">> ERROR [%d:%d] non existing type %s\n",2,2,type);
-		//	throw new SemantException(this.getLineNumber(), "TYPE is not found in symbol table");
-			
-	//	}
-		
-		/**************************************/
-		/* [2] Check That Name does NOT exist */
-		/**************************************/
-		//if (SYMBOL_TABLE.getInstance().find(name) != null)
-		//{
-		//	System.out.format(">> ERROR [%d:%d] variable %s already exists in scope\n",2,2,name);	
-		//	throw new SemantException(this.getLineNumber(), "name is already exist in symbol table");
-			
-		//}
+		if (this.dec instanceof AST_VAR_DEC)
+		{
+			TYPE t = ((AST_VAR_DEC)this.dec).SemantMe(inClass);
+			return new TYPE_CLASS_DATA_MEMBER(((AST_VAR_DEC)this.dec).name, t);
+		}
+		else if (this.dec instanceof AST_FUNCDEC)
+		{
+			//TODO: uncomment below once SemantFunctionPrototype is implemented
 
-		/***************************************************/
-		/* [3] Enter the Function Type to the Symbol Table */
-		/***************************************************/
-		//SYMBOL_TABLE.getInstance().enter(name,t);
-
-		/*********************************************************/
-		/* [4] Return value is irrelevant for class declarations */
-		/*********************************************************/
-		
-		dec.SemantMe();
-		
+			// TYPE t = ((AST_FUNCDEC)this.dec).SemantFunctionPrototype(inClass); //TYPE_FUNCTION
+			// return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t);
+			return null;
+		}
 		return null;
 	}
 

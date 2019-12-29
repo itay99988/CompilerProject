@@ -1,7 +1,7 @@
 package AST;
 
-
 import TYPES.*;
+import SYMBOL_TABLE.*;
 
 public class AST_CFIELD_LIST extends AST_Node {
 
@@ -54,19 +54,19 @@ public class AST_CFIELD_LIST extends AST_Node {
 		}
 	}
 
-	public TYPE_CLASS_DATA_MEMBER_LIST SemantMe() throws SemantException
+	public TYPE_CLASS_DATA_MEMBER_LIST SemantMe(AST_CLASSDEC inClass) throws SemantException
 	{
 		if (clsFieldList == null)
 		{
 			return new TYPE_CLASS_DATA_MEMBER_LIST(
-				clsField.SemantMe(),
+				clsField.SemantMe(inClass),
 				null);
 		}
 		else
 		{
 			return new TYPE_CLASS_DATA_MEMBER_LIST(
-				clsField.SemantMe(),
-				clsFieldList.SemantMe());
+				clsField.SemantMe(inClass),
+				clsFieldList.SemantMe(inClass));
 		}
 	}
 

@@ -64,7 +64,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		/***************************/
 		/* [2] Semant Data Members */
 		/***************************/
-		TYPE_CLASS t = new TYPE_CLASS(null,className,cfieldList.SemantMe());
+		TYPE_CLASS t = new TYPE_CLASS(null,className,cfieldList.SemantMe(this));
 
 		/*****************/
 		/* [3] End Scope */

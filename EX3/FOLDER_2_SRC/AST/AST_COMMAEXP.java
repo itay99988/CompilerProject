@@ -1,5 +1,8 @@
 package AST;
 
+import TYPES.*;
+import SYMBOL_TABLE.*;
+
 public class AST_COMMAEXP extends AST_DEC {
 	
 	public AST_EXP exp;
@@ -39,6 +42,11 @@ public class AST_COMMAEXP extends AST_DEC {
 		if(commaExpsList != null) {
 			AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, commaExpsList.SerialNumber);
 		}
+	}
+
+	public TYPE SemantMe() throws SemantException
+	{
+		return null;
 	}
 
 }
