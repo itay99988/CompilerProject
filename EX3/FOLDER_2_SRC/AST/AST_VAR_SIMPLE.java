@@ -62,7 +62,7 @@ public class AST_VAR_SIMPLE extends AST_VAR
 				return t;
 			else
 			{
-				String err = String.format(">> ERROR '%s' doesn't exist in SYMBOL_TABLE", this.name);
+				String err = String.format("var_simple: '%s' doesn't exist in the SYMBOL_TABLE.\n", this.name);
 				throw new SemantException(this.getLineNumber(), err);
 			}
 		}

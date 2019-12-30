@@ -54,7 +54,8 @@ public class AST_VAR_DEC_EXP extends AST_VAR_DEC {
 				if(!(assign.exp instanceof AST_EXP_INT ||
 					 assign.exp instanceof AST_EXP_STRING ||
 				 	 assign.exp instanceof AST_EXP_NIL)) {
-					throw new SemantException(this.getLineNumber(), "var_dec_exp: cannot use non-constant assignments inside class");
+					String err = "var_dec_exp: cannot use non-constant assignments inside class.\n";
+					throw new SemantException(this.getLineNumber(), err);
 				}
 			}
 			assign.SemantMe(null);

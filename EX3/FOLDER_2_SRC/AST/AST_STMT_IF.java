@@ -54,7 +54,7 @@ public class AST_STMT_IF extends AST_STMT
         /****************************/
         if (cond.SemantMe() != TYPE_INT.getInstance())
         {
-            String err = String.format(">> ERROR: condition inside IF does not return integer value\n");
+            String err = String.format("stmt_if: condition inside IF does not return an integer value.\n");
 			throw new SemantException(this.getLineNumber(), err);
         }
 

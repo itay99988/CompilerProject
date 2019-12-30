@@ -116,7 +116,7 @@ public class AST_FUNCDEC extends AST_DEC {
             t = SYMBOL_TABLE.getInstance().find(param.type, EntryCategory.Type);
             boolean paramNameExists = SYMBOL_TABLE.getInstance().existInScope(param.name);
             if (paramNameExists) {
-				String err = String.format("ast_func_dec: in function '%s': two or more parameters share the same name (%s)", this.name, param.name);
+				String err = String.format("func_dec: in function '%s': two or more parameters share the same name: '%s'.\n", this.name, param.name);
 				throw new SemantException(this.getLineNumber(), err);	
 			}
 			if(t.isArray()) {
@@ -137,7 +137,7 @@ public class AST_FUNCDEC extends AST_DEC {
 		/*******************/
         returnType = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
         if (returnType == null) {
-			String err = String.format("ast_func_dec: non existing return type: %s", this.type);
+			String err = String.format("func_dec: non existing return type: '%s'\n", this.type);
             throw new SemantException(lineNumber, err);
         }
         if(returnType.isArray()){
@@ -151,11 +151,11 @@ public class AST_FUNCDEC extends AST_DEC {
         for (AST_IDSCOMMA param = this.params; param != null; param = param.commaIdsLst) {
             t = SYMBOL_TABLE.getInstance().find(param.type, EntryCategory.Type);
             if (t == null) {
-				String err = String.format("ast_func_dec: non existing parameter type: %s", param.type);
+				String err = String.format("func_dec: non existing parameter type: '%s'.\n", param.type);
 				throw new SemantException(lineNumber, err);	
             }
             if(t == TYPE_VOID.getInstance()){
-				String err = "ast_func_dec: can't use type void for argument";
+				String err = "func_dec: can't use type void for argument.\n";
 				throw new SemantException(lineNumber, err);	
             }
             else{ // t isn't null nor void
@@ -199,7 +199,7 @@ public class AST_FUNCDEC extends AST_DEC {
         TYPE isObj = SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Obj);
         TYPE isType = SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Type);
         if (isType != null) {
-			String err = String.format("ast_func_dec: function name '%s' is already taken by another class or array", this.name);
+			String err = String.format("func_dec: function name '%s' is already taken by another class or array.\n", this.name);
 			throw new SemantException(lineNumber, err);
 		}
 		
@@ -208,13 +208,13 @@ public class AST_FUNCDEC extends AST_DEC {
                 return true;
 			}
 			else {
-				String err = String.format("ast_func_dec: function name '%s' is already taken by another function or variable", this.name);
+				String err = String.format("func_dec: function name '%s' is already taken by another function or variable.\n", this.name);
 				throw new SemantException(lineNumber, err);
             }
 		}
 		
         if (SYMBOL_TABLE.getInstance().existInScope(this.name)) {
-			String err = String.format("ast_func_dec: function name '%s' was already declared in this class", this.name);
+			String err = String.format("func_dec: function name '%s' was already declared in this class.\n", this.name);
 			throw new SemantException(lineNumber, err);
         }
 		else if (inClass.superClassName == null) { // class doesn't extend another class
@@ -239,20 +239,20 @@ public class AST_FUNCDEC extends AST_DEC {
 						}
 						// else: shadowing
 						if(!superFunction.returnType.name.equals(returnType.name)) {
-							String err = String.format("ast_func_dec: overrided method '%s' must have the same return type.", this.name);
-							err += String.format("\nExpected return type: '%s'; got: '%s'", superFunction.returnType.name, returnType.name);
+							String err = String.format("func_dec: overrided method '%s' must have the same return type.", this.name);
+							err += String.format("\nexpected return type: '%s'; got: '%s'.\n", superFunction.returnType.name, returnType.name);
 							throw new SemantException(lineNumber, err);
 						}
 						else {
-							String err = String.format("ast_func_dec: overriding method '%s' in super class '%s': parameter types mismatch",
+							String err = String.format("func_dec: overriding method '%s' in super class '%s': parameter types mismatch.\n",
 											this.name, superFunction.returnType.name);
 							throw new SemantException(lineNumber, err);
 						}
 					}
 					else {
-						String err = String.format("ast_func_dec: function name '%s' was already declared in super class '%s'", 
+						String err = String.format("func_dec: function name '%s' was already declared in super class '%s'", 
 										this.name, superClass.name);
-						err += " as a variable or an array";
+						err += " as a variable or an array.\n";
 						throw new SemantException(lineNumber, err);
 					}
 				}

@@ -33,12 +33,12 @@ public class AST_NEW_EXP extends AST_EXP
 	{
 		TYPE t = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
 		if(t == null){
-		    String err = String.format(">> ERROR: class '%s' is not in SYMBOL_TABLE", this.type);
+		    String err = String.format("new_exp: class '%s' is not in SYMBOL_TABLE.\n", this.type);
 		    throw new SemantException(this.getLineNumber(), err);
 		}
 		if(t.isClass())
 		    return t;
-		String err = String.format(">> ERROR new expression can't be followed by %s (it's not a Class or an Array\n", this.type);
+		String err = String.format("new_exp: new expression can't be followed by '%s' (it's not a class or an array).\n", this.type);
 		throw new SemantException(this.getLineNumber(), err);
 	}
 

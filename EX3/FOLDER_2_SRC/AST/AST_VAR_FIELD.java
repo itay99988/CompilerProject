@@ -68,7 +68,7 @@ public class AST_VAR_FIELD extends AST_VAR
 
 		if(t == null || !t.isClass())
 		{
-			String err = String.format(">> ERROR var_field: '.%s', the var is not a class object\n", this.fieldName);
+			String err = String.format("var_field: variable '%s' is not a class object.\n", this.fieldName);
 			throw new SemantException(this.getLineNumber(), err);
 		}
 

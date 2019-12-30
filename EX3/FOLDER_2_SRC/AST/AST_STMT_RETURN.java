@@ -49,9 +49,12 @@ public class AST_STMT_RETURN  extends AST_STMT {
 		if (exp != null)
 		{
 			TYPE expType = exp.SemantMe();
-			if(!AST_STMT_ASSIGN.isValidAssignment(returnedTypeExpected,expType, this.getLineNumber()))
-			{
-				String err = ">> ERROR Retrun expression type doesn't match the expected return type\n";
+			try {
+				AST_STMT_ASSIGN.isValidAssignment(returnedTypeExpected, expType, this.getLineNumber());
+			}
+			catch(SemantException e) {
+				String err = "stmt_return: etrun expression type doesn't match the expected return type.";
+				err += String.format("\nexpected: '%s'; got: '%s'.\n", returnedTypeExpected.name, expType.name);
 				throw new SemantException(this.getLineNumber(), err);
 			}
 		}
@@ -59,7 +62,7 @@ public class AST_STMT_RETURN  extends AST_STMT {
 		{
 			if(returnedTypeExpected !=  TYPE_VOID.getInstance()) 
 			{
-            		String err = ">> ERROR empty Retrun expression with non-void expected return type\n";
+            		String err = "stmt_return: empty return expression with non-void expected return type.\n";
             		throw new SemantException(this.getLineNumber(), err);
         	}
 		}

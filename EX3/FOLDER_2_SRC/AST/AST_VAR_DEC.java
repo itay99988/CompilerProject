@@ -39,10 +39,12 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		t = SYMBOL_TABLE.getInstance().find(type, EntryCategory.Type);
 		
 		if (t == null) {
-			throw new SemantException(lineNumber, String.format("var_dec: '%s %s', type cannot be found", this.type, this.name));
+			String err = String.format("var_dec: '%s %s': type '%s' cannot be found.\n", this.type, this.name, this.type);
+			throw new SemantException(lineNumber, err);
 		}
 		if(t == TYPE_VOID.getInstance()) {
-			throw new SemantException(lineNumber, String.format("var_dec: '%s %s', can't use type void", this.type, this.name));
+			String err = String.format("var_dec: '%s %s', can't use type void.\n", this.type, this.name);
+			throw new SemantException(lineNumber, err);
 		}
 		
 		/**************************************/
@@ -78,10 +80,12 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 
 	void checkVarName(AST_CLASSDEC inClass) throws SemantException {
     	if(SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Type) != null){
-			throw new SemantException(this.getLineNumber(), String.format("var_dec: var name '%s' already exists as a type", this.name));
+			String err = String.format("var_dec: var name '%s' already exists as a type.\n", this.name);
+			throw new SemantException(this.getLineNumber(), err);
     	}
-    	if (SYMBOL_TABLE.getInstance().existInScope(this.name)) { //var name exists in scope
-			throw new SemantException(this.getLineNumber(), String.format("var_dec: var name '%s' already exists in the current scope", this.name));
+		if (SYMBOL_TABLE.getInstance().existInScope(this.name)) { //var name exists in scope
+			String err = String.format("var_dec: variable name '%s' already exists in the current scope.\n", this.name);
+			throw new SemantException(this.getLineNumber(), err);
         }
         if(inClass != null){
         	if(inClass.superClassName == null) //this class doesn't extend another class => var name is unique
@@ -98,10 +102,10 @@ public abstract class AST_VAR_DEC extends AST_DEC {
         	TYPE_CLASS_DATA_MEMBER_LIST cfieldTypes = superClass.data_members;
             while (cfieldTypes != null) {
                 if (this.name.equals(cfieldTypes.head.name)) { 
-                	//cfieldTypes.head.name is either a function or a variable - doesn't matter!
-					throw new SemantException(this.getLineNumber(), 
-						String.format("var_dec: can't use var name '%s' in class '%s', as name already exists in super class '%s'",
-									  this.name, inClass.className, superClass.name));
+					//cfieldTypes.head.name is either a function or a variable - doesn't matter!
+					String err = String.format("var_dec: can't use var name '%s' in class '%s', as name already exists in super class '%s'.\n",
+									this.name, inClass.className, superClass.name);
+					throw new SemantException(this.getLineNumber(), err);
                 }
                 cfieldTypes = cfieldTypes.tail;
             }

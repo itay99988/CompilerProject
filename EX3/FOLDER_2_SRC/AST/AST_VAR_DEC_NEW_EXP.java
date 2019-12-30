@@ -48,7 +48,8 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 		if(newAssign != null) {
 			if(inClass != null) {
 				// allow only constant values
-				throw new SemantException(this.getLineNumber(), "var_dec_new_exp: cannot use new assignments inside class");
+				String err = "var_dec_new_exp: cannot use new assignments inside class.\n";
+				throw new SemantException(this.getLineNumber(), err);
 			}
 			newAssign.SemantMe(null);
 		}

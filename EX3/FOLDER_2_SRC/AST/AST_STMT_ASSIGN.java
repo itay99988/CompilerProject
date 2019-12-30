@@ -71,7 +71,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
 		TYPE varType = this.var.SemantMe();
 		if (varType == null)
 		{
-			String err = ">> ERROR stmt_assign: var doesn't exist\n";
+			String err = "stmt_assign: var doesn't exist.\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 
@@ -83,14 +83,14 @@ public class AST_STMT_ASSIGN extends AST_STMT
 
 		if (expressionType == null)
 		{
-			String err = ">> ERROR stmt_assign: exp type doesn't exist";
+			String err = "stmt_assign: exp type doesn't exist.\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 		if (isValidAssignment(varType, expressionType, this.getLineNumber()))
 			return null;
 		else 
 		{
-			String err = ">> ERROR stmt_assign: assignment is illegal!";
+			String err = "stmt_assign: assignment is illegal!\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 	}
@@ -112,7 +112,7 @@ public class AST_STMT_ASSIGN extends AST_STMT
                 if (son.isDerivedFrom(father))
                     return true;
                 else {
-                    String err = String.format(">> ERROR %s is not derived from %s\n", son.name, father.name);
+                    String err = String.format("stmt_assign: class '%s' is not derived from class '%s'.\n", son.name, father.name);
         			throw new SemantException(lineNumber, err);
                 }
             }
@@ -120,7 +120,8 @@ public class AST_STMT_ASSIGN extends AST_STMT
             if(t2 == TYPE_NIL.getInstance()) //Father FatherClassInstance := NIL
                 return true;
             else{
-                String err = String.format(">> ERROR %s new class instance can be assigned with object or NIL\n", father.name);
+				String err = String.format("stmt_assign: an instance of class '%s' can only be assigned ", father.name);
+				err += String.format("with an instance of the same class (or a derived class), or with nil.\n");
     			throw new SemantException(lineNumber, err);
             }
         }
@@ -138,8 +139,8 @@ public class AST_STMT_ASSIGN extends AST_STMT
                 else {
                   TYPE arrayType = SYMBOL_TABLE.getInstance().find(varArrayType.name, EntryCategory.Type); //IntArray type (=int)
        	    	  if(!arrayType.name.equals(expArrayType.name)){
-       	    		String err = String.format(">> ERROR '%s' (type:%s[]), new '%s[]'," +
-       	    									" array types don't match\n", varArrayType.name, arrayType.name, expArrayType.name);
+       	    		String err = String.format("stmt_assign: '%s' (type: '%s[]'), new '%s[]'," +
+       	    									" array types don't match.\n", varArrayType.name, arrayType.name, expArrayType.name);
        		  		throw new SemantException(lineNumber, err);
        	    	  }
                   return true;
@@ -147,14 +148,14 @@ public class AST_STMT_ASSIGN extends AST_STMT
             }
             //t1 is Array, t2 is not Array nor NIL
             else {
-                String err = String.format(">> ERROR TYPE_ARRAY %s can only be assigned with a new $s[exp] or NILL\n",
-                        					varArrayType.name,varArrayType.name);
+                String err = String.format("stmt_assign: TYPE_ARRAY '%s' can only be assigned with a new '%s[<expression>]' or NIL.\n",
+                        					varArrayType.name, varArrayType.name);
     			throw new SemantException(lineNumber,err);
             }
         }
         //t1 is not a class or an array, i.e t1 is a primitive type
         else{
-            String err = String.format(">> ERROR can't assign exp of type %s to var of type %s\n", t2.name, t1.name);
+            String err = String.format("stmt_assign: can't assign exp of type %s to var of type '%s'.\n", t2.name, t1.name);
 			throw new SemantException(lineNumber, err);
         }
     }

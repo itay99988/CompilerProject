@@ -39,17 +39,17 @@ public class AST_ARR_DEC extends AST_DEC {
 
         if (t == null) 
 		{ //array element type does not exist
-            err = String.format(">> ERROR array_dec: 'array %s = %s[]', type '%s' doesn't exist\n", this.name, this.type, this.type);
+            err = String.format("array_dec: 'array %s = %s[]', type '%s' doesn't exist.\n", this.name, this.type, this.type);
             throw new SemantException(this.getLineNumber(), err);
         }
         if (isArrayDecNameExist) 
 		{
-            err = String.format(">> ERROR array declaration name %s already exist in the current scope level", this.name);
+            err = String.format("array_dec: array declaration name '%s' already exist in the current scope level.\n", this.name);
             throw new SemantException(this.getLineNumber(), err);
         } 
         if(t == TYPE_VOID.getInstance())
 		{
-        	err = String.format(">> ERROR array declaration name %s, can't use type void\n", this.name);
+        	err = String.format("array_dec: array declaration name '%s', can't use type void.\n", this.name);
             throw new SemantException(this.getLineNumber(), err);
         }
         else 

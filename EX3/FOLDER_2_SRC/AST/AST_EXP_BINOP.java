@@ -89,8 +89,7 @@ public class AST_EXP_BINOP extends AST_EXP {
             }
         }
 		
-		System.out.format("ERROR: binop:%s types don't match", op.toString());
-        throw new SemantException(this.getLineNumber(), "ERROR: binop: types don't match");
+        throw new SemantException(this.getLineNumber(), "exp_binop: binop: types don't match.\n");
 	}
 
 	public boolean isComparable(TYPE_CLASS t1, TYPE_CLASS t2)

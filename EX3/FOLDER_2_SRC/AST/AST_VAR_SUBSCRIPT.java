@@ -69,14 +69,14 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 
 		if(t == null || !t.isArray())
 		{
-			String err = ">> ERROR var_subscript: the var is not an array";
+			String err = "var_subscript: the var is not an array.\n";
 			throw new SemantException(this.getLineNumber(),err);
 		}
 
 		TYPE_ARRAY typeArray = (TYPE_ARRAY)t;
 		if(subscript.SemantMe() != TYPE_INT.getInstance())
 		{
-			String err = ">> ERROR var_subscript: exp inside '[]' is not int";
+			String err = "var_subscript: expression inside '[]' is not an integer.\n";
 			throw new SemantException(this.getLineNumber(),err);
 		}
 

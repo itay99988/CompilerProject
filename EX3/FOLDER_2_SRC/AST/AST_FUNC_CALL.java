@@ -58,7 +58,7 @@ public class AST_FUNC_CALL extends AST_DEC {
 		int lineNumber = this.getLineNumber();
         TYPE t = checkFuncExists();
         if (t instanceof TYPE_FUNCTION == false) {
-            String err = String.format("variable %s is not a function", this.name);
+            String err = String.format("func_call: variable '%s' is not a function.\n", this.name);
 			throw new SemantException(lineNumber, err);	
 		}
 		
@@ -68,11 +68,11 @@ public class AST_FUNC_CALL extends AST_DEC {
 		int argListLen = args == null? 0 : args.length();
 		
 		if (typeFunction.paramsLen < argListLen) {
-			String err = String.format("ast_func_call: too many arguments when calling function %s", this.name);
+			String err = String.format("func_call: too many arguments when calling function '%s'\n", this.name);
             throw new SemantException(lineNumber, err);
         }
         if (typeFunction.paramsLen > argListLen) {
-			String err = String.format("ast_func_call: too few arguments when calling function %s", this.name);
+			String err = String.format("func_call: too few arguments when calling function '%s'.\n", this.name);
             throw new SemantException(lineNumber, err);
         }
 
@@ -95,9 +95,9 @@ public class AST_FUNC_CALL extends AST_DEC {
         int argIndex = argListLen;
         while (argTypeList.head != null) {
             if (!AST_STMT_ASSIGN.isValidAssignment(funcParamList.head, argTypeList.head, lineNumber)) {
-				String err = String.format("ast_func_call: can't call function %s, argument #%d type doesn't match.",
+				String err = String.format("func_call: can't call function '%s', argument #%d type doesn't match.",
 								this.name, argIndex);
-				err += String.format("\nExpected: %s; got: %s.", funcParamList.head, argTypeList.head);
+				err += String.format("\nexpected: '%s'; got: '%s'.\n", funcParamList.head, argTypeList.head);
 				throw new SemantException(lineNumber, err);
             }
             argTypeList = argTypeList.tail;

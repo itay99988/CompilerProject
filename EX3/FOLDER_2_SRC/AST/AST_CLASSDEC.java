@@ -63,12 +63,12 @@ public class AST_CLASSDEC extends AST_DEC {
 		if(this.superClassName != null){
 			TYPE t = SYMBOL_TABLE.getInstance().find(superClassName, EntryCategory.Type);
 			if(t == null){
-				String err = String.format("class_dec: class '%s' cannot extend '%s'.\nclass '%s' does not exist",
+				String err = String.format("class_dec: class '%s' cannot extend '%s'.\nclass '%s' does not exist.\n",
 								this.className, this.superClassName, this.superClassName);
 				throw new SemantException(lineNumber, err);
 			}
 			if(t instanceof TYPE_CLASS == false){
-				String err = String.format("class_dec: class '%s' cannot extend '%s': '%s' is not a class.",
+				String err = String.format("class_dec: class '%s' cannot extend '%s': '%s' is not a class.\n",
 								this.className, this.superClassName, this.superClassName);
 				throw new SemantException(lineNumber, err);
 			}
@@ -78,7 +78,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		// check if class name already exists in visible scopes
 		if(SYMBOL_TABLE.getInstance().find(className, EntryCategory.Type) != null ||
 		   SYMBOL_TABLE.getInstance().find(className, EntryCategory.Obj) != null){
-			String err = String.format("class_dec: name '%s' was already declared.", this.className);
+			String err = String.format("class_dec: name '%s' was already declared.\n", this.className);
 			throw new SemantException(lineNumber, err);
 		}
 

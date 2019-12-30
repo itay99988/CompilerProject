@@ -63,7 +63,7 @@ public class AST_IDSCOMMA extends AST_DEC {
 			/**************************/
 			/* ERROR: undeclared type */
 			/**************************/
-			String err = String.format(">> ERROR arg: %s %s, type doesn't exist\n", this.type, this.name);
+			String err = String.format("ids_comma: arg '%s %s': type '%s' doesn't exist\n", this.type, this.name, this.type);
             throw new SemantException(this.getLineNumber(), err);
 		}
 		else

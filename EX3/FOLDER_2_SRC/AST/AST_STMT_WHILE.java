@@ -53,7 +53,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		/****************************/
 		if (cond.SemantMe() != TYPE_INT.getInstance())
 		{
-            String err = String.format(">> ERROR: condition inside WHILE does not return integer value\n");
+            String err = String.format("stmt_while: condition inside WHILE does not return integer value.\n");
 			throw new SemantException(this.getLineNumber(), err);
 		}
 

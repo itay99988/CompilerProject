@@ -50,7 +50,7 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 		TYPE varType = this.var.SemantMe();
 		if (varType == null)
 		{
-			String err = ">> ERROR stmt_assign: var doesn't exist\n";
+			String err = "stmt_new_assign: var doesn't exist.\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 
@@ -60,21 +60,21 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 		{	//array gets special treatment here
 			if(!expressionType.isArray())
 			{
-				String err = String.format(">> ERROR stmt_assign: '%s', new exp type is not an array\n", newExp.type);
+				String err = String.format("stmt_new_assign: '%s': new exp type is not an array.\n", newExp.type);
 				throw new SemantException(this.getLineNumber(), err);
 			}
 		}
 
 		if (expressionType == null)
 		{
-			String err = ">> ERROR stmt_assign: exp type doesn't exist";
+			String err = "stmt_new_assign: exp type doesn't exist\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 		if (AST_STMT_ASSIGN.isValidAssignment(varType, expressionType, this.getLineNumber()))
 			return null;
 		else 
 		{
-			String err = ">> ERROR stmt_assign: assignment is illegal!";
+			String err = "stmt_new_assign: assignment is illegal!\n";
 			throw new SemantException(this.getLineNumber(), err);
 		}
 	}

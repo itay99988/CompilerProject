@@ -45,7 +45,7 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 		TYPE t = SYMBOL_TABLE.getInstance().find(this.type, EntryCategory.Type);
 		if(t == null)
 		{
-		    String err = String.format(">> ERROR type %s for array init doesn't exist in SYMBOL_TABLE", this.type);
+		    String err = String.format("new_exp_extended: type '%s' for array init doesn't exist in SYMBOL_TABLE.\n", this.type);
 		    throw new SemantException(this.getLineNumber(),err);
 		}
 
@@ -54,7 +54,7 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 			return new TYPE_ARRAY(this.type, 0);
 
 		//array wasn't defined properly
-		String err = String.format(">> ERROR Array allocation must be with integral size\n");
+		String err = String.format("new_exp_extended: array allocation must be with integral size.\n");
 		throw new SemantException(this.getLineNumber(),err);
 	}
 
