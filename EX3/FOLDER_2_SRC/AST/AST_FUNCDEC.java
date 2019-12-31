@@ -94,13 +94,25 @@ public class AST_FUNCDEC extends AST_DEC {
 		/*******************/
 		body.SemantMe(typeFunction.returnType);
 
+		/************************************/
+        /* [3] Return Stmt existence check  */
+		/************************************/
+		if( !(typeFunction.returnType instanceof TYPE_VOID) )
+		{
+			if( !this.body.containsReturnStmt() )
+			{
+				String err = String.format("func_dec: function '%s' expects a return statement.", this.name);
+				throw new SemantException(this.getLineNumber(), err);
+			}
+		}
+
         /*****************/
-        /* [3] End Scope */
+        /* [4] End Scope */
         /*****************/
 		SYMBOL_TABLE.getInstance().endScope();
 		
         /****************************/
-        /* [4] Return function type */
+        /* [5] Return function type */
         /****************************/
         return typeFunction;
 	}

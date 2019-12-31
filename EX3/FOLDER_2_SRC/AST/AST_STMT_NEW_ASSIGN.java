@@ -71,7 +71,11 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 			throw new SemantException(this.getLineNumber(), err);
 		}
 		if (AST_STMT_ASSIGN.isValidAssignment(varType, expressionType, this.getLineNumber()))
+		{
+			System.out.println(varType.name + "," + expressionType.name);
 			return null;
+		}
+
 		else 
 		{
 			String err = "stmt_new_assign: assignment is illegal!\n";
