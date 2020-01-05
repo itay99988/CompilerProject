@@ -99,10 +99,17 @@ public class AST_STMT_ASSIGN extends AST_STMT
 	{
 	    if(t1 == null || t2 == null)
 	        return false;
-
-        if(t1.name.equals(t2.name)) 
-            return true;
-
+        if(t1.name.equals(t2.name))
+		{
+			if( !( t2.isArray() && !t1.isArray() ) )
+				return true;
+			else
+			{
+				    String err = String.format("stmt_assign: cannot assign array to non array type.\n");
+        			throw new SemantException(lineNumber, err);
+			}
+		} 
+            
         if(t1.isClass())
 		{
             TYPE_CLASS father = (TYPE_CLASS)t1;

@@ -71,12 +71,12 @@ public class AST_STMT_LIST extends AST_Node
 		return null;
 	}
 
-	public boolean containsReturnStmt()
-	{
-		if( this.tail == null )
-			return (this.head instanceof AST_STMT_RETURN);
+	// public boolean containsReturnStmt()
+	// {
+	// 	if( this.tail == null )
+	// 		return (this.head instanceof AST_STMT_RETURN);
 
-		return ((this.head instanceof AST_STMT_RETURN) || this.tail.containsReturnStmt());
-	}
+	// 	return ((this.head instanceof AST_STMT_RETURN) || this.tail.containsReturnStmt());
+	// }
 
 }
