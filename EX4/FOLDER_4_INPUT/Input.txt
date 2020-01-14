@@ -1,0 +1,10 @@
+int i;
+int j;
+int k;
+void main()
+{
+	i := 5;
+	j := 7;
+	k := i*j = 35;
+	PrintInt(k);
+}
