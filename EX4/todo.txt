@@ -1,0 +1,8 @@
+1. AST_FUNCDEC מתאים רק לmain
+2.  לבדוק BinOp GT ו-BinOp Div/Minus
+3. הוספנו פקודות בsir mips a lot:כמו Bgt,ble. אם אלו לא קיימים במיפס ניתן לעשות את אותו דבר עם בדיקה bge? אם לא bne? 
+4. AST_IDSCOMMA - לטפל - בעיקר בhead בIRME
+5. k:=5 מייצר global_k ולא לוקאלי (בתוך פונקציה)
+6. בAST_FUNC_CALL יש רק טיפול בפונקציה של PrintInt
+7. לטפל בAST_BRACESEXP שיטפל גם בשאר הארגומנטים בIRme שלו
+8. AST_COMMAEXP צריך להחזיר משהו שהוא לא null
