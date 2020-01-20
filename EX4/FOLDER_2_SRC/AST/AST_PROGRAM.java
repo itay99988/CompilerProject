@@ -2,6 +2,7 @@ package AST;
 
 import TYPES.*;
 import TEMP.*;
+import IR.*;
 
 public class AST_PROGRAM extends AST_Node {
 	
@@ -44,7 +45,9 @@ public class AST_PROGRAM extends AST_Node {
 
 	public TEMP IRme()
 	{
-		return l.IRme();
+		l.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Label("end"));
+		return null;
 	}
 
 }

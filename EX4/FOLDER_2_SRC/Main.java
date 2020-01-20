@@ -94,7 +94,7 @@ public class Main
 		}
 		catch (Exception e)
 			{
-				System.out.println("IR Exception");
+				System.out.println("IR Exception: " + e.toString());
 			}
 			
 		try{

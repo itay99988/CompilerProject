@@ -45,6 +45,7 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 
 	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
 		TYPE t = super.SemantMe(inClass);
+		SYMBOL_TABLE symbol_table = SYMBOL_TABLE.getInstance();
 		
 		if(newAssign != null) {
 			if(inClass != null) {
@@ -54,7 +55,7 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 			}
 			newAssign.SemantMe(null);
 		}
-
+		symbol_table.localsNum++;
 		return t;
 	}
 	

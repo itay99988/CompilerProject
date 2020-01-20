@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
+import IR.*;
 
 public class sir_MIPS_a_lot
 {
@@ -86,6 +87,12 @@ public class sir_MIPS_a_lot
 
 		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+	
+	public void moveSystemRegisterToTempRegister(TEMP dst, SystemRegisters src)
+	{
+		fileWriter.format("\tmove %s, %s\n", dst.getRegName(), src.toMIPSString());
+	}
+	
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -118,7 +125,12 @@ public class sir_MIPS_a_lot
 	public void jump(String inlabel)
 	{
 		fileWriter.format("\tj %s\n",inlabel);
+	}
+	
+	public void jumpra() {
+		fileWriter.format("\tjr $ra \n");
 	}	
+	
 	public void blt(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -166,6 +178,27 @@ public class sir_MIPS_a_lot
 		int i1 =oprnd1.getSerialNumber();
 				
 		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
+	}
+	
+	public void storeInAddress(TEMP address, TEMP value) {
+		fileWriter.format("\tsw %s, (%s)\n", value.getRegName(), address.getRegName());
+	}
+	
+	public void IncreaseSP(int wordsnum) {
+		fileWriter.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE);
+	}
+	
+	public void decreaseSP(int wordsnum) {
+		fileWriter.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE*-1);
+	}
+	
+	public void loadStringFromDataSegment(TEMP dst, String str) {
+		fileWriter.format("\tla %s, %s\n", dst.getRegName(), str);
+	}
+	
+	public void pushRegToStack(TempRegisters reg) {
+		decreaseSP(1);
+		fileWriter.format("\tsw %s, ($sp)\n", reg.toMIPSString());
 	}
 	
 	/**************************************/

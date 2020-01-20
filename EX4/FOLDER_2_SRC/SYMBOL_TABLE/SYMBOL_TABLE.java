@@ -28,6 +28,7 @@ public class SYMBOL_TABLE
 	private int top_index = 0;
 	public int scope_level = 0;
 	public TYPE_CLASS currClass = null;
+	public int localsNum = 0;
 	
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */

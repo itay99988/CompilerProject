@@ -3,6 +3,7 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
+import IR.*;
 
 public class AST_STMT_IF extends AST_STMT
 {
@@ -82,6 +83,19 @@ public class AST_STMT_IF extends AST_STMT
 	
 	public TEMP IRme()
 	{
+		String if_cond_label = IRcommand.getFreshLabel("ifCond");
+		String if_true_label = IRcommand.getFreshLabel("ifTrue");
+		String if_end_label = IRcommand.getFreshLabel("ifEnd");
+		//Generate ifCond label and condition checking code.
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(if_cond_label));
+		TEMP cond_temp = cond.IRme();
+		//Generate beq code (if code == 0, jump to ifEnd).
+		IR.getInstance().Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,if_end_label));
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(if_true_label));
+		//Generate body code.
+		body.IRme();
+		//Generate ifFalse label
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(if_end_label));
 		return null;
 	}	
 	

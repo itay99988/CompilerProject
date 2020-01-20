@@ -12,6 +12,7 @@ public class AST_FUNCDEC extends AST_DEC {
 	public String name;
 	public AST_IDSCOMMA params;
 	public AST_STMT_LIST body;
+	private int localsNum;
 
 	public AST_FUNCDEC(String type, String name, int lineNumber) {
 		this.type = type;
@@ -89,6 +90,8 @@ public class AST_FUNCDEC extends AST_DEC {
         /****************************/
         SYMBOL_TABLE.getInstance().beginScope();
 
+		SYMBOL_TABLE.getInstance().localsNum = 0;
+
 		//check that all parameter names are unique:
 		SemantFunctionArguments();
 
@@ -97,17 +100,10 @@ public class AST_FUNCDEC extends AST_DEC {
 		/*******************/
 		body.SemantMe(typeFunction.returnType);
 
-		/************************************/
-        /* [3] Return Stmt existence check  */
-		/************************************/
-		// if( !(typeFunction.returnType instanceof TYPE_VOID) )
-		// {
-		// 	if( !this.body.containsReturnStmt() )
-		// 	{
-		// 		String err = String.format("func_dec: function '%s' expects a return statement.", this.name);
-		// 		throw new SemantException(this.getLineNumber(), err);
-		// 	}
-		// }
+		/********************************************/
+        /* [3] Count local vars number for IRme use */
+		/********************************************/
+		localsNum = SYMBOL_TABLE.getInstance().localsNum;
 
         /*****************/
         /* [4] End Scope */
@@ -294,6 +290,7 @@ public class AST_FUNCDEC extends AST_DEC {
         return true;
     }
 
+/*
 	public TEMP IRme()
 	{
 		IR.
@@ -301,6 +298,44 @@ public class AST_FUNCDEC extends AST_DEC {
 		Add_IRcommand(new IRcommand_Label("main"));		
 		if (body != null) body.IRme();
 
+		return null;
+	}*/
+	
+	public TEMP IRme() {
+		//IR.getInstance().createNewCFG();
+		//IR.getInstance().functionsNames.add(funcName);
+		if (this.name.equals("main"))
+		{
+			TEMP sp = TEMP_FACTORY.getInstance().getFreshTEMP();
+			TEMP storeFuncName = TEMP_FACTORY.getInstance().getFreshTEMP();
+			TEMP tzero = TEMP_FACTORY.getInstance().getFreshTEMP(); 
+			
+			IR.getInstance().Add_IRcommand(new IRcommand_Label("main"));
+			IR.getInstance().Add_IRcommand(new IRcommandConstInt(tzero, 0));
+			//IR.getInstance().putTempRegtoIntMapping(sp);
+			IR.getInstance().Add_IRcommand(new IRcommand_GetRegister(sp, SystemRegisters.sp));
+			//IR.getInstance().putTempRegtoIntMapping(tzero);
+			IR.getInstance().Add_IRcommand(new IRcommand_StoreAddress(sp,tzero));
+			IR.getInstance().Add_IRcommand(new IRcommand_DecreaseSP(1));
+			IR.getInstance().Add_IRcommand(new IRcommand_GetRegister(sp, SystemRegisters.sp));
+			IR.getInstance().Add_IRcommand(new IRcommand_LoadString(storeFuncName,name));
+			IR.getInstance().Add_IRcommand(new IRcommand_StoreAddress(sp,storeFuncName));
+		}
+		else
+		{
+			IR.getInstance().Add_IRcommand(new IRcommand_Label("func_"+this.name));
+		}
+		
+		IR.storeRegistersInStack();
+		IR.getInstance().Add_IRcommand(new IRcommand_DecreaseSP(localsNum));
+		if (body != null) body.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_IncreaseSP(localsNum));
+		
+		if (this.name.equals("main"))
+			IR.getInstance().Add_IRcommand(new IRcommand_Jump_Label("end"));
+		else
+			IR.getInstance().Add_IRcommand(new IRcommand_Jump_ra());
+		
 		return null;
 	}
 

@@ -6,6 +6,7 @@ package TEMP;
 /*******************/
 /* GENERAL IMPORTS */
 /*******************/
+import IR.*;
 
 /*******************/
 /* PROJECT IMPORTS */
@@ -24,4 +25,10 @@ public class TEMP
 	{
 		return serial;
 	}
+	
+    public String getRegName()
+	{
+		return "$t"+getSerialNumber();
+    	//return "$t"+IR.getInstance().getAllocationTranslationMap().get(this);
+    }
 }
