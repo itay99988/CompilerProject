@@ -90,7 +90,7 @@ public class sir_MIPS_a_lot
 	
 	public void moveSystemRegisterToTempRegister(TEMP dst, SystemRegisters src)
 	{
-		fileWriter.format("\tmove %s, %s\n", dst.getRegName(), src.toMIPSString());
+		fileWriter.format("\tmove %s, %s\n", dst.toString(), src.toMIPSString());
 	}
 	
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
@@ -181,7 +181,7 @@ public class sir_MIPS_a_lot
 	}
 	
 	public void storeInAddress(TEMP address, TEMP value) {
-		fileWriter.format("\tsw %s, (%s)\n", value.getRegName(), address.getRegName());
+		fileWriter.format("\tsw %s, (%s)\n", value.toString(), address.toString());
 	}
 	
 	public void IncreaseSP(int wordsnum) {
@@ -193,7 +193,7 @@ public class sir_MIPS_a_lot
 	}
 	
 	public void loadStringFromDataSegment(TEMP dst, String str) {
-		fileWriter.format("\tla %s, %s\n", dst.getRegName(), str);
+		fileWriter.format("\tla %s, %s\n", dst.toString(), str);
 	}
 	
 	public void pushRegToStack(TempRegisters reg) {

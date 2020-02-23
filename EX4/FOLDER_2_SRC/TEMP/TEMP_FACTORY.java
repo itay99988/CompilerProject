@@ -6,6 +6,7 @@ package TEMP;
 /*******************/
 /* GENERAL IMPORTS */
 /*******************/
+import java.util.*;
 
 /*******************/
 /* PROJECT IMPORTS */
@@ -13,7 +14,8 @@ package TEMP;
 
 public class TEMP_FACTORY
 {
-	private int counter=0;
+	private int counter = 1;
+	public static ZERO zero;
 	
 	public TEMP getFreshTEMP()
 	{
@@ -41,7 +43,16 @@ public class TEMP_FACTORY
 			/* [0] The instance itself ... */
 			/*******************************/
 			instance = new TEMP_FACTORY();
+			zero = new ZERO(0);
 		}
 		return instance;
+	}
+
+	/******************************/
+	/* GET NUMBER OF EXISTING TEMP */
+	/******************************/
+	public int getTempsCount() 
+	{ 
+		return counter;
 	}
 }
