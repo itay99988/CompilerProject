@@ -1,5 +1,8 @@
 package SYMBOL_TABLE;
-public enum EntryCategory {
+public enum EntryCategory 
+{
     Type,
-    Obj
+    Obj,
+    Argument,
+    ClassMember
 }

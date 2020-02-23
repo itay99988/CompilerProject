@@ -28,8 +28,13 @@ public class SYMBOL_TABLE
 	private int top_index = 0;
 	public int scope_level = 0;
 	public TYPE_CLASS currClass = null;
-	public int localsNum = 0;
 	
+	public static int prevVarCount = 0;
+	public static int currVarCount = 0;
+	public static int currArgsCount = 0;
+	public static int prevFuncCount = 0;
+	public static int currFuncCount = 0;
+
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
 	/**************************************************************/
@@ -56,6 +61,8 @@ public class SYMBOL_TABLE
 		/*************************************************/
 		int hashValue = hash(name);
 
+		boolean isClassMember = (entryCat == entryCat.ClassMember);
+
 		/******************************************************************************/
 		/* [2] Extract what will eventually be the next entry in the hashed position  */
 		/*     NOTE: this entry can very well be null, but the behaviour is identical */
@@ -65,7 +72,30 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* [3] Prepare a new symbol table entry with name, type, next and prevtop */
 		/**************************************************************************/
-		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++,scope_level,entryCat);
+
+		int offset = 0;
+		
+		/*if this is an argument*/
+		if(entryCat == EntryCategory.Argument){
+			currArgsCount++;
+			offset = -currArgsCount;
+		}
+		/*if this is a function*/
+		if(t instanceof TYPE_FUNCTION){
+			offset = ++currFuncCount;
+		}
+		else if(entryCat==EntryCategory.ClassMember || entryCat==EntryCategory.Obj){ //this is a var
+			if(entryCat == EntryCategory.ClassMember){
+				if(currClass != null && currClass.father != null)
+					offset += (currClass.father.ObjSizeInBytes-4)/4; //-4 => ignore the 4 bytes of vtable
+			}
+			offset += ++currVarCount;
+		}
+		
+		if(entryCat != EntryCategory.Type)
+			entryCat = EntryCategory.Obj;
+
+		SYMBOL_TABLE_ENTRY e = new SYMBOL_TABLE_ENTRY(name,t,hashValue,next,top,top_index++,scope_level,entryCat,offset,isClassMember);
 
 		/**********************************************/
 		/* [4] Update the top of the symbol table ... */
@@ -103,9 +133,8 @@ public class SYMBOL_TABLE
 	}
 
 	/***************************************************************************/
-	/* returns true if the variable name exists in the current scope level */
+	/* returns true if the variable name exists in the current scope level     */
 	/***************************************************************************/
-		/* */
 	public boolean existInScope(String name)
 	{
 		SYMBOL_TABLE_ENTRY e;
@@ -121,10 +150,63 @@ public class SYMBOL_TABLE
 		return false;
 	}
 
+
+	public boolean isGlobal(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				return e.scope_level==0;
+			}
+		}
+		return false;
+	}
+
+	public boolean isClassMember(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				if(e.entry_cat == EntryCategory.Obj)
+					return e.isClassMember;
+			}
+		}
+		return false;
+	}
+
+	public int getOffset(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+
+		for (e = table[hash(name)]; e != null; e = e.next)
+		{
+			if (name.equals(e.name))
+			{
+				return e.offset;
+			}
+		}
+		return 0;
+	}
+
+	public int getFuncCount()
+	{
+		return this.currFuncCount;
+	}
+
+	public int getVarCount()
+	{
+		return this.currVarCount;
+	}
+
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
-	public void beginScope()
+	public void beginScope(boolean classOrFunc)
 	{
 		/************************************************************************/
 		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
@@ -132,6 +214,14 @@ public class SYMBOL_TABLE
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/
+
+		if(classOrFunc)
+		{
+			prevFuncCount = currFuncCount;
+			prevVarCount = currVarCount;
+			currFuncCount = 0;
+			currVarCount = 0;
+		}
 
 		this.scope_level++;
 
@@ -149,7 +239,7 @@ public class SYMBOL_TABLE
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
 	/********************************************************************************/
-	public void endScope()
+	public void endScope(boolean classOrFunc)
 	{
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
@@ -168,6 +258,13 @@ public class SYMBOL_TABLE
 		top = top.prevtop;
 
 		this.scope_level--;
+
+		if(classOrFunc)
+		{ //endScope of a class or a function
+			currFuncCount = prevFuncCount;
+			currVarCount = prevVarCount;
+			currArgsCount = 0;
+		}
 
 		/*********************************************/
 		/* Print the symbol table after every change */		

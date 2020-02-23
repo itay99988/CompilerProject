@@ -41,6 +41,9 @@ public class SYMBOL_TABLE_ENTRY
 
 	public int scope_level;
 	public EntryCategory entry_cat;
+
+	public int offset;
+	public boolean isClassMember;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -53,7 +56,9 @@ public class SYMBOL_TABLE_ENTRY
 		SYMBOL_TABLE_ENTRY prevtop,
 		int prevtop_index,
 		int scope_level,
-		EntryCategory entryCat)
+		EntryCategory entryCat,
+		int offset,
+		boolean isClassMember)
 	{
 		this.index = index;
 		this.name = name;
@@ -63,5 +68,7 @@ public class SYMBOL_TABLE_ENTRY
 		this.prevtop_index = prevtop_index;
 		this.scope_level = scope_level;
 		this.entry_cat = entryCat;
+		this.offset = offset;
+		this.isClassMember = isClassMember;
 	}
 }

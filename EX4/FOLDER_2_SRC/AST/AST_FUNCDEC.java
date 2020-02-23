@@ -88,9 +88,9 @@ public class AST_FUNCDEC extends AST_DEC {
         /****************************/
         /* [1] Begin Function Scope */
         /****************************/
-        SYMBOL_TABLE.getInstance().beginScope();
+        SYMBOL_TABLE.getInstance().beginScope(true);
 
-		SYMBOL_TABLE.getInstance().localsNum = 0;
+		//SYMBOL_TABLE.getInstance().localsNum = 0;
 
 		//check that all parameter names are unique:
 		SemantFunctionArguments();
@@ -103,12 +103,12 @@ public class AST_FUNCDEC extends AST_DEC {
 		/********************************************/
         /* [3] Count local vars number for IRme use */
 		/********************************************/
-		localsNum = SYMBOL_TABLE.getInstance().localsNum;
+		//localsNum = SYMBOL_TABLE.getInstance().localsNum;
 
         /*****************/
         /* [4] End Scope */
         /*****************/
-		SYMBOL_TABLE.getInstance().endScope();
+		SYMBOL_TABLE.getInstance().endScope(true);
 		
         /****************************/
         /* [5] Return function type */

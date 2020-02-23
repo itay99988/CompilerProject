@@ -55,7 +55,7 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 			}
 			newAssign.SemantMe(null);
 		}
-		symbol_table.localsNum++;
+		//symbol_table.localsNum++;
 		return t;
 	}
 	

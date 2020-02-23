@@ -62,7 +62,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		/*************************/
 		/* [1] Begin Class Scope */
 		/*************************/
-		SYMBOL_TABLE.getInstance().beginScope();
+		SYMBOL_TABLE.getInstance().beginScope(false);
 
 		/***************************/
 		/* [2] Semant Data Members */
@@ -72,7 +72,7 @@ public class AST_STMT_WHILE extends AST_STMT
 		/*****************/
 		/* [3] End Scope */
 		/*****************/
-		SYMBOL_TABLE.getInstance().endScope();
+		SYMBOL_TABLE.getInstance().endScope(false);
 
 		/*********************************************************/
 		/* [4] Return value is irrelevant for class declarations */

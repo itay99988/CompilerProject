@@ -86,7 +86,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		/*************************/
 		/* [1] Begin Class Scope */
 		/*************************/
-		SYMBOL_TABLE.getInstance().beginScope();
+		SYMBOL_TABLE.getInstance().beginScope(true);
 		//add class just so we could use objects of type ClassName inside the class scope
 		TYPE_CLASS tc = new TYPE_CLASS(superClassType, this.className, null);
 		SYMBOL_TABLE.getInstance().enter(className, tc, EntryCategory.Type);
@@ -102,7 +102,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		/* [3] End Scope */
 		/*****************/
 		SYMBOL_TABLE.getInstance().currClass = null;
-		SYMBOL_TABLE.getInstance().endScope();
+		SYMBOL_TABLE.getInstance().endScope(true);
 
 		/************************************************/
 		/* [4] Enter the Class Type to the Symbol Table */
