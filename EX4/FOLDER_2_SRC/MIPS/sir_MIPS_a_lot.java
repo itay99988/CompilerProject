@@ -200,6 +200,25 @@ public class sir_MIPS_a_lot
 		decreaseSP(1);
 		fileWriter.format("\tsw %s, ($sp)\n", reg.toMIPSString());
 	}
+
+	/**************************************/
+	/* Recent Additions (don't omit these)*/
+	/**************************************/
+
+	public static String getFunctionLabel(String className, String name) 
+	{
+		if (className != null) 
+		{
+			return String.format("%s_%s", className, name);
+		} 
+		else 
+		{
+			if (name.equals("main")) 
+				return "_main";
+
+			return "global_func_" + name;
+		}
+	}
 	
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */

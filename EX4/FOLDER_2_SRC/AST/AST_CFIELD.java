@@ -44,12 +44,14 @@ public class AST_CFIELD extends AST_DEC {
 		if (this.dec instanceof AST_VAR_DEC)
 		{
 			TYPE t = ((AST_VAR_DEC)this.dec).SemantMe(inClass);
-			return new TYPE_CLASS_DATA_MEMBER(((AST_VAR_DEC)this.dec).name, t);
+			//todo: change TYPE_CLASS_DATA_MEMBER initialization
+			return new TYPE_CLASS_DATA_MEMBER(((AST_VAR_DEC)this.dec).name, t, 0, null);
 		}
 		else if (this.dec instanceof AST_FUNCDEC)
 		{
 			TYPE t = ((AST_FUNCDEC)this.dec).SemantMe(inClass);
-			return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t);
+			//todo: change TYPE_CLASS_DATA_MEMBER initialization
+			return new TYPE_CLASS_DATA_MEMBER(((AST_FUNCDEC)this.dec).name, t, 0, null);
 		}
 		return null;
 	}

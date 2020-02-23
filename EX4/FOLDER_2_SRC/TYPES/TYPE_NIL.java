@@ -1,6 +1,7 @@
 package TYPES;
 
-public class TYPE_NIL extends TYPE {
+public class TYPE_NIL extends TYPE 
+{
 	
 	private static TYPE_NIL instance = null;
 

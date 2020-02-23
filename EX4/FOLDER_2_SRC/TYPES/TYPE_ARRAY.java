@@ -8,19 +8,22 @@ public class TYPE_ARRAY extends TYPE {
     /* CTROR(S) ... */
     /****************/
 
-    public TYPE_ARRAY(String name) {
+    public TYPE_ARRAY(String name) 
+    {
         this.name = name;
 	    this.size = 0;
     }
 
-    public TYPE_ARRAY(String name, int size) {
+    public TYPE_ARRAY(String name, int size) 
+    {
         this.name = name;
 	    this.size = size;
     }
 
     
     @Override
-    public boolean isArray() {
+    public boolean isArray() 
+    {
         return true;
     }
 }

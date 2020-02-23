@@ -1,6 +1,8 @@
 package TYPES;
 
-public class TYPE_CLASS_DATA_MEMBER_LIST extends TYPE {
+public class TYPE_CLASS_DATA_MEMBER_LIST extends TYPE 
+{
+
 	public TYPE_CLASS_DATA_MEMBER head;
 	public TYPE_CLASS_DATA_MEMBER_LIST tail;
 	
