@@ -7,6 +7,8 @@ package MIPS;
 /* GENERAL IMPORTS */
 /*******************/
 import java.io.PrintWriter;
+import java.util.*;
+import java.io.*;
 
 /*******************/
 /* PROJECT IMPORTS */
@@ -16,21 +18,129 @@ import IR.*;
 
 public class sir_MIPS_a_lot
 {
-	private int WORD_SIZE=4;
 	/***********************/
-	/* The file writer ... */
+	/*   Class Members     */
 	/***********************/
-	private PrintWriter fileWriter;
+	private static String dirName = "./FOLDER_5_OUTPUT/";
+	private static String finalFile = String.format("MIPS.txt");
+	private static String dataFileName = "DATA_BLOCK.txt";
+	private static String textFileName = "TEXT_BLOCK.txt";
+	private static String initFileName = "INIT_BLOCK.txt";
+
+	private int WORD_SIZE = 4;
 
 	/***********************/
-	/* The file writer ... */
+	/*    File writers     */
 	/***********************/
+	private PrintWriter textPartPrinter;
+	private PrintWriter dataPartPrinter;
+	private PrintWriter initPartPrinter;
+	private PrintWriter writer;
+	private PrintWriter finalWriter;
+
+	//functions for switching from one writer to another
+	public void writeText() 
+	{
+		writer = textPartPrinter;
+	}
+	public void writeInit() 
+	{
+		writer = initPartPrinter;
+	}
+
 	public void finalizeFile()
 	{
-		fileWriter.print("\tli $v0,10\n");
-		fileWriter.print("\tsyscall\n");
-		fileWriter.close();
+		//push "main"
+		initPartPrinter.print("\tla $t0, string_main\n");
+		initPartPrinter.print("\taddi $sp, -4\n");
+		initPartPrinter.print("\tsw $t0, 0($sp)\n");
+
+		//call main
+		initPartPrinter.print("\tjal _main\n");
+		initPartPrinter.print("\tli $v0,10\n");
+		initPartPrinter.print("\tsyscall\n");
+		textPartPrinter.close();
+		dataPartPrinter.close();
+		initPartPrinter.close();
+
+		File dataFile = new File(dirName + dataFileName);
+		File initFile = new File(dirName + initFileName);
+		File textFile = new File(dirName + textFileName);
+
+		try 
+		{
+			finalWriter = new PrintWriter(dirName + finalFile);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+
+		// Copy data segment to final file
+		appendFileContentsToFinal(dataFile);
+
+		// Copy init code to final file
+		appendFileContentsToFinal(initFile);
+
+		// Copy text segment to final file
+		appendFileContentsToFinal(textFile);
+
+		finalWriter.close();
 	}
+
+	private void appendFileContentsToFinal(File file) 
+	{
+		Scanner sc = null;
+		try 
+		{
+			sc = new Scanner(file);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+
+        while(sc.hasNextLine()) 
+		{
+            String s = sc.nextLine();
+            finalWriter.println(s);
+        }
+	}
+
+	/******************************/
+	/*   End of writers section   */
+	/******************************/
+
+	/******************************/
+	/*      Label management      */
+	/******************************/
+
+	private static int label_counter = 0;
+
+	public static String getFreshLabel(String msg) 
+	{
+		return String.format("Label_%d_%s", label_counter++, msg);
+	}
+
+	public static String getFunctionLabel(String className, String name) 
+	{
+		if (className != null) 
+		{
+			return String.format("%s_%s", className, name);
+		} 
+		else 
+		{
+			if (name.equals("main")) 
+				return "_main";
+
+			return "global_func_" + name;
+		}
+	}
+
+	/******************************/
+	/*   End of Label management  */
+	/******************************/
+
 	public void print_int(TEMP t)
 	{
 		int idx=t.getSerialNumber();
@@ -42,15 +152,7 @@ public class sir_MIPS_a_lot
 		fileWriter.format("\tli $v0,11\n");
 		fileWriter.format("\tsyscall\n");
 	}
-	//public TEMP addressLocalVar(int serialLocalVarNum)
-	//{
-	//	TEMP t  = TEMP_FACTORY.getInstance().getFreshTEMP();
-	//	int idx = t.getSerialNumber();
-	//
-	//	fileWriter.format("\taddi Temp_%d,$fp,%d\n",idx,-serialLocalVarNum*WORD_SIZE);
-	//	
-	//	return t;
-	//}
+
 	public void allocate(String var_name)
 	{
 		fileWriter.format(".data\n");
@@ -204,22 +306,9 @@ public class sir_MIPS_a_lot
 	/**************************************/
 	/* Recent Additions (don't omit these)*/
 	/**************************************/
-
-	public static String getFunctionLabel(String className, String name) 
-	{
-		if (className != null) 
-		{
-			return String.format("%s_%s", className, name);
-		} 
-		else 
-		{
-			if (name.equals("main")) 
-				return "_main";
-
-			return "global_func_" + name;
-		}
-	}
 	
+
+
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */
 	/**************************************/
@@ -244,16 +333,15 @@ public class sir_MIPS_a_lot
 
 			try
 			{
-				/*********************************************************************************/
-				/* [1] Open the MIPS text file and write data section with error message strings */
-				/*********************************************************************************/
-				String dirname="./FOLDER_5_OUTPUT/";
-				String filename=String.format("MIPS.txt");
+			/*********************************************************************************/
+			/* [1] Open the MIPS text file and write data section with error message strings */
+			/*********************************************************************************/
+				instance.textPartPrinter = new PrintWriter(dirName + textFileName);
+				instance.dataPartPrinter = new PrintWriter(dirName + dataFileName);
+				instance.initPartPrinter = new PrintWriter(dirName + initFileName);
 
-				/***************************************/
-				/* [2] Open MIPS text file for writing */
-				/***************************************/
-				instance.fileWriter = new PrintWriter(dirname+filename);
+				//set the textPartPrinter to be the active one
+				instance.writer = instance.textPartPrinter;
 			}
 			catch (Exception e)
 			{
@@ -263,11 +351,19 @@ public class sir_MIPS_a_lot
 			/*****************************************************/
 			/* [3] Print data section with error message strings */
 			/*****************************************************/
-			instance.fileWriter.print(".data\n");
-			instance.fileWriter.print("string_access_violation: .asciiz \"Access Violation\"\n");
-			instance.fileWriter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
-			instance.fileWriter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
+			instance.dataPartPrinter.print(".data\n");
+			instance.dataPartPrinter.print("string_access_violation: .asciiz \"Access Violation\"\n");
+			instance.dataPartPrinter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+			instance.dataPartPrinter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
+			instance.dataPartPrinter.print("\tstring_main: .asciiz \"main\"\n");
+
+			/*************************/
+			/* [4] Init text section */
+			/*************************/
+			instance.initPartPrinter.println(".text");
+			instance.initPartPrinter.println("main:");
 		}
+
 		return instance;
 	}
 }
