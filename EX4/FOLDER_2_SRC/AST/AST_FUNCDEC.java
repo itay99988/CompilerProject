@@ -1,10 +1,14 @@
 package AST;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
 import IR.*;
 import MIPS.*;
+
 
 public class AST_FUNCDEC extends AST_DEC {
 
@@ -12,7 +16,10 @@ public class AST_FUNCDEC extends AST_DEC {
 	public String name;
 	public AST_IDSCOMMA params;
 	public AST_STMT_LIST body;
+	
 	private int localsNum;
+	public int offset;
+	public String className = null;
 
 	public AST_FUNCDEC(String type, String name, int lineNumber) {
 		this.type = type;
@@ -82,15 +89,14 @@ public class AST_FUNCDEC extends AST_DEC {
 	}
 
 
-	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException {
+	public TYPE SemantMe(AST_CLASSDEC inClass) throws SemantException 
+	{
         TYPE_FUNCTION typeFunction = SemantFunctionPrototype(inClass);
 
         /****************************/
         /* [1] Begin Function Scope */
         /****************************/
         SYMBOL_TABLE.getInstance().beginScope(true);
-
-		//SYMBOL_TABLE.getInstance().localsNum = 0;
 
 		//check that all parameter names are unique:
 		SemantFunctionArguments();
@@ -103,7 +109,11 @@ public class AST_FUNCDEC extends AST_DEC {
 		/********************************************/
         /* [3] Count local vars number for IRme use */
 		/********************************************/
-		//localsNum = SYMBOL_TABLE.getInstance().localsNum;
+        this.localsNum = SYMBOL_TABLE.getInstance().getVarCount();
+        this.offset = SYMBOL_TABLE.getInstance().getOffset(this.name);
+
+		if(inClass!=null)
+        	this.className = inClass.className;
 
         /*****************/
         /* [4] End Scope */
@@ -133,7 +143,7 @@ public class AST_FUNCDEC extends AST_DEC {
 			if(t.isArray()) {
 				t = new TYPE_ARRAY(param.type);
 			}
-            SYMBOL_TABLE.getInstance().enter(param.name, t, EntryCategory.Obj);
+            SYMBOL_TABLE.getInstance().enter(param.name, t, EntryCategory.Argument);
         }
     }
 

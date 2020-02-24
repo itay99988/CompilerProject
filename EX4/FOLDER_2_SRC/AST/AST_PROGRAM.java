@@ -6,9 +6,13 @@ import IR.*;
 
 public class AST_PROGRAM extends AST_Node {
 	
-	AST_DEC_LIST l;
+	public AST_DEC_LIST l;
+
+	public static boolean stringConcatUsed = false;
+    public static boolean stringCompareUsed = false;
 	
-	public AST_PROGRAM (AST_DEC_LIST decList) {
+	public AST_PROGRAM (AST_DEC_LIST decList) 
+	{
 		System.out.print("====================== program -> decs\n");
 		l = decList;
 	}

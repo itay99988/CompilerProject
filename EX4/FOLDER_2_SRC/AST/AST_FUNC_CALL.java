@@ -10,6 +10,10 @@ public class AST_FUNC_CALL extends AST_DEC {
 	public AST_BRACESEXP args;
 	public AST_VAR var;
 
+	public String funcNameStr; 
+    public String funcClassName;
+    public int funcOffset;
+
 
 	public AST_FUNC_CALL(String name, AST_BRACESEXP args, AST_VAR var, int lineNumber){
 		this.name = name;
@@ -55,7 +59,8 @@ public class AST_FUNC_CALL extends AST_DEC {
 	}
 
 
-    public TYPE SemantMe() throws SemantException {
+    public TYPE SemantMe() throws SemantException 
+	{
 		int lineNumber = this.getLineNumber();
         TYPE t = checkFuncExists();
         if (t instanceof TYPE_FUNCTION == false) {
@@ -105,6 +110,15 @@ public class AST_FUNC_CALL extends AST_DEC {
             funcParamList = funcParamList.tail;
             argIndex--;
         }
+
+		//update info for next stages
+		this.funcNameStr = typeFunction.name;
+        this.funcClassName = typeFunction.className;
+        if(funcClassName!=null)
+        	this.funcOffset = ((TYPE_CLASS)SYMBOL_TABLE.getInstance().find(funcClassName, EntryCategory.Type)).functionTable.get(funcNameStr).offset;
+        else
+        	this.funcOffset = SYMBOL_TABLE.getInstance().getOffset(funcNameStr);
+
 
         // all parameter types match the argument types
         return typeFunction.returnType;

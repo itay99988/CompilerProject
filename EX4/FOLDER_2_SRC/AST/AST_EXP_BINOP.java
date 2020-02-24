@@ -3,10 +3,14 @@ import TYPES.*;
 import TEMP.*;
 import IR.*;
 
-public class AST_EXP_BINOP extends AST_EXP {
+public class AST_EXP_BINOP extends AST_EXP 
+{
 	public AST_BINOP op;
 	public AST_EXP left;
 	public AST_EXP right;
+
+	public boolean isStringConcat = false;
+	public boolean isStringCompare = false;
 	
 
 	public AST_EXP_BINOP(AST_EXP left,AST_EXP right, AST_BINOP op, int lineNumber) {
@@ -70,6 +74,7 @@ public class AST_EXP_BINOP extends AST_EXP {
 		}
 		if ((t1 == TYPE_STRING.getInstance()) && (op.toString() == "PLUS") && (t2 == TYPE_STRING.getInstance()))
 		{
+			this.isStringConcat = true;
 			return TYPE_STRING.getInstance();
 		}
 
@@ -77,7 +82,11 @@ public class AST_EXP_BINOP extends AST_EXP {
             if(t1.isArray() && t2.isArray() && t1.name.equals(t2.name))
                 return TYPE_INT.getInstance();
             if(t1 == TYPE_STRING.getInstance() && t2 == TYPE_STRING.getInstance())
-                return TYPE_INT.getInstance();
+			{
+				this.isStringCompare = true;
+				return TYPE_INT.getInstance();
+			}
+                
             if(t1 == TYPE_NIL.getInstance() || t2 == TYPE_NIL.getInstance()){
                 if(t1.isArray() || t2.isArray())
                     return TYPE_INT.getInstance();

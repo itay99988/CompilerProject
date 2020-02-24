@@ -59,11 +59,6 @@ public class AST_ARR_DEC extends AST_DEC {
         }
         return null;
 	}
-	
-	public TEMP IRme()
-	{
-		return null;
-	}
 
 }
 	

@@ -11,6 +11,10 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 	public String type;
 	public AST_EXP exp;
 
+	public boolean isGlobal;
+    public boolean isClassMember;
+	public int offset;
+
     public AST_VAR_DEC(String type, String name, AST_EXP exp) {
         this.type = type;
 		this.name = name;
@@ -57,11 +61,13 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 		/***************************************************/
 		/* [3] Enter the Variable Type to the Symbol Table */
 		/***************************************************/
+		EntryCategory cat = (inClass==null) ? EntryCategory.Obj : EntryCategory.ClassMember;
+
 		if (t.isArray()) {
-			SYMBOL_TABLE.getInstance().enter(this.name, new TYPE_ARRAY(this.type, 0), EntryCategory.Obj);
+			SYMBOL_TABLE.getInstance().enter(this.name, new TYPE_ARRAY(this.type, 0), cat);
 		}
 		else {
-			SYMBOL_TABLE.getInstance().enter(this.name, t, EntryCategory.Obj);
+			SYMBOL_TABLE.getInstance().enter(this.name, t, cat);
 		}
 
 		/******************/
@@ -71,8 +77,16 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 			this.exp.SemantMe();
 		}
 
+		/**************************************/
+		/* [5] add info to be used later on   */
+		/**************************************/
+
+        this.isGlobal = SYMBOL_TABLE.getInstance().isGlobal(this.name);
+        this.offset = SYMBOL_TABLE.getInstance().getOffset(this.name);
+        this.isClassMember= (inClass != null);
+
 		/*********************/
-		/* [5] Return type t */
+		/* [6] Return type t */
 		/*********************/
 
 		return t;

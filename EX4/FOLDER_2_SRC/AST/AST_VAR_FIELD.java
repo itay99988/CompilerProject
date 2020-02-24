@@ -9,6 +9,8 @@ public class AST_VAR_FIELD extends AST_VAR
 	public AST_VAR var;
 	public String fieldName;
 	
+	public boolean isGlobal = false;
+	public int fieldIndex;
 	/******************/
 	/* CONSTRUCTOR(S) */
 	/******************/
@@ -81,7 +83,10 @@ public class AST_VAR_FIELD extends AST_VAR
 			while(memList != null)
 			{
 				if(memList.head.name.equals(this.fieldName))
-						return memList.head.type;
+				{
+					this.fieldIndex = memList.head.offset;
+					return memList.head.type;
+				}
 
 				memList = memList.tail;
 			}

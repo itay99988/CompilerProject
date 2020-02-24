@@ -11,6 +11,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
 	/* simple variable name */
 	/************************/
 	public String name;
+
+	private boolean isGlobal;
+	private boolean isClassMember;
+	private int localVarIdx;
 	
 	/******************/
 	/* CONSTRUCTOR(S) */
@@ -61,7 +65,13 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		{ //find var in current class or in global scope.
 			TYPE t = SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Obj);
 			if(t != null)
+			{
+				this.isGlobal = SYMBOL_TABLE.getInstance().isGlobal(this.name);
+				this.localVarIdx = SYMBOL_TABLE.getInstance().getOffset(this.name);
+				this.isClassMember=false;
+
 				return t;
+			}
 			else
 			{
 				String err = String.format("var_simple: '%s' doesn't exist in the SYMBOL_TABLE.\n", this.name);
@@ -70,10 +80,42 @@ public class AST_VAR_SIMPLE extends AST_VAR
 		}
 
 		//var is used inside a class
-		TYPE t = findNameInSuperClass(inClass); //var may be in a current or super class
-		if(t != null)
-			return t;
-		return SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Obj); //return from global scope
+		SYMBOL_TABLE symbol = SYMBOL_TABLE.getInstance();
+		TYPE typeInScope=null, typeClassMember;
+		TYPE varType = symbol.find(this.name, EntryCategory.Obj);
+		typeClassMember = findNameInSuperClass(inClass);
+		isGlobal = symbol.isGlobal(this.name);
+
+		
+		if(varType == null)
+		{
+			//var doesn't exist in a function or as a class member of the current class or as global var.
+			if(typeClassMember == null)
+			{
+				String err = String.format(">> ERROR '%s' doesn't exist in SYMBOL_TABLE", this.name);
+				throw new SemantException(this.getLineNumber(), err);
+			}
+			//var exist in super class!
+			this.isClassMember = true;
+			return typeClassMember;
+		}
+		//var exist in a method, as a class member of the current class or as a global var.
+		if(isGlobal)
+		{
+			if(typeClassMember != null)
+			{
+				//prefer class member of super class over the global var
+				isClassMember = true;
+				return typeClassMember;
+			}
+			this.isClassMember = false;
+			this.localVarIdx = symbol.getOffset(name);
+			return varType;
+		}
+		//var exist in a method or as a class member
+		this.localVarIdx = symbol.getOffset(name);
+		this.isClassMember = symbol.isClassMember(name);
+		return varType;
 	}
 
 	public TYPE findNameInSuperClass(TYPE_CLASS inClass)
