@@ -141,6 +141,10 @@ public class sir_MIPS_a_lot
 	/*   End of Label management  */
 	/******************************/
 
+	/******************************/
+	/*       MIPS Commands        */
+	/******************************/
+
 	public void print_int(TEMP t)
 	{
 		int idx=t.getSerialNumber();
@@ -303,11 +307,11 @@ public class sir_MIPS_a_lot
 		fileWriter.format("\tsw %s, ($sp)\n", reg.toMIPSString());
 	}
 
-	/**************************************/
-	/* Recent Additions (don't omit these)*/
-	/**************************************/
+	/******************************/
+	/*    END of MIPS Commands    */
+	/******************************/
 	
-
+	
 
 	/**************************************/
 	/* USUAL SINGLETON IMPLEMENTATION ... */
