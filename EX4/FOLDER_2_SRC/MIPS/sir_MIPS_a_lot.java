@@ -144,167 +144,177 @@ public class sir_MIPS_a_lot
 	/******************************/
 	/*       MIPS Commands        */
 	/******************************/
-
-	public void print_int(TEMP t)
+	//checked
+	public void print_int(TEMP src)
 	{
-		int idx=t.getSerialNumber();
-		// fileWriter.format("\taddi $a0,Temp_%d,0\n",idx);
-		fileWriter.format("\tmove $a0,Temp_%d\n",idx);
-		fileWriter.format("\tli $v0,1\n");
-		fileWriter.format("\tsyscall\n");
-		fileWriter.format("\tli $a0,32\n");
-		fileWriter.format("\tli $v0,11\n");
-		fileWriter.format("\tsyscall\n");
+		writer.format("\tmove $a0, %s\n", src);
+		writer.format("\tli $v0, 1\n");
+		writer.format("\tsyscall\n");
+
+		writer.format("\tli $a0,32\n");
+		writer.format("\tli $v0,11\n");
+		writer.format("\tsyscall\n");
 	}
 
-	public void allocate(String var_name)
+	//checked
+	public void allocateWord(String var_name)
 	{
-		fileWriter.format(".data\n");
-		fileWriter.format("\tglobal_%s: .word 721\n",var_name);
+		writer.format(".data\n");
+		writer.format("\tglobal_%s: .word 721\n",var_name);
 	}
+    //checked
 	public void load(TEMP dst,String var_name)
 	{
-		int idxdst=dst.getSerialNumber();
-		fileWriter.format("\tlw Temp_%d,global_%s\n",idxdst,var_name);
+		writer.format("\tlw %s, %s\n", dst, var_name);
 	}
+	//checked
 	public void store(String var_name,TEMP src)
 	{
 		int idxsrc=src.getSerialNumber();
-		fileWriter.format("\tsw Temp_%d,global_%s\n",idxsrc,var_name);		
+		writer.format("\tsw %s, %s\n", src, var_name);	
 	}
+	//checked
 	public void li(TEMP t,int value)
 	{
 		int idx=t.getSerialNumber();
-		fileWriter.format("\tli Temp_%d,%d\n",idx,value);
+		writer.format("\tli Temp_%d, %d\n",idx,value);
 	}
+	//checked
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		writer.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+	//checked
 	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		writer.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 	
 	public void moveSystemRegisterToTempRegister(TEMP dst, SystemRegisters src)
 	{
-		fileWriter.format("\tmove %s, %s\n", dst.toString(), src.toMIPSString());
+		writer.format("\tmove %s, %s\n", dst.toString(), src.toMIPSString());
 	}
-	
+	//checked
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		writer.format("\tmul Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+	//checked
 	public void div(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		int dstidx=dst.getSerialNumber();
 
-		fileWriter.format("\tdiv Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
+		writer.format("\tdiv Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 
 	public void label(String inlabel)
 	{
 		if (inlabel.equals("main"))
 		{
-			fileWriter.format(".text\n");
-			fileWriter.format("%s:\n",inlabel);
+			writer.format(".text\n");
+			writer.format("%s:\n",inlabel);
 		}
 		else
 		{
-			fileWriter.format("%s:\n",inlabel);
+			writer.format("%s:\n",inlabel);
 		}
 	}	
+	//checked
 	public void jump(String inlabel)
 	{
-		fileWriter.format("\tj %s\n",inlabel);
+		writer.format("\tj %s\n",inlabel);
 	}
 	
 	public void jumpra() {
-		fileWriter.format("\tjr $ra \n");
+		writer.format("\tjr $ra \n");
 	}	
-	
+	//checked
 	public void blt(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tblt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tblt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
 	public void bgt(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbgt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tbgt Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
+	//checked
 	public void bge(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbge Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tbge Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
 	public void ble(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tble Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tble Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
+	//checked
 	public void bne(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbne Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tbne Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
+	//checked
 	public void beq(TEMP oprnd1,TEMP oprnd2,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 		int i2 =oprnd2.getSerialNumber();
 		
-		fileWriter.format("\tbeq Temp_%d,Temp_%d,%s\n",i1,i2,label);				
+		writer.format("\tbeq Temp_%d,Temp_%d,%s\n",i1,i2,label);				
 	}
+	//checked
 	public void beqz(TEMP oprnd1,String label)
 	{
 		int i1 =oprnd1.getSerialNumber();
 				
-		fileWriter.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
+		writer.format("\tbeq Temp_%d,$zero,%s\n",i1,label);				
 	}
 	
 	public void storeInAddress(TEMP address, TEMP value) {
-		fileWriter.format("\tsw %s, (%s)\n", value.toString(), address.toString());
+		writer.format("\tsw %s, (%s)\n", value.toString(), address.toString());
 	}
 	
 	public void IncreaseSP(int wordsnum) {
-		fileWriter.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE);
+		writer.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE);
 	}
 	
 	public void decreaseSP(int wordsnum) {
-		fileWriter.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE*-1);
+		writer.format("\taddi $sp, $sp, %d\n", wordsnum*WORD_SIZE*-1);
 	}
 	
 	public void loadStringFromDataSegment(TEMP dst, String str) {
-		fileWriter.format("\tla %s, %s\n", dst.toString(), str);
+		writer.format("\tla %s, %s\n", dst.toString(), str);
 	}
 	
 	public void pushRegToStack(TempRegisters reg) {
 		decreaseSP(1);
-		fileWriter.format("\tsw %s, ($sp)\n", reg.toMIPSString());
+		writer.format("\tsw %s, ($sp)\n", reg.toMIPSString());
 	}
 
 	/******************************/

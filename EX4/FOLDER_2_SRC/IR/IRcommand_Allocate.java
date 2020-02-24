@@ -27,6 +27,6 @@ public class IRcommand_Allocate extends IRcommand
 	/***************/
 	public void MIPSme()
 	{
-		sir_MIPS_a_lot.getInstance().allocate(var_name);
+		sir_MIPS_a_lot.getInstance().allocateWord(var_name);
 	}
 }
