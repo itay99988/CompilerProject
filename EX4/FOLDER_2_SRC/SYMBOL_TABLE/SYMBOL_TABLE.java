@@ -391,7 +391,7 @@ public class SYMBOL_TABLE
 						TYPE_INT.getInstance(),
 						null), 1, null), EntryCategory.Obj);
 
-			//additional library funcs
+			//additional library function
 			instance.enter(
 				"PrintString",
 				new TYPE_FUNCTION(
@@ -400,14 +400,6 @@ public class SYMBOL_TABLE
 					new TYPE_LIST(
 						TYPE_STRING.getInstance(),
 						null),1, null), EntryCategory.Obj);
-						
-			instance.enter(
-				"PrintTrace",
-				new TYPE_FUNCTION(
-					TYPE_VOID.getInstance(),
-					"PrintTrace",
-					null
-					,0, null), EntryCategory.Obj);
 			
 		}
 		return instance;
