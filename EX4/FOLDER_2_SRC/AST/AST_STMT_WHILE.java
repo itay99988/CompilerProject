@@ -92,6 +92,7 @@ public class AST_STMT_WHILE extends AST_STMT
     	body.MIPSme(); //loop body
     	mips.jump(while_start);
     	mips.label(while_end);
+		
 	}
 	
 }
