@@ -94,7 +94,8 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 
 
 
-	void checkVarName(AST_CLASSDEC inClass) throws SemantException {
+	void checkVarName(AST_CLASSDEC inClass) throws SemantException 
+	{
     	if(SYMBOL_TABLE.getInstance().find(this.name, EntryCategory.Type) != null){
 			String err = String.format("var_dec: var name '%s' already exists as a type.\n", this.name);
 			throw new SemantException(this.getLineNumber(), err);
@@ -111,7 +112,8 @@ public abstract class AST_VAR_DEC extends AST_DEC {
 	}
 	
 
-	void checkNameInSuperClasses(AST_CLASSDEC inClass) throws SemantException {
+	void checkNameInSuperClasses(AST_CLASSDEC inClass) throws SemantException 
+	{
     	TYPE_CLASS superClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(inClass.superClassName, EntryCategory.Type);
     	
     	while (superClass != null) {
