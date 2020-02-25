@@ -3,6 +3,7 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_VAR_FIELD extends AST_VAR
 {
@@ -93,6 +94,25 @@ public class AST_VAR_FIELD extends AST_VAR
 			typeClass = typeClass.father;
 		}
 		return null;
+	}
+
+	public TEMP getMipsValue() 
+	{
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		sir_MIPS_a_lot.getInstance().load(dst, this.getMipsRepr());
+		return dst;
+	}
+
+	public void setMipsValue(String dst, TEMP src) 
+	{
+		sir_MIPS_a_lot.getInstance().store(dst, src);
+	}
+
+	public String getMipsRepr() 
+	{
+		TEMP baseAddr = this.var.getValueMips();
+		sir_MIPS_a_lot.getInstance().beqz(baseAddr, "_nullDereferenceError");
+		return String.format("%d(%s)", 4*this.fieldIndex, baseAddr);
 	}
 	
 }

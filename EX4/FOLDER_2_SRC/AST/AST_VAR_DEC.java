@@ -129,4 +129,26 @@ public abstract class AST_VAR_DEC extends AST_DEC {
         }
     }
 
+	public void MIPSme() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		if (this.isGlobal) 
+		{
+			mips.allocateWord(this.name);
+
+			mips.writeInit();
+			mips.store("global_"+this.name, TEMP_FACTORY.getInstance().zero);
+			mips.writeText();
+		} 
+		else 
+		{
+			if(!this.isClassMember)
+			{ 
+				//a local variable in a function
+				TEMP zero = TEMP_FACTORY.getInstance().zero;
+				mips.store(String.format("%d($fp)", -4*this.offset), zero);
+			}
+		}
+	}
+
 }

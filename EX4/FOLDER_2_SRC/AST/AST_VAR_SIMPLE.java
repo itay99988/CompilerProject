@@ -3,7 +3,7 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
-import IR.*;
+import MIPS.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR
 {
@@ -134,6 +134,45 @@ public class AST_VAR_SIMPLE extends AST_VAR
             currClass = currClass.father;
         }
     	return null;
+	}
+
+	public TEMP getMipsValue() 
+	{
+		TEMP_FACTORY factory = TEMP_FACTORY.getInstance();
+		TEMP dst = factory.getFreshTEMP();
+		sir_MIPS_a_lot.getInstance().load(dst, getMipsRepr());
+		return dst;
+	}
+
+	public void setMipsValue(String dst, TEMP src) 
+	{
+		sir_MIPS_a_lot.getInstance().store(dst, src);
+	}
+
+	public String getMipsRepr() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+				
+		if (this.isGlobal) 
+		{
+			return String.format("global_%s", this.name);
+		} 
+		else 
+		{
+			if(this.isClassMember)
+			{
+				TEMP object = TEMP_FACTORY.getInstance().getFreshTEMP();
+				mips.load(object,"12($fp)");
+				sir_MIPS_a_lot.getInstance().beqz(object, "_nullDereferenceError");
+				return String.format("%d(%s)", this.localVarIdx*4, object);
+			}
+			int offset = -4 * this.localVarIdx;
+			if (this.localVarIdx < 0)
+			{ 
+				offset += 12;
+			}
+			return String.format("%d($fp)", offset);
+		}
 	}
 	
 }

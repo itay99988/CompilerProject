@@ -3,6 +3,7 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR
 {
@@ -91,5 +92,36 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 
 		return arrayType;
 	}
+
 	
+	public TEMP getMipsValue() 
+	{
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		sir_MIPS_a_lot.getInstance().load(dst, this.getMipsRepr());
+		return dst;
+	}
+
+	public void setMipsValue(String dst, TEMP src) 
+	{
+		sir_MIPS_a_lot.getInstance().store(dst, src);
+	}
+
+	public String getMipsRepr() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		TEMP arrayLen = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP subIdx = subscript.MIPSme();
+		TEMP baseAddr = var.getValueMips();
+		
+		mips.beqz(baseAddr, "_nullDereferenceError");
+		mips.load(arrayLen, baseAddr, 0);
+		mips.bge(subIdx, arrayLen, "_accessViolationError"); //if subidx >= array len --> go to Error
+		
+		mips.addi(baseAddr, baseAddr, 4); //skip first 4 bytes (array length)
+		TEMP element = TEMP_FACTORY.getInstance().getFreshTEMP();
+		mips.li(element, 4);
+		mips.mul(element, element, subIdx);
+		mips.add(baseAddr, baseAddr, element); //$base = 4*idx($base)
+		return String.format("0(%s)", baseAddr);
+	}
 }
