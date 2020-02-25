@@ -12,9 +12,5 @@ public abstract class AST_VAR extends AST_Node
 	public TYPE SemantMe() throws SemantException{
 		return null;
 	}
-	
-	public TEMP IRme()
-	{
-		return null;
-	}
+
 }

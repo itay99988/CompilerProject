@@ -95,9 +95,4 @@ public class AST_VAR_FIELD extends AST_VAR
 		return null;
 	}
 	
-	public TEMP IRme()
-	{
-		return null;
-	}
-	
 }

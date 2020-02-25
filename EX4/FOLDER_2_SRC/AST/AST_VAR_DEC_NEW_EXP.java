@@ -60,10 +60,5 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 		return t;
 	}
 	
-	public TEMP IRme()
-	{
-		return null;
-	}
-	
 }
 	
