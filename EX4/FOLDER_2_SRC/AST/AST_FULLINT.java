@@ -2,6 +2,7 @@ package AST;
 
 import TYPES.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_FULLINT extends AST_DEC {
 
@@ -53,5 +54,23 @@ public class AST_FULLINT extends AST_DEC {
 		
 		return astInt.GetValue();
 	}
+
+	public TEMP MIPSme() 
+	{
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		int newVal=this.GetValue();
+		
+		if(newVal > Math.pow(2, 15)-1)
+			newVal = (int)Math.pow(2, 15)-1;
+		else
+			if(newVal < -Math.pow(2, 15))
+				newVal = -(int)Math.pow(2, 15);
+		
+		sir_MIPS_a_lot.getInstance().li(dst, newVal);
+		
+		return dst;
+	}
+
+
 }
 	

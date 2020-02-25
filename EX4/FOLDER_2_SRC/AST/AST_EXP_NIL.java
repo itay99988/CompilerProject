@@ -2,6 +2,7 @@ package AST;
 
 import TYPES.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_EXP_NIL extends AST_EXP {
 
@@ -29,9 +30,11 @@ public class AST_EXP_NIL extends AST_EXP {
 		return TYPE_NIL.getInstance();
 	}
 	
-	public TEMP IRme()
+    public TEMP MIPSme()
 	{
-		return null;
-	}
+    	TEMP zero = TEMP_FACTORY.getInstance().getFreshTEMP();
+    	sir_MIPS_a_lot.getInstance().li(zero, 0);
+    	return zero;
+    }
     
 }

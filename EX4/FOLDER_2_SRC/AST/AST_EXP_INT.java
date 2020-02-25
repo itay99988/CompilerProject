@@ -2,7 +2,7 @@ package AST;
 
 import TYPES.*;
 import TEMP.*;
-import IR.*;
+import MIPS.*;
 
 public class AST_EXP_INT extends AST_EXP
 {
@@ -42,14 +42,12 @@ public class AST_EXP_INT extends AST_EXP
 
 	public TYPE SemantMe() throws SemantException
 	{
-		return fullInt.SemantMe();
+		return this.fullInt.SemantMe();
 	}
 	
-	public TEMP IRme()
+	public TEMP MIPSme() 
 	{
-		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
-		IR.getInstance().Add_IRcommand(new IRcommandConstInt(t,fullInt.GetValue()));
-		return t;
+		return this.fullInt.MIPSme();
 	}
 
 }

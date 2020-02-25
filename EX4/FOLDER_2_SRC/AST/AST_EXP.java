@@ -1,5 +1,8 @@
 package AST;
+
 import TYPES.*;
+import TEMP.*;
+import MIPS.*;
 
 public abstract class AST_EXP extends AST_Node {
 	
@@ -12,5 +15,5 @@ public abstract class AST_EXP extends AST_Node {
 	{
 		return null;
 	}
-	
+
 }
