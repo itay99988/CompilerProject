@@ -60,10 +60,10 @@ public class AST_BINOP extends AST_DEC {
 		}
 	}
 	
-	public TEMP IRme()
+    public void MIPSme()
 	{
-		return null;
-	}
+    	return;
+    }
 
 	
 }

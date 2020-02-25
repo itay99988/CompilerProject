@@ -11,7 +11,8 @@ public abstract class AST_Node
 	public int SerialNumber;
 	public int LineNumber;
 
-	public AST_Node() {
+	public AST_Node() 
+	{
         SerialNumber = AST_Node_Serial_Number.getFresh();
 	}
 	
@@ -23,16 +24,13 @@ public abstract class AST_Node
 		System.out.print("AST NODE UNKNOWN\n");
 	}
 	
-	public void setLineNumber(int number){
+	public void setLineNumber(int number)
+	{
 		this.LineNumber = number;
 	}
 	
-	public int getLineNumber(){
-		return this.LineNumber;
-	}
-	
-	public TEMP IRme()
+	public int getLineNumber()
 	{
-		return null;
+		return this.LineNumber;
 	}
 }

@@ -14,13 +14,8 @@ public class AST_EXP_EXP extends AST_EXP {
         System.out.print("====================== exp -> LPAREN exp RPAREN\n");
     }
 	
-	
-	public TYPE SemantMe() throws SemantException{
-		return exp.SemantMe();
-	}
-
-
-	public void PrintMe() {
+	public void PrintMe() 
+	{
 		/**********************************/
 		/* AST NODE TYPE = AST EXP NIL */
 		/**********************************/
@@ -45,8 +40,14 @@ public class AST_EXP_EXP extends AST_EXP {
 
 	}
 	
-	public TEMP IRme()
+	public TYPE SemantMe() throws SemantException
+	{
+		return exp.SemantMe();
+	}
+
+	public TEMP MIPSme() 
 	{
 		return null;
-	}    
+	}
+	
 }

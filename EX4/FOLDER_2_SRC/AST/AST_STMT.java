@@ -18,8 +18,8 @@ public abstract class AST_STMT extends AST_Node
 		return null;
 	}
 	
-	public TEMP IRme()
+	public void MIPSme() 
 	{
-		return null;
+		return;
 	}
 }

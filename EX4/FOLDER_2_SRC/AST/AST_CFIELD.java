@@ -94,10 +94,5 @@ public class AST_CFIELD extends AST_DEC {
 		}
 	}
 
-	public TEMP IRme()
-	{
-		return null;
-	}
-
 }
 	

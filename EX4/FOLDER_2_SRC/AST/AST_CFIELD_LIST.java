@@ -69,11 +69,6 @@ public class AST_CFIELD_LIST extends AST_Node {
 				clsFieldList.SemantMe(inClass));
 		}
 	}
-	
-	public TEMP IRme()
-	{
-		return null;
-	}
 
 }
 	

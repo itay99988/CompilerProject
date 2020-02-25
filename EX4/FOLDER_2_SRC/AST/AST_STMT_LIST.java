@@ -80,12 +80,12 @@ public class AST_STMT_LIST extends AST_Node
 	// 	return ((this.head instanceof AST_STMT_RETURN) || this.tail.containsReturnStmt());
 	// }
 
-	public TEMP IRme()
+	public void MIPSme() 
 	{
-		if (head != null) head.IRme();
-		if (tail != null) tail.IRme();
+		this.head.MIPSme();
 		
-		return null;
+		if (this.tail != null) 
+			this.tail.MIPSme();
 	}
 
 }
