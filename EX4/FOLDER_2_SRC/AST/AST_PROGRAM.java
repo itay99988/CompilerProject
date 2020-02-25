@@ -47,6 +47,10 @@ public class AST_PROGRAM extends AST_Node {
 		return l.SemantMe();
 	}
 
+	public void MIPSme() {
+		//TODO
+	}
+
 	public TEMP IRme()
 	{
 		l.IRme();
