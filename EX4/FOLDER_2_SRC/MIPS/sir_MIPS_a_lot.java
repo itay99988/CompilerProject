@@ -162,10 +162,24 @@ public class sir_MIPS_a_lot
 		writer.format(".data\n");
 		writer.format("\tglobal_%s: .word 721\n",var_name);
 	}
+
+	private static int string_counter = 0;
+	//checked
+	public String allocateString(String str) 
+	{
+		String stringLabel = String.format("string_%d", string_counter++);
+		dataWriter.format("\t%s: .asciiz %s\n", stringLabel, str);
+		return stringLabel;
+	}
     //checked
 	public void load(TEMP dst,String var_name)
 	{
 		writer.format("\tlw %s, %s\n", dst, var_name);
+	}
+    //checked
+	public void loadAddress(TEMP dst, String label)
+	{
+		writer.format("\tla %s, %s\n", dst, label);
 	}
 	//checked
 	public void store(String var_name,TEMP src)
@@ -220,19 +234,20 @@ public class sir_MIPS_a_lot
 
 		writer.format("\tdiv Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
-
+	//checked
 	public void label(String inlabel)
 	{
-		if (inlabel.equals("main"))
+		if (inlabel.equals("main")) 
 		{
-			writer.format(".text\n");
-			writer.format("%s:\n",inlabel);
+			writer.format("_main:\n");
 		}
-		else
-		{
-			writer.format("%s:\n",inlabel);
-		}
+		writer.format("%s:\n", inlabel);
 	}	
+	//checked
+	public void dataLabel(String inlabel) 
+	{
+		dataWriter.format("%s:\n", inlabel);
+	}
 	//checked
 	public void jump(String inlabel)
 	{

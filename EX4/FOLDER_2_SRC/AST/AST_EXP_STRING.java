@@ -1,7 +1,9 @@
 package AST;
 
 import TYPES.*;
+import SYMBOL_TABLE.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_EXP_STRING extends AST_EXP {
 
@@ -35,9 +37,14 @@ public class AST_EXP_STRING extends AST_EXP {
 		return TYPE_STRING.getInstance();
 	}
 	
-	public TEMP IRme()
+	public TEMP MIPSme() 
 	{
-		return null;
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		String stringLabel = mips.allocateString(this.str);
+		mips.loadAddress(dst, stringLabel);
+		
+		return dst;
 	}
     
 }
