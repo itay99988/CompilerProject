@@ -146,16 +146,5 @@ public class AST_FUNC_CALL extends AST_DEC {
     	return funcVar.findNameInSuperClass(curClass); //check if name exists in super class
     }
 
-	public TEMP IRme()
-	{
-		TEMP t=null;
-		
-		if (args != null) { t = args.IRme(); }
-		
-		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
-		
-		return null;
-	}
-
 }
 	

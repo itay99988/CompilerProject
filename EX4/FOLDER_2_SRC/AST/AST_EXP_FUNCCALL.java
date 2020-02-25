@@ -44,11 +44,6 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 	{
 		return funcCall.SemantMe();
 	}
-	
-	public TEMP IRme()
-	{
-		return funcCall.IRme();
-	}
 
 }
 	

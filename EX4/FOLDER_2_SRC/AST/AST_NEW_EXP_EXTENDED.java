@@ -59,10 +59,5 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 		throw new SemantException(this.getLineNumber(),err);
 	}
 
-	public TEMP IRme()
-	{
-		return null;
-	}
-
 }
 	

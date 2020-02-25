@@ -63,15 +63,4 @@ public class AST_BRACESEXP extends AST_DEC {
 		return 1 + this.commaExpsList.length();
 	}
 	
-	public TEMP IRme()
-	{
-		return exp.IRme();
-		/*
-		if (commaExpsList != null)
-			commaExpsList.IRme();
-		
-		return null;
-		*/
-	}
-	
 }

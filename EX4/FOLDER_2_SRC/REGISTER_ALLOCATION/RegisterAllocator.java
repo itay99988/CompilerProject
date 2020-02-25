@@ -12,11 +12,12 @@ public class RegisterAllocator {
     private Map<String, LabelInstruction> labels;
     private Map<String, List<JumpBranch>> labelToJumpsMap;
     private Graph interferenceGraph;
+    private Map<String, Integer> coloringMap;
 
     private static final Set<String> JUMP_INSTRUCTIONS = new HashSet<>(Arrays.asList("j", "jal", "jr"));
     private static final Set<String> STORE_INSTRUCTIONS = new HashSet<>(Arrays.asList("sb", "sw"));
     private static final Set<String> BRANCH_INSTRUCTIONS = new HashSet<>(Arrays.asList("blt", "bge", "bne", "beq", "beqz", "bgt"));
-    private static final int NUM_OF_REGISTERS = 10;
+    private static final int NUM_OF_REGISTERS = 8; // as instructed
     private static final String TEMP = "Temp_";
 
     public RegisterAllocator(){
@@ -27,37 +28,78 @@ public class RegisterAllocator {
     }
 
 
-    public void allocate(String outputFileName) throws Exception {
+    public void allocate() throws Exception {
         buildInstructionList();
         updateSuccessors();
         livenessAnalysis();
         buildInterferenceGraph();
-        Map<String, Integer> coloringMap = findGraphColoring();
-        System.out.println(coloringMap.entrySet());
-        replaceTempsWithRegisters(outputFileName, coloringMap);    
+        this.coloringMap = findGraphColoring();
+        System.out.println(this.coloringMap.entrySet());
     }
 
 
-    public void buildInstructionList(){
+    public void finalizeFile(String outputFilename) {
         String dirName = "./FOLDER_5_OUTPUT/";
-        String textFileName = "MIPS.txt";
-        Scanner sc = null;
-        File file = new File(dirName + textFileName);
+        String inputFilename = "MIPS.txt";
 
+        PrintWriter fileWriter = null;
+        Scanner scanner = null;
+        File outputFile;
+        if(outputFilename.startsWith("/") || outputFilename.startsWith("./")) {
+            outputFile = new File(outputFilename);
+        } else {
+            outputFile = new File("./" + outputFilename);
+        }
+        File inputFile = new File(dirName + inputFilename);
+        
+        int tempsCount = TEMP_FACTORY.getInstance().getTempsCount();
         try {
-            sc = new Scanner(file);
+            fileWriter = new PrintWriter(outputFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while(sc.hasNextLine()) {
-            String s = sc.nextLine();
-            addInstructionToList(s);
+        try {
+            scanner = new Scanner(inputFile);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        sc.close();
+        while(scanner.hasNextLine()) {
+            String s = scanner.nextLine();
+            String line = s;
+            for(int i = tempsCount; i >= 1; i--) {
+                String temp = String.format(TEMP + "%d", i);
+                String reg = String.format("\\$t%d", this.coloringMap.get(temp));
+                line = line.replaceAll(temp, reg);
+
+            }
+            fileWriter.println(line);
+            fileWriter.flush();
+        }
+        scanner.close();
+        fileWriter.close();
     }
 
 
-    public void updateSuccessors(){
+    private void buildInstructionList() {
+        String dirName = "./FOLDER_5_OUTPUT/";
+        String textFileName = "MIPS.txt";
+        Scanner scanner = null;
+        File file = new File(dirName + textFileName);
+
+        try {
+            scanner = new Scanner(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        while(scanner.hasNextLine()) {
+            String s = scanner.nextLine();
+            addInstructionToList(s);
+        }
+        scanner.close();
+    }
+
+
+    private void updateSuccessors(){
         int numOfInsts = this.instructions.size();
         for(int i = 0; i < numOfInsts; i++) {
             Instruction inst = this.instructions.get(i);
@@ -75,7 +117,7 @@ public class RegisterAllocator {
     }
 
 
-    public void livenessAnalysis() {
+    private void livenessAnalysis() {
         boolean changed = true;
         while (changed) {
             /*******************/
@@ -116,7 +158,7 @@ public class RegisterAllocator {
     }
 
 
-    public void buildInterferenceGraph() {
+    private void buildInterferenceGraph() {
         int numOfVertices = TEMP_FACTORY.getInstance().getTempsCount();
         this.interferenceGraph = new Graph(numOfVertices);
         for(Instruction inst : instructions){
@@ -131,7 +173,7 @@ public class RegisterAllocator {
     }
 
 
-    public Map<String, Integer> findGraphColoring() throws Exception{
+    private Map<String, Integer> findGraphColoring() throws Exception {
         Map<String, Integer> coloringMap = new HashMap<>();
         Integer[] coloringArray =  this.interferenceGraph.findColoring();
         int numOfColorsUsed = Collections.max(Arrays.asList(coloringArray)) + 1;
@@ -144,48 +186,6 @@ public class RegisterAllocator {
             coloringMap.put(temp, coloringArray[i]);
         }
         return coloringMap;
-    }
-
-
-    public void replaceTempsWithRegisters(String outputFileName, Map<String, Integer> coloringMap) {
-        String dirName = "./FOLDER_5_OUTPUT/";
-        String inputFileName = "MIPS.txt";
-
-        PrintWriter fileWriter = null;
-        Scanner scanner = null;
-        File outputFile;
-        if(outputFileName.startsWith("/") || outputFileName.startsWith("./")) {
-            outputFile = new File(outputFileName);
-        } else {
-            outputFile = new File("./" + outputFileName);
-        }
-        File inputFile = new File(dirName + inputFileName);
-        
-        int tempsCount = TEMP_FACTORY.getInstance().getTempsCount();
-        try {
-            fileWriter = new PrintWriter(outputFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            scanner = new Scanner(inputFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        while(scanner.hasNextLine()) {
-            String s = scanner.nextLine();
-            String line = s;
-            for(int i = tempsCount; i >= 1; i--) {
-                String temp = String.format(TEMP + "%d", i);
-                String reg = String.format("\\$t%d", coloringMap.get(temp));
-                line = line.replaceAll(temp, reg);
-
-            }
-            fileWriter.println(line);
-            fileWriter.flush();
-        }
-        scanner.close();
-        fileWriter.close();
     }
 
 
@@ -205,7 +205,7 @@ public class RegisterAllocator {
     }
 
 
-    public void addLabelInstruction(String labelNameWithColon){
+    private void addLabelInstruction(String labelNameWithColon){
         String labelName = labelNameWithColon.substring(0, labelNameWithColon.length() -1);
         LabelInstruction label = labelFactory(labelName);
         instructions.add(label);
@@ -213,7 +213,7 @@ public class RegisterAllocator {
     }
 
 
-    public void addJumpBranchInstruction(String[] instParts, String instName, int instLength){
+    private void addJumpBranchInstruction(String[] instParts, String instName, int instLength){
         String labelName = instParts[instLength - 1];
         LabelInstruction label = labelFactory(labelName);
         JumpBranch jump = new JumpBranch(instName, label);
@@ -235,7 +235,7 @@ public class RegisterAllocator {
     }
 
 
-    public void addBasicInstruction(String[] instParts, String instName, int instLength){
+    private void addBasicInstruction(String[] instParts, String instName, int instLength){
         Instruction inst = new Instruction(instName);
         if(STORE_INSTRUCTIONS.contains(instName)) {
             for(int i = 1; i < instLength; i++) {
@@ -256,7 +256,7 @@ public class RegisterAllocator {
     }
 
 
-    public LabelInstruction labelFactory(String name){
+    private LabelInstruction labelFactory(String name){
         LabelInstruction label;
         if(this.labels.containsKey(name)) {
             label = this.labels.get(name);

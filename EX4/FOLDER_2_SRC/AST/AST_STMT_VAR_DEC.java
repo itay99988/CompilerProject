@@ -54,9 +54,4 @@ public class AST_STMT_VAR_DEC  extends AST_STMT {
 
 	}
 
-	public TEMP IRme()
-	{
-		return null;
-	}
-
 }

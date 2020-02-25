@@ -45,11 +45,4 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
 		return funcCall.SemantMe();
 	}
 
-	public TEMP IRme()
-	{
-		if (funcCall != null) funcCall.IRme();
-		
-		return null;
-	}
-
 }

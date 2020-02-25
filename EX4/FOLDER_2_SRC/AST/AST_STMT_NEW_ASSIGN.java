@@ -84,9 +84,4 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 		}
 	}
 
-	public TEMP IRme()
-	{
-		return null;
-	}
-
 }

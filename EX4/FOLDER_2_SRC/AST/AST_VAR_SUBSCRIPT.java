@@ -92,9 +92,4 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		return arrayType;
 	}
 	
-	public TEMP IRme()
-	{
-		return null;
-	}
-	
 }

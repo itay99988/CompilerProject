@@ -57,16 +57,6 @@ public class AST_COMMAEXP extends AST_DEC {
 		}
 		return 1 + this.commaExpsList.length();
 	}
-	
-	public TEMP IRme()
-	{
-		exp.IRme();
-		
-		if (commaExpsList != null)
-			commaExpsList.IRme();
-		
-		return null;
-	}
 
 }
 	

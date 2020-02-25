@@ -45,9 +45,5 @@ public class AST_EXP_VAR extends AST_EXP
 	{
 		return var.SemantMe();
 	}
-	
-	public TEMP IRme()
-	{
-		return var.IRme();
-	}
+
 }

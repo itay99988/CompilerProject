@@ -42,11 +42,6 @@ public class AST_NEW_EXP extends AST_EXP
 		String err = String.format("new_exp: new expression can't be followed by '%s' (it's not a class or an array).\n", this.type);
 		throw new SemantException(this.getLineNumber(), err);
 	}
-	
-	public TEMP IRme()
-	{
-		return null;
-	}
 
 }
 	

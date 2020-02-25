@@ -49,9 +49,5 @@ public class AST_Node_Serial_Number
 	{
 		return AST_Node_Serial_Number.getInstance().get();
 	}
-	
-	public TEMP IRme()
-	{
-		return null;
-	}
+
 }

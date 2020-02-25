@@ -128,16 +128,5 @@ public abstract class AST_VAR_DEC extends AST_DEC {
             superClass = superClass.father;
         }
     }
-	
-	public TEMP IRme()
-	{
-		IR.getInstance().Add_IRcommand(new IRcommand_Allocate(name));
-		
-		if (exp != null)
-		{
-			IR.getInstance().Add_IRcommand(new IRcommand_Store(name,exp.IRme()));
-		}
-		return null;
-	}
 
 }

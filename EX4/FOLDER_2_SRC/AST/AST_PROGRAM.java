@@ -47,11 +47,8 @@ public class AST_PROGRAM extends AST_Node {
 		return l.SemantMe();
 	}
 
-	public TEMP IRme()
-	{
-		l.IRme();
-		IR.getInstance().Add_IRcommand(new IRcommand_Label("end"));
-		return null;
+	public void MIPSme() {
+		//TODO
 	}
 
 }

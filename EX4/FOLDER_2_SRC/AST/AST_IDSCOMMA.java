@@ -82,11 +82,5 @@ public class AST_IDSCOMMA extends AST_DEC {
 		return t;
 	}
 	
-	public TEMP IRme()
-	{
-		// todo HEAD!!!
-		return commaIdsLst.IRme();
-	}
-	
 }
 	
