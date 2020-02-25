@@ -3,6 +3,7 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
+import MIPS.*;
 
 public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 
@@ -58,6 +59,26 @@ public class AST_VAR_DEC_NEW_EXP extends AST_VAR_DEC {
 		}
 
 		return t;
+	}
+
+	public void MIPSme() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		if (this.isGlobal) 
+		{
+			mips.allocateWord(this.name);
+			mips.writeInit();
+
+			if(newAssign != null)
+				newAssign.MIPSme();
+
+			mips.writeText();
+		} 
+		else 
+		{
+			if(newAssign != null)
+				newAssign.MIPSme();
+		}
 	}
 	
 }
