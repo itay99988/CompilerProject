@@ -26,10 +26,10 @@ public class AST_EXP_STRING extends AST_EXP {
 		/*********************************/
 		/* Print to AST GRAPHIZ DOT file */
 		/*********************************/
-		this.str = this.str.replaceAll("\"", "");
+        String val = str.replace('"', '\'');
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("EXP_STR( '%s' )", this.str));
+			String.format("EXP_STR( '%s' )", val));
 	}
 	
 	public TYPE SemantMe() throws SemantException

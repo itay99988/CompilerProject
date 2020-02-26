@@ -159,8 +159,7 @@ public class sir_MIPS_a_lot
 	//checked
 	public void allocateWord(String var_name)
 	{
-		writer.format(".data\n");
-		writer.format("\tglobal_%s: .word 721\n",var_name);
+		dataPartPrinter.format("\tglobal_%s: .word 721\n", var_name);
 	}
 
 	private static int string_counter = 0;
@@ -274,16 +273,6 @@ public class sir_MIPS_a_lot
 		writer.format("\tlw $t6, 24($sp)\n");
 		writer.format("\tlw $t7, 28($sp)\n");
 		writer.format("\taddi $sp, $sp, 32\n");
-	}
-
-	//checked
-	public void popArgs(int count) {
-		writer.format("\taddi $sp, $sp, %d\n", 4*count);
-	}
-
-	//checked
-	public void getReturnValue(TEMP dst) {
-		writer.format("\tmove %s, $v0\n", dst);
 	}
 
 	//checked

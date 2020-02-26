@@ -122,7 +122,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
 		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
 
-		string opType = this.op.toString();
+		String opType = this.op.toString();
 		//choose which code to generate according to the chosen operator
 		if( opType.equals("PLUS") )
 		{
