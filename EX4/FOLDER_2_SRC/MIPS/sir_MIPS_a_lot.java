@@ -227,7 +227,7 @@ public class sir_MIPS_a_lot
 	public void loadByte(TEMP dst, TEMP src){
 		writer.format("\tlb %s, 0(%s)\n", dst, src);
 	}
-
+	//checked
 	public void storeByte(TEMP dst, TEMP src){
 		writer.format("\tsb %s, 0(%s)\n", src, dst);
 	}

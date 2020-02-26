@@ -309,6 +309,11 @@ public class AST_FUNCDEC extends AST_DEC {
 		mips.label(sir_MIPS_a_lot.getFunctionLabel(this.className, this.name));
 		mips.prologue(this.localsNum);
 		body.MIPSme();
-		mips.epilogue();
+		if (this.name.equals("main")) {
+			mips.jump("The_End");
+		}
+		else {
+			mips.epilogue();
+		}
 	}
 }
