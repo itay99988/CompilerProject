@@ -1,6 +1,7 @@
 package AST;
 
 import TYPES.*;
+import SYMBOL_TABLE.*;
 import TEMP.*;
 
 public class AST_EXP_VAR extends AST_EXP
@@ -43,7 +44,12 @@ public class AST_EXP_VAR extends AST_EXP
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		return var.SemantMe();
+		return this.var.SemantMe();
+	}
+
+	public TEMP MIPSme() 
+	{
+		return this.var.getMipsValue();
 	}
 
 }

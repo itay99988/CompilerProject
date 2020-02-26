@@ -110,7 +110,7 @@ public class AST_VAR_FIELD extends AST_VAR
 
 	public String getMipsRepr() 
 	{
-		TEMP baseAddr = this.var.getValueMips();
+		TEMP baseAddr = this.var.getMipsValue();
 		sir_MIPS_a_lot.getInstance().beqz(baseAddr, "_nullDereferenceError");
 		return String.format("%d(%s)", 4*this.fieldIndex, baseAddr);
 	}

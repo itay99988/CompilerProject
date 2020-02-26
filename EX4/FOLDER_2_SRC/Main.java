@@ -3,9 +3,8 @@ import java.io.*;
 import java.io.PrintWriter;
 import java_cup.runtime.Symbol;
 import AST.*;
-import IR.*;
 import MIPS.*;
-import REGISTER_ALLOCATION.RegisterAllocator;
+import REGISTER_ALLOCATION.*;
 
 public class Main {
 	static public void main(String argv[]) {

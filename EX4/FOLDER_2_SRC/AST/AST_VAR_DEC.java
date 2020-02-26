@@ -131,4 +131,6 @@ public abstract class AST_VAR_DEC extends AST_DEC {
         }
     }
 
+	public abstract void MIPSme();
+
 }

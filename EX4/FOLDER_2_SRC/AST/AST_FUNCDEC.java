@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
-import IR.*;
 import MIPS.*;
 
 

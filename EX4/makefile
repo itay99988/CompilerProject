@@ -18,10 +18,10 @@ JFlex_GENERATED_FILE      = ${SRC_DIR}/Lexer.java
 CUP_GENERATED_FILES       = ${SRC_DIR}/Parser.java ${SRC_DIR}/TokenNames.java
 JFlex_CUP_GENERATED_FILES = ${JFlex_GENERATED_FILE} ${CUP_GENERATED_FILES}
 SRC_FILES                 = ${SRC_DIR}/*.java              \
-                            ${SRC_DIR}/IR/*.java           \
                             ${SRC_DIR}/AST/*.java          \
                             ${SRC_DIR}/TEMP/*.java         \
                             ${SRC_DIR}/MIPS/*.java         \
+							${SRC_DIR}/REGISTER_ALLOCATION/*.java         \
                             ${SRC_DIR}/TYPES/*.java        \
                             ${SRC_DIR}/SYMBOL_TABLE/*.java
 EXTERNAL_JAR_FILES        = ${EXTERNAL_JARS_DIR}/java-cup-11b-runtime.jar

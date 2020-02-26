@@ -111,7 +111,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR
 		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
 		TEMP arrayLen = TEMP_FACTORY.getInstance().getFreshTEMP();
 		TEMP subIdx = subscript.MIPSme();
-		TEMP baseAddr = var.getValueMips();
+		TEMP baseAddr = var.getMipsValue();
 		
 		mips.beqz(baseAddr, "_nullDereferenceError");
 		mips.load(arrayLen, baseAddr, 0);

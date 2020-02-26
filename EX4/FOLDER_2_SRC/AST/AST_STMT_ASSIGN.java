@@ -3,7 +3,6 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
-import IR.*;
 
 public class AST_STMT_ASSIGN extends AST_STMT
 {

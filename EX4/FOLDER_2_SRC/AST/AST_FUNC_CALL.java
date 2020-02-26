@@ -2,7 +2,6 @@ package AST;
 import TYPES.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
-import IR.*;
 
 public class AST_FUNC_CALL extends AST_DEC {
 

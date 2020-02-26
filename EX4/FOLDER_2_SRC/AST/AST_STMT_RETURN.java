@@ -1,6 +1,8 @@
 package AST;
 
 import TYPES.*;
+import SYMBOL_TABLE.*;
+import MIPS.*;
 import TEMP.*;
 
 public class AST_STMT_RETURN  extends AST_STMT {
@@ -68,6 +70,20 @@ public class AST_STMT_RETURN  extends AST_STMT {
         	}
 		}
 		return null;
+	}
+
+	public void MIPSme() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		if(this.exp != null)
+		{
+			TEMP val = this.exp.MIPSme();
+			mips.returnVal(val);
+		}
+		else
+		{
+            mips.epilogue();
+        }
 	}
 
 }

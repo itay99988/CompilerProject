@@ -14,7 +14,6 @@ import java.io.*;
 /* PROJECT IMPORTS */
 /*******************/
 import TEMP.*;
-import IR.*;
 
 public class sir_MIPS_a_lot
 {
@@ -168,13 +167,46 @@ public class sir_MIPS_a_lot
 	public String allocateString(String str) 
 	{
 		String stringLabel = String.format("string_%d", string_counter++);
-		dataWriter.format("\t%s: .asciiz %s\n", stringLabel, str);
+		dataPartPrinter.format("\t%s: .asciiz %s\n", stringLabel, str);
 		return stringLabel;
 	}
+    //checked
+	public void prologue(int localVarCount) 
+	{
+		writer.format("\taddi $sp, $sp, -8\n");
+		writer.format("\tsw $fp, 0($sp)\n");
+		writer.format("\tsw $ra, 4($sp)\n");
+		writer.format("\tmove $fp, $sp\n");
+		if (localVarCount > 0) 
+		{
+			writer.format("\taddi $sp, $sp, %d\n", -4*localVarCount);
+		}
+	}
+    //checked
+	public void epilogue() 
+	{
+		writer.format("\tmove $sp, $fp\n");
+		writer.format("\tlw $fp, 0($sp)\n");
+		writer.format("\tlw $ra, 4($sp)\n");
+		writer.format("\taddi $sp, $sp, 8\n");
+		writer.format("\tjr $ra\n");
+	}
+    //checked
+	public void returnVal(TEMP val) 
+	{
+		writer.format("\tmove $v0, %s\n", val);
+		this.epilogue();
+	}
+
     //checked
 	public void load(TEMP dst,String var_name)
 	{
 		writer.format("\tlw %s, %s\n", dst, var_name);
+	}
+    //checked
+	public void load(TEMP dst, TEMP src, int offset)
+	{
+		writer.format("\tlw %s, %d(%s)\n", dst, offset, src);
 	}
     //checked
 	public void loadAddress(TEMP dst, String label)
@@ -203,6 +235,11 @@ public class sir_MIPS_a_lot
 		writer.format("\tadd Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 	//checked
+	public void addi(TEMP dst, TEMP src, int i)
+	{
+		writer.format("\tadd %s, %s, %d\n",dst, src, i);
+	}
+	//checked
 	public void sub(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -212,10 +249,6 @@ public class sir_MIPS_a_lot
 		writer.format("\tsub Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
 	
-	public void moveSystemRegisterToTempRegister(TEMP dst, SystemRegisters src)
-	{
-		writer.format("\tmove %s, %s\n", dst.toString(), src.toMIPSString());
-	}
 	//checked
 	public void mul(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
@@ -246,7 +279,7 @@ public class sir_MIPS_a_lot
 	//checked
 	public void dataLabel(String inlabel) 
 	{
-		dataWriter.format("%s:\n", inlabel);
+		dataPartPrinter.format("%s:\n", inlabel);
 	}
 	//checked
 	public void jump(String inlabel)
@@ -325,11 +358,6 @@ public class sir_MIPS_a_lot
 	
 	public void loadStringFromDataSegment(TEMP dst, String str) {
 		writer.format("\tla %s, %s\n", dst.toString(), str);
-	}
-	
-	public void pushRegToStack(TempRegisters reg) {
-		decreaseSP(1);
-		writer.format("\tsw %s, ($sp)\n", reg.toMIPSString());
 	}
 
 	/******************************/
