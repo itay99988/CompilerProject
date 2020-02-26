@@ -293,6 +293,16 @@ public class sir_MIPS_a_lot
 		writer.format("\tli Temp_%d, %d\n",idx,value);
 	}
 	//checked
+	public void move(TEMP dst, TEMP src)
+	{
+		writer.format("\tmove %s, %s\n",dst, src);
+	}
+	//checked
+	public void move(TEMP dst, String src)
+	{
+		writer.format("\tmove %s, %s\n",dst, src);
+	}
+	//checked
 	public void add(TEMP dst,TEMP oprnd1,TEMP oprnd2)
 	{
 		int i1 =oprnd1.getSerialNumber();
@@ -355,9 +365,31 @@ public class sir_MIPS_a_lot
 		dataPartPrinter.format("%s:\n", inlabel);
 	}
 	//checked
+	public void push(TEMP tmp) 
+	{
+		writer.format("\taddi $sp, $sp, -4\n");
+		writer.format("\tsw %s, 0($sp)\n", tmp);
+	}
+	//checked
+	public void popArgs(int count) 
+	{
+		writer.format("\taddi $sp, $sp, %d\n", 4*count);
+	}
+	//checked
+	public void getReturnValue(TEMP dst) 
+	{
+		writer.format("\tmove %s, $v0\n", dst);
+	}
+
+	//checked
 	public void jump(String inlabel)
 	{
 		writer.format("\tj %s\n",inlabel);
+	}
+	//checked
+	public void jal(String label) 
+	{
+		writer.format("\tjal %s\n", label);
 	}
 	
 	public void jumpra() {
