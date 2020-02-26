@@ -213,6 +213,16 @@ public class sir_MIPS_a_lot
 	{
 		writer.format("\tla %s, %s\n", dst, label);
 	}
+
+	//checked
+	public void loadByte(TEMP dst, TEMP src){
+		writer.format("\tlb %s, 0(%s)\n", dst, src);
+	}
+
+	public void storeByte(TEMP dst, TEMP src){
+		writer.format("\tsb %s, 0(%s)\n", src, dst);
+	}
+
 	//checked
 	public void store(String var_name,TEMP src)
 	{
@@ -360,6 +370,19 @@ public class sir_MIPS_a_lot
 		writer.format("\tla %s, %s\n", dst.toString(), str);
 	}
 
+	//checked
+	public void printString(TEMP str) {
+		writer.format("\tmove $a0, %s\n", str);
+		writer.format("\tli $v0, 4\n");
+		writer.format("\tsyscall\n");
+	}
+
+	//checked
+	public void exit(){
+		writer.print("\tli $v0, 10\n");
+		writer.print("\tsyscall\n");
+	}
+
 	/******************************/
 	/*    END of MIPS Commands    */
 	/******************************/
@@ -423,4 +446,5 @@ public class sir_MIPS_a_lot
 
 		return instance;
 	}
+
 }

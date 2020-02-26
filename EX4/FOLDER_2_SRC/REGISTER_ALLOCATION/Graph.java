@@ -1,10 +1,7 @@
 package REGISTER_ALLOCATION;
 
-// A Java program to implement greedy algorithm for graph coloring
 import java.util.*;
-import java.util.LinkedList;
 
-// This class represents an undirected graph using adjacency list
 public class Graph {
 
     private LinkedList<Integer> adjacencyList[];
