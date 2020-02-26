@@ -284,13 +284,17 @@ public class AST_FUNCDEC extends AST_DEC {
 	}
 	
 
-    public boolean typeListsMatch(TYPE_LIST tl1, int tl1_len, TYPE_LIST tl2, int tl2_len) {
-        if (tl1_len != tl2_len) {
+    public boolean typeListsMatch(TYPE_LIST tl1, int tl1_len, TYPE_LIST tl2, int tl2_len) 
+	{
+        if (tl1_len != tl2_len) 
+		{
             return false;
         }
         // loop over type lists and make sure that all names match
-        while (tl1.head != null) {
-            if (!tl1.head.name.equals(tl2.head.name)) {
+        while (tl1.head != null) 
+		{
+            if (!tl1.head.name.equals(tl2.head.name)) 
+			{
                 return false;
             }
             tl1 = tl1.tail;
@@ -299,4 +303,12 @@ public class AST_FUNCDEC extends AST_DEC {
         return true;
     }
 
+	public void MIPSme() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		mips.label(sir_MIPS_a_lot.getFunctionLabel(this.className, this.name));
+		mips.prologue(this.localsNum);
+		body.MIPSme();
+		mips.epilogue();
+	}
 }
