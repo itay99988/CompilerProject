@@ -170,6 +170,15 @@ public class sir_MIPS_a_lot
 		dataPartPrinter.format("\t%s: .asciiz %s\n", stringLabel, str);
 		return stringLabel;
 	}
+	//checked
+	public void allocateOnHeap(TEMP dst, TEMP bytes)
+	{
+		writer.format("\tmove $a0, %s\n", bytes); 
+		writer.format("\tli $v0, 9\n"); 
+		writer.format("\tsyscall\n");
+		writer.format("\tmove %s, $v0\n", dst); //$v0 is the address of the allocated space
+	}
+
     //checked
 	public void prologue(int localVarCount) 
 	{
@@ -218,6 +227,16 @@ public class sir_MIPS_a_lot
 	{
 		int idxsrc=src.getSerialNumber();
 		writer.format("\tsw %s, %s\n", src, var_name);	
+	}
+	//checked
+	public void store(TEMP dst, TEMP src, int offset)
+	{
+		writer.format("\tsw %s, %d(%s)\n", src, offset, dst);
+	}
+	//checked
+	public void store(String dstReg, TEMP src, int offset)
+	{
+		writer.format("\tsw %s %d(%s)\n", src, offset, dstReg);
 	}
 	//checked
 	public void li(TEMP t,int value)

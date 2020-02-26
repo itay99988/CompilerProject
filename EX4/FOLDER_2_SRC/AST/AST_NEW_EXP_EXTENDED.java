@@ -1,6 +1,7 @@
 package AST;
 
 import TYPES.*;
+import MIPS.*;
 import SYMBOL_TABLE.*;
 import TEMP.*;
 
@@ -57,6 +58,22 @@ public class AST_NEW_EXP_EXTENDED extends AST_NEW_EXP
 		//array wasn't defined properly
 		String err = String.format("new_exp_extended: array allocation must be with integral size.\n");
 		throw new SemantException(this.getLineNumber(),err);
+	}
+
+	public TEMP MIPSme() 
+	{
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP(); //arr address on heap
+		TEMP sizeInBytes = TEMP_FACTORY.getInstance().getFreshTEMP();
+		TEMP arrayLen = this.size.MIPSme();
+
+		mips.li(sizeInBytes, 4); //one element is sizeInBytes*4
+		mips.mul(sizeInBytes, sizeInBytes, arrayLen);
+		mips.addi(sizeInBytes, sizeInBytes, 4); //add 4 byts to store the array length
+		mips.allocateOnHeap(dst, sizeInBytes);
+		mips.store(dst, arrayLen, 0);
+
+		return dst; 
 	}
 
 }
