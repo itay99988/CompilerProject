@@ -121,6 +121,7 @@ public class sir_MIPS_a_lot
 		return String.format("Label_%d_%s", label_counter++, msg);
 	}
 
+	//checked
 	public static String getFunctionLabel(String className, String name) 
 	{
 		if (className != null) 
@@ -248,6 +249,43 @@ public class sir_MIPS_a_lot
 	{
 		writer.format("\tsw %s %d(%s)\n", src, offset, dstReg);
 	}
+
+	//checked
+	public void storeTempsInStack() {
+		writer.format("\taddi $sp, $sp, -32\n");
+		writer.format("\tsw $t0, 0($sp)\n");
+		writer.format("\tsw $t1, 4($sp)\n");
+		writer.format("\tsw $t2, 8($sp)\n");
+		writer.format("\tsw $t3, 12($sp)\n");
+		writer.format("\tsw $t4, 16($sp)\n");
+		writer.format("\tsw $t5, 20($sp)\n");
+		writer.format("\tsw $t6, 24($sp)\n");
+		writer.format("\tsw $t7, 28($sp)\n");
+	}
+
+	//checked
+	public void loadTempsFromStack() {
+		writer.format("\tlw $t0, 0($sp)\n");
+		writer.format("\tlw $t1, 4($sp)\n");
+		writer.format("\tlw $t2, 8($sp)\n");
+		writer.format("\tlw $t3, 12($sp)\n");
+		writer.format("\tlw $t4, 16($sp)\n");
+		writer.format("\tlw $t5, 20($sp)\n");
+		writer.format("\tlw $t6, 24($sp)\n");
+		writer.format("\tlw $t7, 28($sp)\n");
+		writer.format("\taddi $sp, $sp, 32\n");
+	}
+
+	//checked
+	public void popArgs(int count) {
+		writer.format("\taddi $sp, $sp, %d\n", 4*count);
+	}
+
+	//checked
+	public void getReturnValue(TEMP dst) {
+		writer.format("\tmove %s, $v0\n", dst);
+	}
+
 	//checked
 	public void li(TEMP t,int value)
 	{
@@ -296,6 +334,12 @@ public class sir_MIPS_a_lot
 
 		writer.format("\tdiv Temp_%d,Temp_%d,Temp_%d\n",dstidx,i1,i2);
 	}
+
+	//checked
+	public void decRegister(String regName, int value) {
+		writer.format("\taddi %s, %s, %d\n", regName, regName, -value);
+	}
+
 	//checked
 	public void label(String inlabel)
 	{
@@ -393,6 +437,17 @@ public class sir_MIPS_a_lot
 	public void printString(TEMP str) {
 		writer.format("\tmove $a0, %s\n", str);
 		writer.format("\tli $v0, 4\n");
+		writer.format("\tsyscall\n");
+	}
+
+	//checked
+	public void printInt(TEMP intTemp) {
+		writer.format("\tmove $a0, %s\n", intTemp);
+		writer.format("\tli $v0, 1\n");
+		writer.format("\tsyscall\n");
+		// add space
+		writer.format("\tli $a0,32\n");
+		writer.format("\tli $v0,11\n");
 		writer.format("\tsyscall\n");
 	}
 

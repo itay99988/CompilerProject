@@ -2,6 +2,8 @@ package AST;
 
 import TYPES.*;
 import TEMP.*;
+import MIPS.sir_MIPS_a_lot;
+
 
 public class AST_EXP_FUNCCALL extends AST_EXP {
 	
@@ -43,6 +45,15 @@ public class AST_EXP_FUNCCALL extends AST_EXP {
 	public TYPE SemantMe() throws SemantException
 	{
 		return funcCall.SemantMe();
+	}
+
+	
+	public TEMP MIPSme() {
+		this.funcCall.MIPSme();
+
+		TEMP retVal = TEMP_FACTORY.getInstance().getFreshTEMP();
+		sir_MIPS_a_lot.getInstance().getReturnValue(retVal);
+		return retVal;
 	}
 
 }
