@@ -115,5 +115,10 @@ public class AST_CLASSDEC extends AST_DEC {
 		return null;		
 	}
 
+	public void MIPSme()
+	{
+
+	}
+
 }
 	

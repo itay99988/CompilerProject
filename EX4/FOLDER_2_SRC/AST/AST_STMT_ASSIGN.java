@@ -168,4 +168,11 @@ public class AST_STMT_ASSIGN extends AST_STMT
         }
     }
 
+	public void MIPSme() 
+	{
+		String dst = this.var.getMipsRepr();
+		TEMP src = (this.exp != null) ? exp.MIPSme() : null;
+		this.var.setMipsValue(dst, src);
+	}
+
 }

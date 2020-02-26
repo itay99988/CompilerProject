@@ -1,5 +1,7 @@
 package AST;
+
 import TYPES.*;
+import SYMBOL_TABLE.*;
 import TEMP.*;
 
 public class AST_DEC_LIST extends AST_Node {
@@ -52,28 +54,60 @@ public class AST_DEC_LIST extends AST_Node {
 	
 	public TYPE SemantMe() throws SemantException
 	{
-		if(head instanceof AST_FUNCDEC){
+		if(head instanceof AST_FUNCDEC)
+		{
 			AST_FUNCDEC funcDec = (AST_FUNCDEC)head;
 			funcDec.SemantMe(null); // there is no inclass parameter in this case
 		}
-		else if(head instanceof AST_VAR_DEC){
+		else if(head instanceof AST_VAR_DEC)
+		{
 			AST_VAR_DEC varDec = (AST_VAR_DEC)head;
 			varDec.SemantMe(null); //there is no inclass parameter in this case
 		}
-		else if (head instanceof AST_ARR_DEC){
+		else if (head instanceof AST_ARR_DEC)
+		{
 			AST_ARR_DEC arrDec = (AST_ARR_DEC)head;
 			arrDec.SemantMe();
 		}
-		else if (head instanceof AST_CLASSDEC){
+		else if (head instanceof AST_CLASSDEC)
+		{
 			AST_CLASSDEC classDec = (AST_CLASSDEC)head;
 			classDec.SemantMe();
 		}
 
-		if (tail != null){
+		if (tail != null)
+		{
 			tail.SemantMe();
 		}
 
 		return null;
+	}
+
+	public void MIPSme() 
+	{
+		if(this.head instanceof AST_FUNCDEC)
+		{
+			AST_FUNCDEC funcDec = (AST_FUNCDEC)this.head;
+			funcDec.MIPSme();
+		}
+		else if(this.head instanceof AST_VAR_DEC)
+		{
+			AST_VAR_DEC varDec = (AST_VAR_DEC)this.head;
+			varDec.MIPSme();
+		}
+		else if (this.head instanceof AST_ARR_DEC)
+		{
+			AST_ARR_DEC arrDec = (AST_ARR_DEC)this.head;
+			arrDec.MIPSme();
+		}
+		else if (this.head instanceof AST_CLASSDEC)
+		{
+			AST_CLASSDEC classDec = (AST_CLASSDEC)this.head;
+			classDec.MIPSme();
+		}
+
+		if (this.tail != null) 
+			this.tail.MIPSme();
 	}
 
 }
