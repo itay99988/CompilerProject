@@ -47,6 +47,11 @@ public class AST_COMMAEXP extends AST_DEC {
 
 	public TYPE SemantMe() throws SemantException
 	{
+		exp.SemantMe();
+		
+		if (commaExpsList != null)
+			commaExpsList.SemantMe();
+
 		return null;
 	}
 
