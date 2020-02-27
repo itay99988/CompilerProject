@@ -1,7 +1,8 @@
 class MyClass {
     void oops(){
         PrintString("what");
-       int a:= 3 / 0;
+       int z:= 0;
+       int a:= 3 / z;
     }
 }
 

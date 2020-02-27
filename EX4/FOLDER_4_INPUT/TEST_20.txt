@@ -1,7 +1,6 @@
 class MyClass{
     void what(){
         PrintString("what");
-        PrintTrace();
     }
 }
 

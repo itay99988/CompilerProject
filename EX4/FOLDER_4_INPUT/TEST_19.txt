@@ -1,5 +1,4 @@
 int oof() {	
-    PrintTrace();
     return 27;
 }
 
@@ -9,4 +8,5 @@ int foo() {
 
 void main() {
     int x:= foo();
+    PrintInt(x);
 }

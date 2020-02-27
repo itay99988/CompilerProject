@@ -1,6 +1,6 @@
 void g(int n){
+    PrintInt(n);
     if(n = 2){
-        PrintTrace();
         return;
     }
     g(n-1);
