@@ -179,6 +179,12 @@ public class sir_MIPS_a_lot
 		writer.format("\tmove %s, $v0\n", dst); //$v0 is the address of the allocated space
 	}
 
+	//checked
+	public void addVtableEntry(String func)
+	{
+		dataPartPrinter.format("\t.word %s\n", func);
+	}
+
     //checked
 	public void prologue(int localVarCount) 
 	{

@@ -110,10 +110,10 @@ public class AST_CLASSDEC extends AST_DEC {
 
 		int objectSizeInBytes = 0;
 		if(superClassType != null) { // this class extends another class
-			objectSizeInBytes = superClassType.objectSizeInBytes - 4;
+			objectSizeInBytes = superClassType.ObjSizeInBytes - 4;
 		}
 		objectSizeInBytes += 4 * numOfDataMembers + 4; // +4 added for the vtable pointer
-		tc.objectSizeInBytes = objectSizeInBytes;
+		tc.ObjSizeInBytes = objectSizeInBytes;
 
 		/*****************/
 		/* [3] End Scope */

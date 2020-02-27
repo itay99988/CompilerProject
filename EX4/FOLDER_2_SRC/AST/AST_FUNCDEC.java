@@ -16,7 +16,7 @@ public class AST_FUNCDEC extends AST_DEC {
 	public AST_IDSCOMMA params;
 	public AST_STMT_LIST body;
 	
-	private int localsNum;
+	public int localsNum;
 	public int offset;
 	public String className = null;
 
