@@ -83,7 +83,17 @@ public class AST_FUNC_CALL extends AST_DEC {
             throw new SemantException(lineNumber, err);
         }
 
-		if(this.args == null) {
+		//update info for next stages (MIPS code of func call)
+		this.funcNameStr = typeFunction.name;
+        this.funcClassName = typeFunction.className;
+        if(funcClassName!=null)
+        	this.funcOffset = ((TYPE_CLASS)SYMBOL_TABLE.getInstance().find(funcClassName, EntryCategory.Type)).functionTable.get(funcNameStr).offset;
+        else
+        	this.funcOffset = SYMBOL_TABLE.getInstance().getOffset(funcNameStr);
+		//
+
+		if(this.args == null) 
+		{
 			return typeFunction.returnType;
 		}
 
@@ -111,15 +121,6 @@ public class AST_FUNC_CALL extends AST_DEC {
             funcParamList = funcParamList.tail;
             argIndex--;
         }
-
-		//update info for next stages
-		this.funcNameStr = typeFunction.name;
-        this.funcClassName = typeFunction.className;
-        if(funcClassName!=null)
-        	this.funcOffset = ((TYPE_CLASS)SYMBOL_TABLE.getInstance().find(funcClassName, EntryCategory.Type)).functionTable.get(funcNameStr).offset;
-        else
-        	this.funcOffset = SYMBOL_TABLE.getInstance().getOffset(funcNameStr);
-
 
         // all parameter types match the argument types
         return typeFunction.returnType;
