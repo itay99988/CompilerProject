@@ -1,6 +1,10 @@
 package AST;
 
 import TYPES.*;
+
+import java.util.LinkedHashMap;
+
+import MIPS.sir_MIPS_a_lot;
 import SYMBOL_TABLE.*;
 import TEMP.*;
 
@@ -9,6 +13,8 @@ public class AST_CLASSDEC extends AST_DEC {
 	public String className;
 	public String superClassName;
 	public AST_CFIELD_LIST body;
+	public int numOfDataMembers;
+	public int numOfMethods;
 
 
 
@@ -95,8 +101,19 @@ public class AST_CLASSDEC extends AST_DEC {
 		/***************************/
 		/* [2] Semant Data Members */
 		/***************************/
-		TYPE_CLASS_DATA_MEMBER_LIST dataMembers = body.SemantMe(this);
-		TYPE_CLASS classType = new TYPE_CLASS(superClassType, className, dataMembers);
+		tc.data_members = body.SemantMe(this);
+		semantClassMethods();
+
+		numOfMethods = SYMBOL_TABLE.getInstance().getFuncCount();
+
+		numOfDataMembers = SYMBOL_TABLE.getInstance().getVarCount();
+
+		int objectSizeInBytes = 0;
+		if(superClassType != null) { // this class extends another class
+			objectSizeInBytes = superClassType.objectSizeInBytes - 4;
+		}
+		objectSizeInBytes += 4 * numOfDataMembers + 4; // +4 added for the vtable pointer
+		tc.objectSizeInBytes = objectSizeInBytes;
 
 		/*****************/
 		/* [3] End Scope */
@@ -107,7 +124,7 @@ public class AST_CLASSDEC extends AST_DEC {
 		/************************************************/
 		/* [4] Enter the Class Type to the Symbol Table */
 		/************************************************/
-		SYMBOL_TABLE.getInstance().enter(className, classType, EntryCategory.Type);
+		SYMBOL_TABLE.getInstance().enter(className, tc, EntryCategory.Type);
 
 		/*********************************************************/
 		/* [5] Return value is irrelevant for class declarations */
@@ -115,9 +132,49 @@ public class AST_CLASSDEC extends AST_DEC {
 		return null;		
 	}
 
-	public void MIPSme()
-	{
+	private void semantClassMethods() throws SemantException {
+		AST_CFIELD_LIST lst = this.body;
 
+		while(lst != null) {
+			AST_DEC curDec = lst.clsField.dec;
+			lst = lst.clsFieldList;
+			if(curDec == null || !(curDec instanceof AST_FUNCDEC)) {
+				continue;
+			}
+			AST_FUNCDEC curFunc = (AST_FUNCDEC)curDec;
+			TYPE_FUNCTION typeFunction = (TYPE_FUNCTION)SYMBOL_TABLE.getInstance().find(curFunc.name, EntryCategory.Obj);
+			SYMBOL_TABLE.getInstance().beginScope(true);
+			curFunc.SemantFunctionArguments();
+			curFunc.body.SemantMe(typeFunction.returnType);
+			curFunc.localsNum = SYMBOL_TABLE.getInstance().getVarCount();
+			SYMBOL_TABLE.getInstance().endScope(true);
+			curFunc.className = this.className;
+		}
+	}
+
+	public void MIPSme() {
+		TYPE_CLASS tc = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(this.className, EntryCategory.Type);
+		
+		// vtable
+		LinkedHashMap<String, VtableEntry> vtable = tc.functionTable;
+		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
+		mips.dataLabel("Vtable_" + this.className);
+		for(String str : vtable.keySet()) {
+			VtableEntry entry = vtable.get(str);
+			mips.addVtableEntry(entry.toString());
+		}
+
+		// class methods
+		AST_CFIELD_LIST lst = this.body;
+		while(lst != null) {
+			AST_DEC curDec = lst.clsField.dec;
+			lst = lst.clsFieldList;
+			if(curDec == null || !(curDec instanceof AST_FUNCDEC)) {
+				continue;
+			}
+			AST_FUNCDEC curFunc = (AST_FUNCDEC)curDec;
+			curFunc.MIPSme();
+		}
 	}
 
 }
