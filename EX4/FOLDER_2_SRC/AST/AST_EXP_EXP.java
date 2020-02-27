@@ -47,7 +47,7 @@ public class AST_EXP_EXP extends AST_EXP {
 
 	public TEMP MIPSme() 
 	{
-		return null;
+		return exp.MIPSme();
 	}
 	
 }
