@@ -84,6 +84,9 @@ public class AST_CFIELD extends AST_DEC {
 			if(var_type instanceof TYPE_INT)
 			{
 				AST_EXP_INT intExp = (AST_EXP_INT)varDecExp.assign.exp;
+				if(intExp == null) {
+					return null;
+				}
 				return intExp.fullInt.GetValue();
 			}
 			if(var_type instanceof TYPE_STRING)

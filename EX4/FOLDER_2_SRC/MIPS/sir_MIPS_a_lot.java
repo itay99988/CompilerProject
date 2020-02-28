@@ -534,7 +534,7 @@ public class sir_MIPS_a_lot
 			/*****************************************************/
 			instance.dataPartPrinter.print(".data\n");
 			instance.dataPartPrinter.print("string_access_violation: .asciiz \"Access Violation\"\n");
-			instance.dataPartPrinter.print("string_illegal_div_by_0: .asciiz \"Illegal Division By Zero\"\n");
+			instance.dataPartPrinter.print("string_illegal_div_by_0: .asciiz \"Division By Zero\"\n");
 			instance.dataPartPrinter.print("string_invalid_ptr_dref: .asciiz \"Invalid Pointer Dereference\"\n");
 			instance.dataPartPrinter.print("\tstring_main: .asciiz \"main\"\n");
 

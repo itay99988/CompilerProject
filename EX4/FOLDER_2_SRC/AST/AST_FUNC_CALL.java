@@ -229,8 +229,11 @@ public class AST_FUNC_CALL extends AST_DEC {
 		if(this.var instanceof AST_VAR_FIELD) {				
 			objectVar = ((AST_VAR_FIELD)var).var;
 		}
-		else { //funcName is instanceof AST_VAR_SUBSCRIPT
+		else if(this.var instanceof AST_VAR_SUBSCRIPT) {
 			objectVar = ((AST_VAR_SUBSCRIPT)var).var;
+		}
+		else { //funcName is instanceof AST_VAR_SIMPLE
+			objectVar = var;
 		}
 		TEMP object = objectVar.getMipsValue(); //get the address of the object
 		mips.beqz(object, "_nullDereferenceError");
