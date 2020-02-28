@@ -73,7 +73,6 @@ public class AST_STMT_NEW_ASSIGN  extends AST_STMT {
 		}
 		if (AST_STMT_ASSIGN.isValidAssignment(varType, expressionType, this.getLineNumber()))
 		{
-			System.out.println(varType.name + "," + expressionType.name);
 			return null;
 		}
 

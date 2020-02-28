@@ -34,7 +34,6 @@ public class RegisterAllocator {
         livenessAnalysis();
         buildInterferenceGraph();
         this.coloringMap = findGraphColoring();
-        System.out.println(this.coloringMap.entrySet());
     }
 
 
