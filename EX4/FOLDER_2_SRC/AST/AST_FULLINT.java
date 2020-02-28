@@ -10,11 +10,14 @@ public class AST_FULLINT extends AST_DEC {
 	public boolean withMinus;
 	
 
-	public AST_FULLINT(AST_INT astInt, boolean withMinus) {
+	public AST_FULLINT(AST_INT astInt, boolean withMinus, int lineNumber) 
+	{
 		this.astInt = astInt;
 		this.withMinus = withMinus;
 
 		String minusStr = withMinus ? " MINUS" : "";
+
+		this.setLineNumber(lineNumber);
 		System.out.format("====================== fullInt ->%s int\n", minusStr);
 	}
 
@@ -43,7 +46,14 @@ public class AST_FULLINT extends AST_DEC {
 		AST_GRAPHVIZ.getInstance().logEdge(SerialNumber, astInt.SerialNumber);
 	}
 	
-	public TYPE SemantMe(){
+	public TYPE SemantMe() throws SemantException
+	{
+		//specific integer value which is allowed by the lexer but illegal
+		if(this.GetValue() == 32768)
+		{
+			String err = String.format("exp_int: illegal integer value used.\n");
+			throw new SemantException(this.getLineNumber(), err);
+		}
 		return TYPE_INT.getInstance();
 	}
 	

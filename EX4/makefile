@@ -54,8 +54,8 @@ CUP_FLAGS =                                \
 #########################
 # DEFINITIONS :: PARSER #
 #########################
-INPUT    = ${INPUT_DIR}/Input.txt
-OUTPUT   = ${OUTPUT_DIR}/MIPSCode.txt
+INPUT    = ${INPUT_DIR}/InputPicassoProgram.txt
+OUTPUT   = ${OUTPUT_DIR}/OutputMIPS.s
 
 ##########
 # TARGET #
@@ -260,4 +260,4 @@ everything:
 	@echo "*                                       *"
 	@echo "*                                       *"
 	@echo "*****************************************"
-	spim -f ${OUTPUT_DIR}/MIPSCode.txt > ${OUTPUT_DIR}/SPIM_OUTPUT.txt	
+	spim -f ${OUTPUT} > ${OUTPUT_DIR}/MIPS_OUTPUT.txt

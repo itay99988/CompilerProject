@@ -211,8 +211,8 @@ stmtList	::=		stmt:s	stmtList:l									{: RESULT = new AST_STMT_LIST(s,l);    :
 					| stmt:s											{: RESULT = new AST_STMT_LIST(s,null); :}
 					;
 
-fullInt	    ::=     int: i												{: RESULT = new AST_FULLINT(i, false); :}
-					| MINUS int: i          							{: RESULT = new AST_FULLINT(i, true);  :}
+fullInt	    ::=     int: i												{: RESULT = new AST_FULLINT(i, false, ileft+1); :}
+					| MINUS int: i          							{: RESULT = new AST_FULLINT(i, true, ileft+1);  :}
 					;
  
 
