@@ -50,7 +50,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		/*********************************/
 		AST_GRAPHVIZ.getInstance().logNode(
 			SerialNumber,
-			String.format("EXP\nBINOP", op));
+			String.format("EXP\nBINOP"));
 
 		/****************************************/
 		/* PRINT Edges to AST GRAPHVIZ DOT file */
@@ -63,46 +63,47 @@ public class AST_EXP_BINOP extends AST_EXP
 	public TYPE SemantMe() throws SemantException
 	{
 
-		TYPE t1 = null;
-		TYPE t2 = null;
+		TYPE leftType = null;
+		TYPE rightType = null;
 		
-		if (left  != null) t1 = left.SemantMe();
-		if (right != null) t2 = right.SemantMe();
+		if (left  != null) leftType = left.SemantMe();
+		if (right != null) rightType = right.SemantMe();
 		
-		if ((t1 == TYPE_INT.getInstance()) && (t2 == TYPE_INT.getInstance()))
+		if ((leftType == TYPE_INT.getInstance()) && (rightType == TYPE_INT.getInstance()))
 		{
 			return TYPE_INT.getInstance();
 		}
-		if ((t1 == TYPE_STRING.getInstance()) && (op.toString() == "PLUS") && (t2 == TYPE_STRING.getInstance()))
+		if ((leftType == TYPE_STRING.getInstance()) && (op.toString() == "PLUS") && (rightType == TYPE_STRING.getInstance()))
 		{
 			this.isStringConcat = true;
 			return TYPE_STRING.getInstance();
 		}
 
         if(op.toString() == "EQ"){
-            if(t1.isArray() && t2.isArray() && t1.name.equals(t2.name))
+            if(leftType.isArray() && rightType.isArray() && leftType.name.equals(rightType.name))
                 return TYPE_INT.getInstance();
-            if(t1 == TYPE_STRING.getInstance() && t2 == TYPE_STRING.getInstance())
+            if(leftType == TYPE_STRING.getInstance() && rightType == TYPE_STRING.getInstance())
 			{
 				this.isStringCompare = true;
 				return TYPE_INT.getInstance();
 			}
                 
-            if(t1 == TYPE_NIL.getInstance() || t2 == TYPE_NIL.getInstance()){
-                if(t1.isArray() || t2.isArray())
+            if(leftType == TYPE_NIL.getInstance() || rightType == TYPE_NIL.getInstance()){
+                if(leftType.isArray() || rightType.isArray())
                     return TYPE_INT.getInstance();
-                if(t1.isClass() || t2.isClass())
+                if(leftType.isClass() || rightType.isClass())
                     return TYPE_INT.getInstance();
             }
 
-            if(t1.isClass() && t2.isClass()){
-                if(isComparable((TYPE_CLASS) t1, (TYPE_CLASS) t2))
+            if(leftType.isClass() && rightType.isClass()){
+                if(isComparable((TYPE_CLASS) leftType, (TYPE_CLASS) rightType))
                     return TYPE_INT.getInstance();
             }
         }
 		
         throw new SemantException(this.getLineNumber(), "exp_binop: binop: types don't match.\n");
 	}
+
 
 	public boolean isComparable(TYPE_CLASS t1, TYPE_CLASS t2)
 	{
@@ -112,6 +113,7 @@ public class AST_EXP_BINOP extends AST_EXP
 	        t2 = t2.father;
 	    return t1.name.equals(t2.name);
     }
+
 
 	public TEMP MIPSme() 
 	{
@@ -156,7 +158,7 @@ public class AST_EXP_BINOP extends AST_EXP
 		else if( opType.equals("GT") )
 		{
 			// >
-			this.gtMIPSme(dst, t1, t2);
+			this.ltMIPSme(dst, t2, t1);
 		}
 		else if( opType.equals("EQ") )
 		{
@@ -191,50 +193,6 @@ public class AST_EXP_BINOP extends AST_EXP
 		/******************************************/
 		sir_MIPS_a_lot.getInstance().blt(t1,t2,label_AssignOne);
 		sir_MIPS_a_lot.getInstance().bge(t1,t2,label_AssignZero);
-
-		/************************/
-		/* [3] label_AssignOne: */
-		/*                      */
-		/*         t3 := 1      */
-		/*         goto end;    */
-		/*                      */
-		/************************/
-		sir_MIPS_a_lot.getInstance().label(label_AssignOne);
-		sir_MIPS_a_lot.getInstance().li(dst,1);
-		sir_MIPS_a_lot.getInstance().jump(label_end);
-
-		/*************************/
-		/* [4] label_AssignZero: */
-		/*                       */
-		/*         t3 := 1       */
-		/*         goto end;     */
-		/*                       */
-		/*************************/
-		sir_MIPS_a_lot.getInstance().label(label_AssignZero);
-		sir_MIPS_a_lot.getInstance().li(dst,0);
-		sir_MIPS_a_lot.getInstance().jump(label_end);
-
-		/******************/
-		/* [5] label_end: */
-		/******************/
-		sir_MIPS_a_lot.getInstance().label(label_end);
-	}
-
-	private void gtMIPSme(TEMP dst, TEMP t1, TEMP t2) 
-	{
-		/*******************************/
-		/* [1] Allocate 2 fresh labels */
-		/*******************************/
-		String label_end        = sir_MIPS_a_lot.getFreshLabel("end");
-		String label_AssignOne  = sir_MIPS_a_lot.getFreshLabel("AssignOne");
-		String label_AssignZero = sir_MIPS_a_lot.getFreshLabel("AssignZero");
-		
-		/******************************************/
-		/* [2] if (t1> t2) goto label_AssignOne;  */
-		/*     if (t1<=t2) goto label_AssignZero; */
-		/******************************************/
-		sir_MIPS_a_lot.getInstance().blt(t2,t1,label_AssignOne);
-		sir_MIPS_a_lot.getInstance().bge(t2,t1,label_AssignZero);
 
 		/************************/
 		/* [3] label_AssignOne: */

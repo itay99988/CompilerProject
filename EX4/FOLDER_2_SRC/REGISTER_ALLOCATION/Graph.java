@@ -23,9 +23,9 @@ public class Graph {
     /**
      * Adds edge (u,v) to the graph.
      */
-    public void addEdge(int u,int v) {
-        // add v to u's adjacency list (if it isn't already there)
-        // and update u's degree.
+    public void addEdge(int u, int v) {
+        // add u to v's adjacency list and vice versa
+        // and also update the vertices' degrees
         if(!adjacencyList[u].contains(v)){
             adjacencyList[u].add(v);
             degrees[u]++;

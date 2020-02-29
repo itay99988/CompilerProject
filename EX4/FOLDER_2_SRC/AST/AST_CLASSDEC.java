@@ -18,12 +18,12 @@ public class AST_CLASSDEC extends AST_DEC {
 
 
 
-	public AST_CLASSDEC(String className, String extendingClassName, AST_CFIELD_LIST cfieldList, int lineNumber) {
+	public AST_CLASSDEC(String className, String superClassName, AST_CFIELD_LIST cfieldList, int lineNumber) {
 		this.className = className;
-		this.superClassName = extendingClassName;
+		this.superClassName = superClassName;
 		this.body = cfieldList;
 		
-		String extStr = extendingClassName == null ? "" : String.format(" EXTENDS ( %s )", extendingClassName);
+		String extStr = superClassName == null ? "" : String.format(" EXTENDS ( %s )", superClassName);
 
 		this.setLineNumber(lineNumber);
 		System.out.format("====================== classDec -> CLASS ID( %s )%s LBRACE cFieldList RBRACE\n", className, extStr);
@@ -36,9 +36,9 @@ public class AST_CLASSDEC extends AST_DEC {
 		/***************************************/
 		System.out.print("AST NODE: CLASS DEC\n");
 
-		/***************************************/
-		/* RECURSIVELY PRINT head and tail ... */
-		/***************************************/
+		/******************************/
+		/* RECURSIVELY PRINT body ... */
+		/******************************/
 		if (body != null) body.PrintMe();
 		
 		/*********************************/

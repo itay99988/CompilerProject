@@ -51,14 +51,14 @@ public class AST_STMT_FUNCCALL  extends AST_STMT {
 	public void MIPSme() {
 		sir_MIPS_a_lot mips = sir_MIPS_a_lot.getInstance();
 		if (funcCall.funcNameStr.equals("PrintInt")) {
-			if(funcCall.funcClassName == null){
+			if(funcCall.funcClassName == null) {
 				TEMP intTemp = funcCall.args.exp.MIPSme();
 				mips.printInt(intTemp);
 				return;
 			}
 		}
 		if (funcCall.funcNameStr.equals("PrintString")) {
-			if(funcCall.funcClassName == null){
+			if(funcCall.funcClassName == null) {
 				TEMP strTemp = funcCall.args.exp.MIPSme();
 				mips.printString(strTemp);
 				return;
