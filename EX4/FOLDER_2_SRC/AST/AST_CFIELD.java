@@ -75,7 +75,7 @@ public class AST_CFIELD extends AST_DEC {
 		//in class we only allow initialize with primitive types
 		AST_VAR_DEC varDec = (AST_VAR_DEC)this.dec;
 
-		if(! (varDec instanceof AST_VAR_DEC_EXP))
+		if( ((AST_VAR_DEC_EXP)varDec).assign.exp == null)
 			return null;
 		else
 		{
