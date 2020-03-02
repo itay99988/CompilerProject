@@ -99,6 +99,10 @@ public class AST_EXP_BINOP extends AST_EXP
                 if(isComparable((TYPE_CLASS) leftType, (TYPE_CLASS) rightType))
                     return TYPE_INT.getInstance();
             }
+
+			if(leftType == TYPE_NIL.getInstance() && rightType == TYPE_NIL.getInstance()){
+				return TYPE_INT.getInstance();
+            }
         }
 		
         throw new SemantException(this.getLineNumber(), "exp_binop: binop: types don't match.\n");

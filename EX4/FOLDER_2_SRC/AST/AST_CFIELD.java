@@ -48,6 +48,7 @@ public class AST_CFIELD extends AST_DEC {
 			TYPE t = ((AST_VAR_DEC)this.dec).SemantMe(inClass);
 			Object value = getVarPrimitiveValue(t);
 
+
 			return new TYPE_CLASS_DATA_MEMBER(((AST_VAR_DEC)this.dec).name, t, ((AST_VAR_DEC)this.dec).offset, value);
 
 		}

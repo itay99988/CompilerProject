@@ -77,7 +77,7 @@ public class AST_VAR_FIELD extends AST_VAR
 		}
 
 		TYPE_CLASS typeClass = (TYPE_CLASS)SYMBOL_TABLE.getInstance().find(t.name, EntryCategory.Type);
-		
+
 		while(typeClass != null)
 		{
 			TYPE_CLASS_DATA_MEMBER_LIST memList = typeClass.data_members;
@@ -99,6 +99,7 @@ public class AST_VAR_FIELD extends AST_VAR
 	public TEMP getMipsValue() 
 	{
 		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+		
 		sir_MIPS_a_lot.getInstance().load(dst, this.getMipsRepr());
 		return dst;
 	}

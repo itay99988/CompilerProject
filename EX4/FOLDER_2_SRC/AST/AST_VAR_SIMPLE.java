@@ -69,7 +69,6 @@ public class AST_VAR_SIMPLE extends AST_VAR
 				this.isGlobal = SYMBOL_TABLE.getInstance().isGlobal(this.name);
 				this.localVarIdx = SYMBOL_TABLE.getInstance().getOffset(this.name);
 				this.isClassMember=false;
-
 				return t;
 			}
 			else
@@ -128,7 +127,10 @@ public class AST_VAR_SIMPLE extends AST_VAR
             while (cfieldTypes != null) 
 			{
                 if (this.name.equals(cfieldTypes.head.name))
-                	return cfieldTypes.head.type;
+				{
+					this.localVarIdx=cfieldTypes.head.offset;
+					return cfieldTypes.head.type;
+				}
                 cfieldTypes = cfieldTypes.tail;
             }
             currClass = currClass.father;
